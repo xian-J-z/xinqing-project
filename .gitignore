@@ -1,0 +1,10 @@
+# 云开发依赖
+cloudfunctions/**/node_modules
+cloudfunctions/**/package-lock.json
+
+# 系统文件
+.DS_Store
+*.log
+
+# 开发者工具临时文件
+miniprogram/miniprogram-npm
