@@ -1,2 +1,305 @@
 <!--pages/treehole/treehole.wxml-->
-<text>pages/treehole/treehole.wxml</text>
+<view class="treehole-container">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="header-title">{{userRole === 'counselor' ? '咨询管理' : '心理树洞'}}</text>
+    <text class="header-desc">{{userRole === 'counselor' ? '帮助用户，温暖心灵' : '在这里，你可以放心地倾诉'}}</text>
+  </view>
+
+  <!-- 搜索区域（普通用户显示） -->
+  <view class="search-section" wx:if="{{userRole !== 'counselor'}}">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索帖子标题或内容..." 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="doSearch"
+      />
+      <text class="search-clear" wx:if="{{searchKeyword}}" bindtap="clearSearch">✕</text>
+    </view>
+  </view>
+
+  <!-- 筛选标签（普通用户显示） -->
+  <view class="filter-section" wx:if="{{userRole !== 'counselor'}}">
+    <view class="filter-bar">
+      <view class="filter-item {{filterType === 'all' ? 'active' : ''}}" bindtap="switchFilter" data-type="all">
+        <text>最新</text>
+      </view>
+      <view class="filter-item {{filterType === 'popular' ? 'active' : ''}}" bindtap="switchFilter" data-type="popular">
+        <text>最热</text>
+      </view>
+      <view class="filter-item {{filterType === 'discussed' ? 'active' : ''}}" bindtap="switchFilter" data-type="discussed">
+        <text>讨论最多</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tab-bar">
+    <!-- 普通用户: 全部 + 我的 -->
+    <block wx:if="{{userRole !== 'counselor'}}">
+      <view class="tab {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="0">
+        <text>全部</text>
+      </view>
+      <view class="tab {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="1">
+        <text>我的</text>
+      </view>
+    </block>
+    <!-- 咨询师: 全部 + 待回复 + 我的 -->
+    <block wx:else>
+      <view class="tab {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="0">
+        <text>全部</text>
+      </view>
+      <view class="tab {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="1">
+        <text class="tab-badge">待回复</text>
+        <view class="badge" wx:if="{{pendingPosts.length > 0}}">{{pendingPosts.length}}</view>
+      </view>
+      <view class="tab {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-index="2">
+        <text>我的</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 发布区域（普通用户显示） -->
+  <view class="publish-section" wx:if="{{userRole !== 'counselor'}}">
+    <input 
+      class="publish-title" 
+      placeholder="标题（简短描述你的心情）" 
+      value="{{inputTitle}}"
+      bindinput="onTitleInput"
+      maxlength="30"
+    />
+    <textarea 
+      class="publish-input" 
+      placeholder="说出你的心声，这里是你安全的树洞..." 
+      value="{{inputText}}"
+      bindinput="onInput"
+      maxlength="500"
+    />
+    <view class="publish-action">
+      <view class="publish-options">
+        <text class="char-count">{{inputText.length}}/500</text>
+        <view class="anonymous-toggle" bindtap="toggleAnonymous">
+          <text>{{isAnonymous ? '🔒' : '👤'}}</text>
+          <text class="anonymous-text">{{isAnonymous ? '匿名' : '公开'}}</text>
+        </view>
+      </view>
+      <button class="publish-btn" bindtap="publishPost">发布</button>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <scroll-view scroll-y class="post-list">
+    <!-- 全部帖子 -->
+    <block wx:if="{{currentTab === 0}}">
+      <view class="post-card" wx:for="{{posts}}" wx:key="id">
+        <view class="post-header">
+          <view class="post-avatar-emoji">{{item.avatar}}</view>
+          <view class="post-user">
+            <text class="post-nickname">{{item.nickname}}</text>
+            <text class="post-time">{{item.time}}</text>
+          </view>
+          <view class="anonymous-tag" wx:if="{{item.anonymous}}">匿名</view>
+        </view>
+        
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-content">{{item.content}}</text>
+        
+        <view class="post-actions">
+          <!-- 普通用户操作 -->
+          <block wx:if="{{userRole !== 'counselor'}}">
+            <view class="action-item" bindtap="toggleLike" data-index="{{index}}">
+              <text class="{{item.liked ? 'liked' : ''}}">{{item.liked ? '❤️' : '🤍'}}</text>
+              <text class="action-count">{{item.likes}}</text>
+            </view>
+            <view class="action-item" bindtap="toggleComments" data-index="{{index}}">
+              <text>💬</text>
+              <text class="action-count">{{item.comments}}</text>
+            </view>
+          </block>
+          <!-- 咨询师操作 -->
+          <block wx:else>
+            <view class="action-item counselor-btn" bindtap="counselorReplyAll" data-index="{{index}}">
+              <text>👨‍⚕️</text>
+              <text class="action-count">回复</text>
+            </view>
+            <view class="action-item" bindtap="toggleComments" data-index="{{index}}">
+              <text>💬</text>
+              <text class="action-count">{{item.comments}}</text>
+            </view>
+            <view class="action-item delete-btn" bindtap="counselorDeletePost" data-index="{{index}}">
+              <text>🗑️</text>
+            </view>
+          </block>
+        </view>
+        
+        <!-- 评论区 -->
+        <view class="comments-section" wx:if="{{item.showComments}}">
+          <view class="comment-item {{comment.isCounselorReply ? 'counselor-comment' : ''}}" wx:for="{{item.commentsList}}" wx:for-item="comment" wx:key="*this">
+            <text class="comment-nickname">{{comment.nickname}}:</text>
+            <text class="comment-content">{{comment.content}}</text>
+            <text class="comment-time">{{comment.time}}</text>
+          </view>
+          
+          <view class="comment-input-section" wx:if="{{userRole !== 'counselor'}}">
+            <input 
+              class="comment-input" 
+              placeholder="写下你的回复..." 
+              bindconfirm="submitComment"
+              data-index="{{index}}"
+              bindinput="commentInput"
+            />
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:if="{{posts.length === 0}}">
+        <text wx:if="{{searchKeyword}}">没有找到相关帖子</text>
+        <text wx:else>暂无帖子</text>
+      </view>
+    </block>
+
+    <!-- 待回复帖子（咨询师专属） -->
+    <block wx:if="{{currentTab === 1 && userRole === 'counselor'}}">
+      <view class="pending-header">
+        <text class="pending-title">📋 需要您的专业回复</text>
+        <text class="pending-desc">以下帖子尚未得到咨询师回复，请尽快帮助用户</text>
+      </view>
+      
+      <view class="post-card pending-card" wx:for="{{pendingPosts}}" wx:key="id">
+        <view class="post-header">
+          <view class="post-avatar-emoji">{{item.avatar}}</view>
+          <view class="post-user">
+            <text class="post-nickname">{{item.nickname}}</text>
+            <text class="post-time">{{item.time}}</text>
+          </view>
+          <view class="anonymous-tag" wx:if="{{item.anonymous}}">匿名</view>
+        </view>
+        
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-content">{{item.content}}</text>
+        
+        <view class="post-actions">
+          <view class="action-item counselor-btn" bindtap="counselorReply" data-index="{{index}}">
+            <text>👨‍⚕️</text>
+            <text class="action-count">专业回复</text>
+          </view>
+          <view class="action-item delete-btn" bindtap="counselorDeletePost" data-index="{{index}}">
+            <text>🗑️</text>
+            <text class="action-count">删除</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:if="{{pendingPosts.length === 0}}">
+        <text>🎉 太棒了！暂无待回复的帖子</text>
+      </view>
+    </block>
+
+    <!-- 我的帖子 -->
+    <block wx:if="{{currentTab === (userRole === 'counselor' ? 2 : 1)}}">
+      <view class="post-card my-post" wx:for="{{myPosts}}" wx:key="id">
+        <view class="post-header">
+          <view class="post-avatar-emoji">{{item.avatar}}</view>
+          <view class="post-user">
+            <text class="post-nickname">{{item.nickname}}</text>
+            <text class="post-time">{{item.time}}</text>
+          </view>
+          <view class="anonymous-tag" wx:if="{{item.anonymous}}">匿名</view>
+        </view>
+        
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-content">{{item.content}}</text>
+        
+        <view class="post-actions">
+          <view class="action-item" bindtap="toggleLikeMy" data-index="{{index}}">
+            <text class="{{item.liked ? 'liked' : ''}}">{{item.liked ? '❤️' : '🤍'}}</text>
+            <text class="action-count">{{item.likes}}</text>
+          </view>
+          <view class="action-item" bindtap="toggleCommentsMy" data-index="{{index}}">
+            <text>💬</text>
+            <text class="action-count">{{item.comments}}</text>
+          </view>
+          <view class="action-item edit-btn" bindtap="openEditModal" data-id="{{item.id}}">
+            <text>✏️</text>
+            <text class="action-count">编辑</text>
+          </view>
+          <view class="action-item delete-btn" bindtap="deletePost" data-id="{{item.id}}">
+            <text>🗑️</text>
+            <text class="action-count">删除</text>
+          </view>
+        </view>
+        
+        <!-- 评论区 -->
+        <view class="comments-section" wx:if="{{item.showComments}}">
+          <view class="comment-item {{comment.isCounselorReply ? 'counselor-comment' : ''}}" wx:for="{{item.commentsList}}" wx:for-item="comment" wx:key="*this">
+            <text class="comment-nickname">{{comment.nickname}}:</text>
+            <text class="comment-content">{{comment.content}}</text>
+            <text class="comment-time">{{comment.time}}</text>
+          </view>
+          
+          <view class="comment-input-section" wx:if="{{userRole !== 'counselor'}}">
+            <input 
+              class="comment-input" 
+              placeholder="写下你的回复..." 
+              bindconfirm="submitCommentMy"
+              data-index="{{index}}"
+              bindinput="commentInputMy"
+            />
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:if="{{myPosts.length === 0}}">
+        <text>你还没有发布过帖子</text>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text>{{userRole === 'counselor' ? '咨询管理 · 用心帮助每一位同学' : '心理树洞 · 守护你的秘密花园'}}</text>
+  </view>
+
+  <!-- 编辑帖子弹窗 -->
+  <view class="edit-modal" wx:if="{{showEditModal}}">
+    <view class="modal-mask" bindtap="closeEditModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">编辑帖子</text>
+        <text class="modal-close" bindtap="closeEditModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="form-group">
+          <text class="form-label">标题</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入标题" 
+            value="{{editTitle}}"
+            bindinput="onEditTitleInput"
+            maxlength="30"
+          />
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">内容</text>
+          <textarea 
+            class="form-textarea" 
+            placeholder="请输入内容" 
+            value="{{editContent}}"
+            bindinput="onEditContentInput"
+            maxlength="500"
+          />
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="cancel-btn" bindtap="closeEditModal">取消</button>
+        <button class="save-btn" bindtap="saveEdit">保存修改</button>
+      </view>
+    </view>
+  </view>
+</view>

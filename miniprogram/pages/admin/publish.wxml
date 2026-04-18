@@ -1,0 +1,32 @@
+<!--pages/admin/publish.wxml-->
+<view class="publish-container">
+  <view class="form-section">
+    <text class="form-label">文章标题</text>
+    <input class="form-input" placeholder="请输入文章标题" bindinput="onTitleInput" value="{{title}}"/>
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">封面图片（选填）</text>
+    <view class="cover-upload" bindtap="chooseCover">
+      <image wx:if="{{cover}}" src="{{cover}}" mode="aspectFill"/>
+      <view wx:else class="upload-placeholder">
+        <text class="upload-icon">📷</text>
+        <text class="upload-text">点击上传封面</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">文章分类</text>
+    <picker bindchange="onCategoryChange" value="{{categoryIndex}}" range="{{categories}}">
+      <view class="picker-value">{{categories[categoryIndex]}}</view>
+    </picker>
+  </view>
+
+  <view class="form-section content-section">
+    <text class="form-label">文章内容</text>
+    <textarea class="form-textarea" placeholder="请输入文章内容..." bindinput="onContentInput" value="{{content}}"/>
+  </view>
+
+  <button class="submit-btn" bindtap="handlePublish">发布文章</button>
+</view>

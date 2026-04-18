@@ -1,1 +1,551 @@
 /* pages/treehole/treehole.wxss */
+.treehole-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  padding: 40rpx 30rpx;
+}
+
+.header-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.header-desc {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 搜索区域 */
+.search-section {
+  background: #fff;
+  padding: 20rpx 30rpx;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 30rpx;
+  padding: 16rpx 24rpx;
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 16rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.search-clear {
+  font-size: 28rpx;
+  color: #999;
+  padding: 0 10rpx;
+}
+
+/* 筛选区域 */
+.filter-section {
+  background: #fff;
+  padding: 0 30rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 30rpx;
+}
+
+.filter-item {
+  font-size: 26rpx;
+  color: #666;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.filter-item.active {
+  background: rgba(79, 172, 254, 0.1);
+  color: #4facfe;
+  font-weight: 600;
+}
+
+/* Tab切换 */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  padding: 0 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.tab {
+  padding: 24rpx 40rpx;
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #4facfe;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 6rpx;
+  background: #4facfe;
+  border-radius: 3rpx;
+}
+
+/* 发布区域 */
+.publish-section {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.publish-title {
+  width: 100%;
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.publish-input {
+  width: 100%;
+  min-height: 120rpx;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.publish-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.publish-options {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.char-count {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+.anonymous-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  background: #f5f5f5;
+  border-radius: 20rpx;
+}
+
+.anonymous-text {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.publish-btn {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-size: 26rpx;
+  padding: 16rpx 40rpx;
+  border-radius: 50rpx;
+}
+
+.publish-btn::after {
+  border: none;
+}
+
+.post-list {
+  padding: 0 20rpx;
+  height: calc(100vh - 580rpx);
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.my-post {
+  border-left: 4rpx solid #4facfe;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.post-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background: #eee;
+}
+
+.post-avatar-emoji {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+}
+
+.post-user {
+  flex: 1;
+}
+
+.post-nickname {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.post-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.anonymous-tag {
+  background: rgba(79, 172, 254, 0.1);
+  color: #4facfe;
+  font-size: 20rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.post-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.post-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 20rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-actions {
+  display: flex;
+  gap: 40rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.action-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.action-item .liked {
+  color: #ff6b6b;
+}
+
+.edit-btn {
+  color: #4facfe;
+}
+
+.delete-btn {
+  color: #ff6b6b;
+}
+
+.comments-section {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.comment-item {
+  margin-bottom: 16rpx;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.comment-nickname {
+  font-size: 24rpx;
+  color: #4facfe;
+  font-weight: 600;
+  margin-right: 10rpx;
+}
+
+.comment-content {
+  font-size: 24rpx;
+  color: #333;
+  flex: 1;
+}
+
+.comment-time {
+  font-size: 20rpx;
+  color: #ccc;
+  width: 100%;
+  margin-top: 6rpx;
+  padding-left: 0;
+}
+
+.comment-input-section {
+  margin-top: 16rpx;
+}
+
+.comment-input {
+  background: #f5f5f5;
+  border-radius: 30rpx;
+  padding: 16rpx 24rpx;
+  font-size: 24rpx;
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.footer-tip {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx;
+  text-align: center;
+  border-top: 1rpx solid #eee;
+}
+
+.footer-tip text {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+/* 编辑弹窗 */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 30rpx 30rpx 0 0;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 50rpx;
+  color: #ccc;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.form-input {
+  width: 100%;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx;
+  padding-bottom: 60rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 30rpx;
+  padding: 24rpx 0;
+  border-radius: 50rpx;
+}
+
+.cancel-btn::after {
+  border: none;
+}
+
+.save-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  font-size: 30rpx;
+  padding: 24rpx 0;
+  border-radius: 50rpx;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+/* 咨询师样式 */
+.counselor-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff !important;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  margin-right: 10rpx;
+}
+
+.counselor-btn .action-count {
+  color: #fff !important;
+}
+
+.counselor-comment {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 16rpx;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.counselor-comment .comment-nickname {
+  color: #667eea;
+  font-weight: 700;
+}
+
+/* 待回复区域 */
+.pending-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 24rpx 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 16rpx;
+}
+
+.pending-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.pending-desc {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pending-card {
+  border-left: 4rpx solid #667eea;
+}
+
+/* Tab徽章 */
+.tab-badge {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -10rpx;
+  right: -20rpx;
+  background: #ff6b6b;
+  color: #fff;
+  font-size: 18rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 20rpx;
+  min-width: 32rpx;
+  text-align: center;
+}

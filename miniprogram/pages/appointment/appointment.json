@@ -1,3 +1,6 @@
 {
+  "navigationBarTitleText": "预约咨询",
+  "navigationBarBackgroundColor": "#43e97b",
+  "navigationBarTextStyle": "white",
   "usingComponents": {}
 }

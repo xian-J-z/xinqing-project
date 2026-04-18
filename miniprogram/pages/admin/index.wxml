@@ -1,0 +1,88 @@
+<!--pages/admin/index.wxml-->
+<view class="admin-container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="admin-info">
+      <view class="admin-avatar">👑</view>
+      <view class="admin-text">
+        <text class="admin-name">{{userInfo.nickName || '管理员'}}</text>
+        <text class="admin-welcome">欢迎回来</text>
+      </view>
+    </view>
+    <button class="logout-btn" bindtap="logout">退出</button>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-section">
+    <view class="stat-card">
+      <view class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">👥</view>
+      <view class="stat-info">
+        <text class="stat-num">{{stats.totalUsers}}</text>
+        <text class="stat-label">总用户</text>
+      </view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">👨‍⚕️</view>
+      <view class="stat-info">
+        <text class="stat-num">{{stats.counselors}}</text>
+        <text class="stat-label">咨询师</text>
+      </view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📝</view>
+      <view class="stat-info">
+        <text class="stat-num">{{stats.articles}}</text>
+        <text class="stat-label">文章</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <text class="section-title">管理功能</text>
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="goToUsers">
+        <view class="menu-icon" style="background: #e8f0fe;">👥</view>
+        <text class="menu-text">用户管理</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToArticles">
+        <view class="menu-icon" style="background: #fef3c7;">📝</view>
+        <text class="menu-text">文章管理</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goToPublish">
+        <view class="menu-icon" style="background: #d1fae5;">✏️</view>
+        <text class="menu-text">发布文章</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-section">
+    <text class="section-title">快捷操作</text>
+    <view class="quick-list">
+      <view class="quick-item">
+        <text class="quick-text">添加咨询师账号</text>
+        <view class="quick-btn" bindtap="showAddCounselor">添加</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 添加咨询师弹窗 -->
+<view class="modal" wx:if="{{showAddModal}}" bindtap="hideAddModal">
+  <view class="modal-content" catchtap="stopProp">
+    <view class="modal-header">
+      <text class="modal-title">添加咨询师</text>
+      <text class="modal-close" bindtap="hideAddModal">✕</text>
+    </view>
+    <view class="modal-body">
+      <input class="form-input" placeholder="账号/手机号" bindinput="onAccountInput" value="{{newAccount}}"/>
+      <input class="form-input" type="password" placeholder="密码" bindinput="onPwdInput" value="{{newPwd}}"/>
+      <input class="form-input" placeholder="昵称（选填）" bindinput="onNickInput" value="{{newNick}}"/>
+      <button class="submit-btn" bindtap="handleAddCounselor">确认添加</button>
+    </view>
+  </view>
+</view>

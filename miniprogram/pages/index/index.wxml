@@ -1,29 +1,137 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="title">快速了解云开发</view>
-  <view class="top_tip">免鉴权接口调用 免部署后台 高并发</view>
-  <view class="power" wx:key="title" wx:for="{{powerList}}" wx:for-item="power">
-    <view class="power_info" data-index="{{index}}" data-type="{{ power.type }}" bindtap="onClickPowerInfo">
-      <view class="power_info_text">
-        <view class="power_info_text_title">
-          {{power.title}}
-          <view class="power_info_text_tag" wx:if="{{power.tag}}">{{power.tag}}</view>
-        </view>
-        <view class="power_info_text_tip">{{power.tip}}</view>
-      </view>
-      <image wx:if="{{!power.showItem && power.item.length}}" class="power_info_more" src="../../images/arrow.svg"></image>
-      <image wx:if="{{power.showItem && power.item.length}}" class="power_info_less" src="../../images/arrow.svg"></image>
-      <image wx:if="{{!power.item.length}}" class="power_item_icon" src="../../images/arrow.svg"></image>
+<!--pages/index/index.wxml-->
+<view class="index-container">
+  <!-- 顶部欢迎 -->
+  <view class="header">
+    <view class="welcome">
+      <text class="welcome-text">
+        <block wx:if="{{userRole === 'counselor'}}">咨询师</block>
+        <block wx:else>你好，</block>
+        {{userInfo.nickName || '同学'}}
+      </text>
+      <text class="date-text">{{currentDate}}</text>
+      <text class="role-badge" wx:if="{{userRole === 'counselor'}}">👨‍⚕️ 心理咨询师</text>
     </view>
-    <view wx:if="{{power.showItem}}">
-      <view wx:key="title" wx:for="{{power.item}}">
-        <view class="line"></view>
-        <view class="power_item" bindtap="jumpPage" data-type="{{ item.type }}" data-page="{{item.page}}">
-          <view class="power_item_title">{{item.title}}</view>
-          <image class="power_item_icon" src="../../images/arrow.svg"></image>
+    <block wx:if="{{userInfo.avatarUrl}}">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+    </block>
+    <block wx:else>
+      <view class="avatar-emoji">{{userRole === 'counselor' ? '👨‍⚕️' : '👤'}}</view>
+    </block>
+  </view>
+
+  <!-- 轮播图 - 咨询师不显示 -->
+  <view class="banner-section" wx:if="{{userRole !== 'counselor'}}">
+    <swiper class="banner" indicator-dots autoplay circular interval="3000" bindchange="onBannerChange">
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-item">
+          <view class="banner-emoji">{{item.emoji}}</view>
+          <view class="banner-mask">
+            <text class="banner-title">{{item.title}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+    <view class="banner-dots">
+      <view class="dot {{currentBanner === index ? 'active' : ''}}" wx:for="{{banners}}" wx:key="id"></view>
+    </view>
+  </view>
+
+  <!-- 咨询师工作台 -->
+  <view class="counselor-section" wx:if="{{userRole === 'counselor'}}">
+    <view class="counselor-header">
+      <text class="counselor-title">📋 今日工作台</text>
+    </view>
+    <view class="counselor-stats">
+      <view class="stat-item">
+        <text class="stat-num">5</text>
+        <text class="stat-label">待回复</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">12</text>
+        <text class="stat-label">今日咨询</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">98%</text>
+        <text class="stat-label">满意度</text>
+      </view>
+    </view>
+    <view class="counselor-actions">
+      <view class="action-item" bindtap="goToTreehole">
+        <text class="action-icon">💬</text>
+        <text class="action-text">回复咨询</text>
+      </view>
+      <view class="action-item" bindtap="goToAppointment">
+        <text class="action-icon">📅</text>
+        <text class="action-text">预约管理</text>
+      </view>
+      <view class="action-item" bindtap="goToTest">
+        <text class="action-icon">📊</text>
+        <text class="action-text">查看报告</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 普通用户快捷入口 -->
+  <view class="quick-entry" wx:if="{{userRole !== 'counselor'}}">
+    <view class="entry-item" bindtap="goToTest">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <text class="icon-text">测</text>
+      </view>
+      <text class="entry-title">心理测评</text>
+      <text class="entry-desc">了解你的内心</text>
+    </view>
+    <view class="entry-item" bindtap="goToAI">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <text class="icon-text">AI</text>
+      </view>
+      <text class="entry-title">AI分析</text>
+      <text class="entry-desc">智能心理分析</text>
+    </view>
+    <view class="entry-item" bindtap="goToTreehole">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <text class="icon-text">洞</text>
+      </view>
+      <text class="entry-title">心理树洞</text>
+      <text class="entry-desc">倾诉你的心声</text>
+    </view>
+    <view class="entry-item" bindtap="goToAppointment">
+      <view class="entry-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <text class="icon-text">约</text>
+      </view>
+      <text class="entry-title">预约咨询</text>
+      <text class="entry-desc">专业心理咨询</text>
+    </view>
+  </view>
+
+  <!-- 心理文章列表 -->
+  <view class="articles-section">
+    <view class="section-header">
+      <text class="section-title">{{userRole === 'counselor' ? '热门文章' : '心理文章'}}</text>
+      <text class="more-text">更多 ></text>
+    </view>
+    
+    <view class="article-list">
+      <view class="article-card" wx:for="{{articles}}" wx:key="id" bindtap="goToArticle" data-id="{{item.id}}">
+        <view class="article-emoji">{{item.emoji}}</view>
+        <view class="article-info">
+          <text class="article-title">{{item.title}}</text>
+          <text class="article-summary">{{item.summary}}</text>
+          <view class="article-meta">
+            <text class="article-author">{{item.author}}</text>
+            <text class="article-views">{{item.views}} 阅读</text>
+          </view>
+          <view class="article-tags">
+            <text class="tag tag-primary" wx:for="{{item.tags}}" wx:for-item="tag">{{tag}}</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
-  <cloud-tip-modal showTipProps="{{showTip}}" title="{{title}}" content="{{content}}"></cloud-tip-modal>
+
+  <!-- 底部提示 -->
+  <view class="tip-section">
+    <text class="tip-text" wx:if="{{userRole === 'counselor'}}">帮助他人，温暖心灵</text>
+    <text class="tip-text" wx:else>如果你感到心理困扰，请及时寻求专业帮助</text>
+    <text class="tip-phone">心理援助热线：400-123-4567</text>
+  </view>
 </view>

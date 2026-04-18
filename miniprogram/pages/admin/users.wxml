@@ -1,0 +1,37 @@
+<!--pages/admin/users.wxml-->
+<view class="users-container">
+  <!-- 筛选 -->
+  <view class="filter-bar">
+    <view class="filter-item {{filterRole === '' ? 'active' : ''}}" bindtap="setFilter" data-role="">全部</view>
+    <view class="filter-item {{filterRole === 'user' ? 'active' : ''}}" bindtap="setFilter" data-role="user">学生</view>
+    <view class="filter-item {{filterRole === 'counselor' ? 'active' : ''}}" bindtap="setFilter" data-role="counselor">咨询师</view>
+    <view class="filter-item {{filterRole === 'admin' ? 'active' : ''}}" bindtap="setFilter" data-role="admin">管理员</view>
+  </view>
+
+  <!-- 用户列表 -->
+  <scroll-view scroll-y class="user-list">
+    <view class="user-item {{item.disabled ? 'disabled' : ''}}" wx:for="{{users}}" wx:key="_id">
+      <view class="user-avatar">{{item.avatarUrl ? '🌟' : '👤'}}</view>
+      <view class="user-info">
+        <view class="user-name">
+          <text>{{item.nickName || item.username || '未命名'}}</text>
+          <view class="user-role role-{{item.role}}">{{item.roleText}}</view>
+          <view class="user-status {{item.disabled ? 'status-disabled' : 'status-active'}}">
+            {{item.disabled ? '已停用' : '正常'}}
+          </view>
+        </view>
+        <text class="user-meta">注册: {{item.createTimeStr}}</text>
+      </view>
+      <view class="user-actions">
+        <text class="action-btn" bindtap="toggleUser" data-id="{{item._id}}" data-disabled="{{!item.disabled}}">
+          {{item.disabled ? '启用' : '停用'}}
+        </text>
+        <text class="action-btn delete" bindtap="deleteUser" data-id="{{item._id}}">删除</text>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{users.length === 0}}">
+      <text>暂无用户</text>
+    </view>
+  </scroll-view>
+</view>

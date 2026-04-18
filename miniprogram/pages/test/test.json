@@ -1,3 +1,6 @@
 {
+  "navigationBarTitleText": "心理测评",
+  "navigationBarBackgroundColor": "#667eea",
+  "navigationBarTextStyle": "white",
   "usingComponents": {}
 }

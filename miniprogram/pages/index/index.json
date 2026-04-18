@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "基础能力",
-  "usingComponents": {
-    "cloud-tip-modal": "/components/cloudTipModal/index"
-  }
+  "navigationBarTitleText": "心灵伴侣",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
 }

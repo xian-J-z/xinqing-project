@@ -1,25 +1,32 @@
 {
   "pages": [
+    "pages/login/login",
     "pages/index/index",
     "pages/test/test",
     "pages/ai/ai",
     "pages/appointment/appointment",
     "pages/mine/mine",
-    "pages/treehole/treehole"
+    "pages/treehole/treehole",
+    "pages/admin/index",
+    "pages/admin/users",
+    "pages/admin/articles",
+    "pages/admin/publish"
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#f8f8f8",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#667eea",
+    "navigationBarTitleText": "心灵伴侣",
+    "navigationBarTextStyle": "white"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {
+    "iconPath": "images/home.png",
+    "selectedIconPath": "images/home-active.png",
     "color": "#666",
-    "selectedColor": "#0088ff",
+    "selectedColor": "#667eea",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -30,5 +37,6 @@
         "text": "我的"
       }
     ]
-  }
+  },
+  "requiredBackgroundModes": ["audio"]
 }

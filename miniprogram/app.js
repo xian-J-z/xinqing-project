@@ -1,19 +1,73 @@
 // app.js
 App({
+  globalData: {
+    userInfo: null,
+    openid: '',
+    env: 'cloud1-0g3scszw1d1248a3'
+  },
+  
   onLaunch: function () {
-    this.globalData = {
-      // env 参数说明：
-      // env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会请求到哪个云环境的资源
-      // 此处请填入环境 ID, 环境 ID 可在微信开发者工具右上顶部工具栏点击云开发按钮打开获取
-      env: "",
-    };
     if (!wx.cloud) {
-      console.error("请使用 2.2.3 或以上的基础库以使用云能力");
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
       wx.cloud.init({
-        env: "cloud1-0g3scszw1d1248a3",
+        env: this.globalData.env,
         traceUser: true,
       });
     }
+    
+    // 检查登录状态
+    this.checkLoginStatus();
   },
+  
+  // 检查登录状态
+  checkLoginStatus: function() {
+    const userInfo = wx.getStorageSync('userInfo');
+    if (userInfo) {
+      this.globalData.userInfo = userInfo;
+      this.globalData.openid = userInfo.openid;
+    }
+  },
+  
+  // 登录保存用户信息
+  saveUserInfo: function(userInfo, openid, role, isAccountLogin) {
+    userInfo.openid = openid;
+    userInfo.role = role || 'user';
+    userInfo.isAccountLogin = isAccountLogin || false;  // 标记是否为账号密码登录
+    this.globalData.userInfo = userInfo;
+    this.globalData.openid = openid;
+    this.globalData.userRole = role || 'user';
+    wx.setStorageSync('userInfo', userInfo);
+  },
+  
+  // 获取用户信息
+  getUserInfo: function() {
+    return this.globalData.userInfo;
+  },
+  
+  // 获取openid
+  getOpenid: function() {
+    return this.globalData.openid;
+  },
+  
+  // 获取用户角色
+  getUserRole: function() {
+    return this.globalData.userInfo ? this.globalData.userInfo.role : 'user';
+  },
+  
+  // 检查是否为咨询师
+  isCounselor: function() {
+    return this.getUserRole() === 'counselor';
+  },
+  
+  // 退出登录
+  logout: function() {
+    this.globalData.userInfo = null;
+    this.globalData.openid = '';
+    this.globalData.userRole = '';
+    wx.removeStorageSync('userInfo');
+    wx.reLaunch({
+      url: '/pages/login/login'
+    });
+  }
 });

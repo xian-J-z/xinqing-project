@@ -1,0 +1,32 @@
+<!--pages/admin/articles.wxml-->
+<view class="articles-container">
+  <!-- 工具栏 -->
+  <view class="toolbar">
+    <button class="publish-btn" bindtap="goToPublish">发布文章</button>
+  </view>
+
+  <!-- 文章列表 -->
+  <scroll-view scroll-y class="article-list">
+    <view class="article-item" wx:for="{{articles}}" wx:key="_id">
+      <view class="article-cover" wx:if="{{item.cover}}">
+        <image src="{{item.cover}}" mode="aspectFill"/>
+      </view>
+      <view class="article-info">
+        <text class="article-title">{{item.title}}</text>
+        <view class="article-meta">
+          <text>{{item.authorName || '管理员'}}</text>
+          <text>{{item.createTimeStr}}</text>
+          <text>阅读 {{item.viewCount || 0}}</text>
+        </view>
+      </view>
+      <view class="article-actions">
+        <text class="action-btn" bindtap="editArticle" data-id="{{item._id}}">编辑</text>
+        <text class="action-btn delete" bindtap="deleteArticle" data-id="{{item._id}}">删除</text>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{articles.length === 0}}">
+      <text>暂无文章</text>
+    </view>
+  </scroll-view>
+</view>
