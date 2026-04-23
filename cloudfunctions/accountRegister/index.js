@@ -77,9 +77,13 @@ exports.main = async (event, context) => {
           openid: openid,
           name: userInfo?.nickName || username,
           avatar: userInfo?.avatarUrl || '',
-          intro: '',
-          tags: [],
+          profile: '',
           title: '心理咨询师',
+          specialties: [],
+          experience: '',
+          price: 200,
+          rating: 5.0,
+          consults: 0,
           available: true
         }
       })

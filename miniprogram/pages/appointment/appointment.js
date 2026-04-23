@@ -44,10 +44,10 @@ Page({
         console.log("咨询师数据：", res.data); // 调试用
         const counselors = res.data.map(item => ({
           _id: item._id,
-          id: item._id,
           name: item.name || '未命名咨询师',
           title: item.title || '心理咨询师',
           avatar: item.avatar || '👨‍⚕️',
+          profile: item.profile || '',
           specialties: item.specialties || [],
           experience: item.experience || '5年以上',
           rating: item.rating || 5.0,
@@ -105,7 +105,7 @@ Page({
   // 选择咨询师 → 打开弹窗
   selectCounselor: function (e) {
     const id = e.currentTarget.dataset.id;
-    const counselor = this.data.counselors.find(c => c.id === id);
+    const counselor = this.data.counselors.find(c => c._id === id);
 
     if (!counselor.available) {
       wx.showToast({ title: '该咨询师暂不可预约', icon: 'none' });
@@ -212,7 +212,7 @@ Page({
       openid: app.getOpenid(),
       userName: userInfo.nickName || '用户',
       userAvatar: userInfo.avatarUrl || '',
-      counselorId: selectedCounselor.id,
+      counselorId: selectedCounselor._id,
       counselorName: selectedCounselor.name,
       counselorTitle: selectedCounselor.title,
       date: selectedDate,

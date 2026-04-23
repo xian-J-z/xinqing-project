@@ -41,11 +41,15 @@ exports.main = async (event, context) => {
               data: {
                 openid: openid,
                 name: userInfo.nickName || '咨询师',
-                avatar: userInfo.avatarUrl || '', // 对应 counselor 表的 avatar 字段
-                intro: '', // 对应 counselor 表的 intro 字段
-                tags: [], // 对应 counselor 表的 tags 字段
-                title: '心理咨询师', // 对应 counselor 表的 title 字段
-                available: true // 对应 counselor 表的 available 字段，默认正常状态
+                avatar: userInfo.avatarUrl || '',
+                profile: '',
+                title: '心理咨询师',
+                specialties: [],
+                experience: '',
+                price: 200,
+                rating: 5.0,
+                consults: 0,
+                available: true
               }
             })
           }
@@ -73,16 +77,20 @@ exports.main = async (event, context) => {
       data: userData
     })
 
-    // 新用户是咨询师，写入 counselor 表（字段和你数据库完全匹配）
+    // 新用户是咨询师，写入 counselor 表
     if (role === 'counselor') {
       await db.collection('counselor').add({
         data: {
           openid: openid,
           name: userInfo.nickName || '咨询师',
           avatar: userInfo.avatarUrl || '',
-          intro: '',
-          tags: [],
+          profile: '',
           title: '心理咨询师',
+          specialties: [],
+          experience: '',
+          price: 200,
+          rating: 5.0,
+          consults: 0,
           available: true
         }
       })

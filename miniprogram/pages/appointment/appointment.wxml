@@ -28,9 +28,9 @@
         <view 
           class="counselor-card" 
           wx:for="{{counselors}}" 
-          wx:key="id"
+          wx:key="_id"
           bindtap="selectCounselor"
-          data-id="{{item.id}}"
+          data-id="{{item._id}}"
         >
           <view class="counselor-avatar-emoji">{{item.avatar}}</view>
           <view class="counselor-info">

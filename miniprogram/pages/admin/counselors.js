@@ -9,7 +9,7 @@ Page({
     editForm: {
       name: '',
       title: '',
-      intro: '',
+      profile: '',
       experience: '',
       price: '',
       specialties: [],
@@ -52,14 +52,20 @@ Page({
 
   async toggleAvailable(e) {
     const { id, available } = e.currentTarget.dataset
+    const isCurrentlyAvailable = available === '1'
+    const newAvailable = !isCurrentlyAvailable
+
+    wx.showLoading({ title: '操作中...' })
     try {
-      await wx.cloud.callFunction({
+      const res = await wx.cloud.callFunction({
         name: 'adminManage',
-        data: { action: 'toggleCounselorAvailable', counselorId: id, available: !available }
+        data: { action: 'toggleCounselorAvailable', counselorId: id, available: newAvailable }
       })
-      wx.showToast({ title: available ? '已停用' : '已启用', icon: 'success' })
+      wx.hideLoading()
+      wx.showToast({ title: newAvailable ? '已启用' : '已停用', icon: 'success' })
       this.loadCounselors()
     } catch (e) {
+      wx.hideLoading()
       wx.showToast({ title: '操作失败', icon: 'none' })
     }
   },
@@ -92,10 +98,10 @@ Page({
       editForm: {
         name: counselor.name || '',
         title: counselor.title || '',
-        intro: counselor.intro || '',
+        profile: counselor.profile || '',
         experience: counselor.experience || '',
         price: String(counselor.price || ''),
-        specialties: counselor.specialties || counselor.tags || [],
+        specialties: counselor.specialties || [],
         specialtyInput: ''
       }
     })
@@ -137,7 +143,7 @@ Page({
       const data = {
         name: editForm.name.trim(),
         title: editForm.title.trim() || '心理咨询师',
-        intro: editForm.intro.trim(),
+        profile: editForm.profile.trim(),
         experience: editForm.experience.trim(),
         price: Number(editForm.price) || 200,
         specialties: editForm.specialties

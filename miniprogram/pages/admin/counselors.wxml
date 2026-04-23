@@ -1,0 +1,89 @@
+<!--pages/admin/counselors.wxml-->
+<view class="counselors-container">
+  <!-- 列表 -->
+  <scroll-view scroll-y class="counselor-list">
+    <view class="counselor-item" wx:for="{{counselors}}" wx:key="_id">
+      <view class="counselor-avatar">{{item.avatar || '👨‍⚕️'}}</view>
+      <view class="counselor-info">
+        <view class="name-row">
+          <text class="counselor-name">{{item.name || '未命名'}}</text>
+          <view class="status-tag {{item.available ? 'available' : 'unavailable'}}">
+            {{item.available ? '可预约' : '已停用'}}
+          </view>
+        </view>
+        <text class="counselor-title">{{item.title || '心理咨询师'}}</text>
+        <view class="counselor-tags" wx:if="{{item.specialties.length > 0}}">
+          <text class="tag" wx:for="{{item.specialties}}" wx:for-item="spec" wx:key="*this">{{spec}}</text>
+        </view>
+        <view class="counselor-meta">
+          <text wx:if="{{item.experience}}">🕐 {{item.experience}}</text>
+          <text wx:if="{{item.price}}">¥{{item.price}}/次</text>
+          <text wx:if="{{item.rating}}">⭐ {{item.rating}}</text>
+        </view>
+      </view>
+      <view class="counselor-actions">
+        <text class="action-btn" bindtap="showEdit" data-id="{{item._id}}">编辑</text>
+        <text class="action-btn {{item.available ? 'warn' : 'success'}}" bindtap="toggleAvailable" data-id="{{item._id}}" data-available="{{item.available ? '1' : '0'}}">{{item.available ? '停用' : '启用'}}</text>
+        <text class="action-btn delete" bindtap="deleteCounselor" data-id="{{item._id}}">删除</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{counselors.length === 0}}">
+      <text>暂无咨询师</text>
+    </view>
+  </scroll-view>
+
+  <!-- 编辑弹窗 -->
+  <view class="modal" wx:if="{{showEditModal}}" bindtap="hideEditModal">
+    <view class="modal-content" catchtap="stopProp">
+      <view class="modal-header">
+        <text class="modal-title">编辑咨询师</text>
+        <text class="modal-close" bindtap="hideEditModal">✕</text>
+      </view>
+      <scroll-view scroll-y class="modal-body">
+        <view class="form-section">
+          <text class="form-label">姓名 *</text>
+          <input class="form-input" placeholder="咨询师姓名" bindinput="onEditInput" data-field="name" value="{{editForm.name}}"/>
+        </view>
+
+        <view class="form-section">
+          <text class="form-label">职称</text>
+          <input class="form-input" placeholder="如：高级心理咨询师" bindinput="onEditInput" data-field="title" value="{{editForm.title}}"/>
+        </view>
+
+        <view class="form-section">
+          <text class="form-label">介绍</text>
+          <textarea class="form-textarea" placeholder="咨询师介绍..." bindinput="onEditInput" data-field="profile" value="{{editForm.profile}}" maxlength="-1" auto-height/>
+        </view>
+
+        <view class="form-section">
+          <text class="form-label">从业经验</text>
+          <input class="form-input" placeholder="如：5年以上" bindinput="onEditInput" data-field="experience" value="{{editForm.experience}}"/>
+        </view>
+
+        <view class="form-section">
+          <text class="form-label">咨询价格（元/次）</text>
+          <input class="form-input" type="number" placeholder="如：200" bindinput="onEditInput" data-field="price" value="{{editForm.price}}"/>
+        </view>
+
+        <view class="form-section">
+          <text class="form-label">擅长领域</text>
+          <view class="specialty-list">
+            <view class="specialty-tag" wx:for="{{editForm.specialties}}" wx:key="*this">
+              <text>{{item}}</text>
+              <text class="remove-tag" bindtap="removeSpecialty" data-index="{{index}}">✕</text>
+            </view>
+          </view>
+          <view class="specialty-input-row">
+            <input class="form-input specialty-input" placeholder="输入擅长领域" bindinput="onEditInput" data-field="specialtyInput" value="{{editForm.specialtyInput}}"/>
+            <text class="add-btn" bindtap="addSpecialty">添加</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer">
+        <button class="save-btn" bindtap="saveEdit">保存</button>
+      </view>
+    </view>
+  </view>
+</view>

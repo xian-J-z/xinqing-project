@@ -1,0 +1,222 @@
+/* pages/admin/counselors.wxss */
+page { background: #f5f5f5; }
+
+.counselors-container { height: 100vh; display: flex; flex-direction: column; }
+
+.counselor-list { flex: 1; padding: 20rpx; }
+
+.counselor-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+}
+
+.counselor-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.counselor-info { flex: 1; }
+
+.name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.counselor-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-right: 16rpx;
+}
+
+.status-tag {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+.status-tag.available { background: rgba(67, 233, 123, 0.1); color: #43e97b; }
+.status-tag.unavailable { background: rgba(255, 107, 107, 0.1); color: #ff6b6b; }
+
+.counselor-title {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.counselor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 8rpx;
+}
+
+.tag {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  margin-right: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.counselor-meta {
+  display: flex;
+  gap: 16rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.counselor-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-left: 20rpx;
+  justify-content: center;
+}
+
+.action-btn {
+  font-size: 24rpx;
+  color: #667eea;
+  padding: 10rpx 20rpx;
+  border-radius: 8rpx;
+  background: #e8f0fe;
+  text-align: center;
+  white-space: nowrap;
+}
+.action-btn.warn { color: #ff9800; background: #fff3e0; }
+.action-btn.success { color: #43e97b; background: #e8f5e9; }
+.action-btn.delete { color: #ef4444; background: #fee2e2; }
+
+.empty {
+  text-align: center;
+  padding: 100rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 编辑弹窗 */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  width: 90%;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title { font-size: 32rpx; font-weight: 600; color: #333; }
+.modal-close { font-size: 40rpx; color: #ccc; }
+
+.modal-body {
+  padding: 30rpx;
+  max-height: 65vh;
+}
+
+.form-section { margin-bottom: 30rpx; }
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.form-input {
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+
+.form-textarea {
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  width: 100%;
+  min-height: 120rpx;
+  box-sizing: border-box;
+}
+
+.specialty-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 12rpx;
+}
+
+.specialty-tag {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.remove-tag { font-size: 22rpx; color: #999; }
+
+.specialty-input-row {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.specialty-input { flex: 1; }
+
+.add-btn {
+  font-size: 26rpx;
+  color: #667eea;
+  padding: 16rpx 24rpx;
+  background: #e8f0fe;
+  border-radius: 12rpx;
+  white-space: nowrap;
+}
+
+.modal-footer {
+  padding: 20rpx 30rpx 40rpx;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 30rpx;
+  padding: 24rpx;
+  border-radius: 50rpx;
+  border: none;
+}

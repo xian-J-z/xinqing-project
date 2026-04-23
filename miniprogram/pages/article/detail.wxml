@@ -22,7 +22,7 @@
 
   <!-- 文章内容 -->
   <view class="detail-content">
-    <text class="content-text">{{article.content}}</text>
+    <text class="content-text" decode="{{true}}" space="nbsp">{{article.content}}</text>
   </view>
 </view>
 

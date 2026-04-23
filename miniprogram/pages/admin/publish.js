@@ -6,7 +6,7 @@ Page({
     title: '',
     cover: '',
     content: '',
-    categories: ['心理健康', '情绪管理', '人际关系', '学习方法', '情感倾诉'],
+    categories:[ ' 心理健康 ', ' 情绪管理 ', ' 人际关系 ', ' 学习方法 ', ' 情感倾诉 ',' 压力调节 ', ' 自我成长 ', ' 时间管理 ', ' 亲子沟通 ', ' 职场心理 ',' 恋爱心理 ', ' 焦虑缓解 ', ' 自卑自信 ', ' 性格分析 ', ' 睡眠改善 ',' 专注力提升 ', ' 考试心态 ', ' 社交恐惧 ', ' 家庭关系 ', ' 心理疗愈 '],
     categoryIndex: 0,
     isTop: false,
     articleId: null,
@@ -91,7 +91,7 @@ Page({
     const articleData = {
       title: title.trim(),
       cover,
-      content: content.trim(),
+      content: content,
       category: categories[categoryIndex],
       authorName: (app.getUserInfo() || {}).nickName || (isAdmin ? '管理员' : '心理咨询师'),
       authorOpenid: app.getOpenid() || ''
@@ -115,9 +115,19 @@ Page({
           data: { action: 'publish', article: articleData, role: isAdmin ? 'admin' : 'counselor' }
         })
       }
+
+      const result = res.result || {}
+      if (result.success === false) {
+        wx.hideLoading()
+        wx.showToast({ title: result.message || '保存失败', icon: 'none' })
+        return
+      }
+
       wx.hideLoading()
-      wx.showToast({ title: '成功', icon: 'success' })
-      setTimeout(() => wx.navigateBack(), 1000)
+      wx.showToast({ title: '保存成功', icon: 'success' })
+      setTimeout(() => {
+        wx.navigateBack()
+      }, 1500)
     } catch (e) {
       wx.hideLoading()
       wx.showToast({ title: '保存失败', icon: 'none' })

@@ -11,6 +11,7 @@
     "pages/admin/users",
     "pages/admin/articles",
     "pages/admin/publish",
+    "pages/admin/counselors",
     "pages/article/detail",
     "pages/article/list",
     "pages/counselor/publish"
