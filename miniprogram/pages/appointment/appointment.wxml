@@ -1,12 +1,9 @@
-<!--pages/appointment/appointment.wxml-->
 <view class="appointment-container">
-  <!-- 头部 -->
   <view class="header">
     <text class="header-title">{{userRole === 'counselor' ? '预约管理' : '预约咨询'}}</text>
     <text class="header-desc">{{userRole === 'counselor' ? '管理您的预约日程' : '专业心理咨询师，为你排忧解难'}}</text>
   </view>
 
-  <!-- 咨询师视图切换 -->
   <view class="view-tabs" wx:if="{{userRole === 'counselor'}}">
     <view 
       class="tab-item {{currentView === 'booking' ? 'active' : ''}}" 
@@ -24,9 +21,7 @@
     </view>
   </view>
 
-  <!-- 普通用户视图 -->
   <block wx:if="{{userRole !== 'counselor'}}">
-    <!-- 咨询师列表 -->
     <view class="counselor-section">
       <text class="section-title">选择咨询师</text>
       <view class="counselor-list">
@@ -63,7 +58,6 @@
       </view>
     </view>
 
-    <!-- 我的预约 -->
     <view class="my-appointments">
       <text class="section-title">我的预约</text>
       <view class="appointment-list" wx:if="{{appointments.length > 0}}">
@@ -73,7 +67,7 @@
             <view wx:if="{{item.status === '待确认'}}" class="status-pending">{{item.status}}</view>
             <view wx:elif="{{item.status === '已确认'}}" class="status-confirmed">{{item.status}}</view>
             <view wx:elif="{{item.status === '已完成'}}" class="status-completed">{{item.status}}</view>
-            <view wx:elif="{{item.status === '已拒绝'}}" class="status-rejected">{{item.status}}</view>
+            <view wx:elif="{{item.status === '已拒绝' || item.status === '已取消'}}" class="status-rejected">{{item.status}}</view>
             <view wx:else class="status-pending">{{item.status}}</view>
           </view>
           <view class="appointment-info">
@@ -92,7 +86,6 @@
     </view>
   </block>
 
-  <!-- 咨询师视图：我的预约 -->
   <view class="my-appointments" wx:if="{{userRole === 'counselor' && currentView === 'booking'}}">
     <text class="section-title">我的预约</text>
     <view class="appointment-list" wx:if="{{myConsultations.length > 0}}">
@@ -102,7 +95,7 @@
           <view wx:if="{{item.status === '待确认'}}" class="status-pending">{{item.status}}</view>
           <view wx:elif="{{item.status === '已确认'}}" class="status-confirmed">{{item.status}}</view>
           <view wx:elif="{{item.status === '已完成'}}" class="status-completed">{{item.status}}</view>
-          <view wx:elif="{{item.status === '已拒绝'}}" class="status-rejected">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已拒绝' || item.status === '已取消'}}" class="status-rejected">{{item.status}}</view>
           <view wx:else class="status-pending">{{item.status}}</view>
         </view>
         <view class="appointment-info">
@@ -123,7 +116,6 @@
     </view>
   </view>
 
-  <!-- 预约弹窗 -->
   <view class="booking-modal" wx:if="{{showBookingModal}}">
     <view class="modal-mask" bindtap="closeModal"></view>
     <view class="modal-content">
@@ -133,7 +125,6 @@
       </view>
       
       <view class="modal-body">
-        <!-- 咨询师信息 -->
         <view class="selected-counselor">
           <view class="counselor-avatar-emoji">{{selectedCounselor.avatar}}</view>
           <view class="counselor-detail">
@@ -142,52 +133,53 @@
           </view>
         </view>
         
-        <!-- 选择日期 -->
         <view class="form-section">
-          <text class="form-label">选择日期</text>
+          <text class="form-label">选择日期（提前一周）</text>
           <view class="date-list">
             <view 
-              class="date-item {{selectedDate === item.date ? 'selected' : ''}}" 
+              class="date-item {{selectedDate === item.date ? 'selected' : ''}} {{isDateFullyBooked(item.date) ? 'booked' : ''}}" 
               wx:for="{{dates}}" 
               wx:key="date"
-              bindtap="selectDate"
+              bindtap="{{isDateFullyBooked(item.date) ? '' : 'selectDate'}}"
               data-date="{{item.date}}"
             >
-              <text class="date-weekday">{{item.weekDay}}</text>
+              <text class="date-month">{{item.month}}月</text>
               <text class="date-day">{{item.day}}</text>
+              <text class="date-weekday">{{item.weekDay}}</text>
+              <text class="booked-tip" wx:if="{{isDateFullyBooked(item.date)}}">不可约</text>
             </view>
           </view>
         </view>
         
-        <!-- 选择时间 -->
         <view class="form-section">
           <text class="form-label">选择时间</text>
           <view class="time-list">
             <view 
-              class="time-item {{selectedTime === item ? 'selected' : ''}}" 
+              class="time-item-wrapper {{selectedTime === item ? 'selected' : ''}} {{bookedTimes.includes(item) ? 'booked' : ''}}" 
               wx:for="{{times}}" 
               wx:key="index"
-              bindtap="selectTime"
+              bindtap="{{bookedTimes.includes(item) ? '' : 'selectTime'}}"
               data-time="{{item}}"
             >
-              {{item}}
+              <text class="time-text">{{item}}</text>
+              <text class="time-status {{bookedTimes.includes(item) ? 'status-booked' : 'status-available'}}">
+                {{bookedTimes.includes(item) ? '不可约' : '可约'}}
+              </text>
             </view>
           </view>
         </view>
         
-        <!-- 预约原因 -->
         <view class="form-section">
-          <text class="form-label">预约原因</text>
+          <text class="form-label">预约原因（选填）</text>
           <textarea 
             class="reason-input" 
-            placeholder="请简单描述您的问题..." 
+            placeholder="请简单描述您的问题（选填）" 
             value="{{bookingReason}}"
             bindinput="onReasonInput"
             maxlength="200"
           />
         </view>
         
-        <!-- 费用说明 -->
         <view class="fee-info">
           <text class="fee-label">咨询费用：</text>
           <text class="fee-price">¥{{selectedCounselor.price}}</text>

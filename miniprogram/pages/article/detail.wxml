@@ -1,0 +1,39 @@
+<!--pages/article/detail.wxml-->
+<view class="detail-container" wx:if="{{article}}">
+  <!-- 封面图 -->
+  <view class="detail-cover" wx:if="{{article.cover}}">
+    <image src="{{article.cover}}" mode="aspectFill"/>
+  </view>
+
+  <!-- 文章头部 -->
+  <view class="detail-header">
+    <view class="top-badge" wx:if="{{article.isTop}}">📌 置顶</view>
+    <text class="detail-title">{{article.title}}</text>
+    <view class="detail-meta">
+      <text class="meta-author">{{article.authorName || '匿名'}}</text>
+      <text class="meta-category">{{article.category}}</text>
+      <text class="meta-views">{{article.viewCount || 0}} 阅读</text>
+    </view>
+    <view class="detail-time">
+      <text wx:if="{{article.updateTimeStr}}">更新于 {{article.updateTimeStr}}</text>
+      <text wx:else>发布于 {{article.createTimeStr}}</text>
+    </view>
+  </view>
+
+  <!-- 文章内容 -->
+  <view class="detail-content">
+    <text class="content-text">{{article.content}}</text>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-wrap" wx:if="{{loading}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 加载失败 -->
+<view class="error-wrap" wx:if="{{!loading && !article}}">
+  <text class="error-icon">📄</text>
+  <text class="error-text">文章不存在或已被删除</text>
+</view>

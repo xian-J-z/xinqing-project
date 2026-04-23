@@ -1,4 +1,4 @@
-// pages/admin/publish.js
+// pages/counselor/publish.js
 const app = getApp()
 
 Page({
@@ -8,23 +8,14 @@ Page({
     content: '',
     categories: ['心理健康', '情绪管理', '人际关系', '学习方法', '情感倾诉'],
     categoryIndex: 0,
-    isTop: false,
-    articleId: null,
-    isAdmin: false
+    articleId: null
   },
 
   onLoad(options) {
-    const role = app.getUserRole()
-    const isAdmin = role === 'admin'
-    this.setData({ isAdmin })
-
-    if (!isAdmin && role !== 'counselor') {
+    if (app.getUserRole() !== 'counselor') {
       wx.redirectTo({ url: '/pages/login/login' })
       return
     }
-
-    wx.setNavigationBarTitle({ title: isAdmin ? '发布文章' : '发表文章' })
-
     if (options.articleId) {
       this.setData({ articleId: options.articleId })
       wx.setNavigationBarTitle({ title: '编辑文章' })
@@ -40,22 +31,14 @@ Page({
         title: article.title || '',
         cover: article.cover || '',
         content: article.content || '',
-        categoryIndex: this.data.categories.indexOf(article.category) >= 0 ? this.data.categories.indexOf(article.category) : 0,
-        isTop: article.isTop || false
+        categoryIndex: this.data.categories.indexOf(article.category) >= 0 ? this.data.categories.indexOf(article.category) : 0
       })
     }
   },
 
   onTitleInput(e) { this.setData({ title: e.detail.value }) },
   onContentInput(e) { this.setData({ content: e.detail.value }) },
-
-  onCategoryChange(e) {
-    this.setData({ categoryIndex: e.detail.value })
-  },
-
-  onTopChange(e) {
-    this.setData({ isTop: e.detail.value })
-  },
+  onCategoryChange(e) { this.setData({ categoryIndex: e.detail.value }) },
 
   chooseCover() {
     wx.chooseMedia({
@@ -75,7 +58,7 @@ Page({
   },
 
   async handlePublish() {
-    const { title, cover, content, categoryIndex, categories, isTop, articleId, isAdmin } = this.data
+    const { title, cover, content, categoryIndex, categories, articleId } = this.data
 
     if (!title.trim()) {
       wx.showToast({ title: '请填写标题', icon: 'none' })
@@ -93,13 +76,8 @@ Page({
       cover,
       content: content.trim(),
       category: categories[categoryIndex],
-      authorName: (app.getUserInfo() || {}).nickName || (isAdmin ? '管理员' : '心理咨询师'),
+      authorName: (app.getUserInfo() || {}).nickName || '心理咨询师',
       authorOpenid: app.getOpenid() || ''
-    }
-
-    // 只有管理员可以设置置顶
-    if (isAdmin) {
-      articleData.isTop = isTop
     }
 
     try {
@@ -107,12 +85,12 @@ Page({
       if (articleId) {
         res = await wx.cloud.callFunction({
           name: 'adminArticle',
-          data: { action: 'update', articleId, data: articleData, role: isAdmin ? 'admin' : 'counselor' }
+          data: { action: 'update', articleId, data: articleData, role: 'counselor' }
         })
       } else {
         res = await wx.cloud.callFunction({
           name: 'adminArticle',
-          data: { action: 'publish', article: articleData, role: isAdmin ? 'admin' : 'counselor' }
+          data: { action: 'publish', article: articleData, role: 'counselor' }
         })
       }
       wx.hideLoading()

@@ -9,16 +9,18 @@ Page({
     selectedDate: '',
     selectedTime: '',
     dates: [],
-    times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'],
+    times: ['09:00', '11:00', '15:00', '17:00'],
+    bookedTimes: [], 
+    dateBookedStatus: {}, 
     showBookingModal: false,
     bookingReason: '',
     appointments: [],
-    myConsultations: [],  // 咨询师的预约列表
+    myConsultations: [],
     loading: false,
-    currentView: 'booking'  // booking=预约列表, manage=管理预约
+    currentView: 'booking'
   },
 
-  onLoad: function() {
+  onLoad: function () {
     this.setData({ userRole: app.getUserRole() });
     this.loadCounselors();
     this.generateDates();
@@ -26,282 +28,320 @@ Page({
     this.loadMyConsultations();
   },
 
-  onShow: function() {
+  onShow: function () {
     this.setData({ userRole: app.getUserRole() });
     this.loadAppointments();
     this.loadMyConsultations();
   },
 
   // 加载咨询师列表
-  loadCounselors: function() {
-    const counselors = [
-      {
-        id: '1',
-        name: '张明',
-        title: '资深心理咨询师',
-        avatar: '👨‍⚕️',
-        specialties: ['焦虑抑郁', '人际关系', '学业压力'],
-        experience: '10年',
-        rating: 4.9,
-        consults: 1200,
-        price: 200,
-        available: true
+  loadCounselors: function () {
+    const db = wx.cloud.database();
+    db.collection('counselor').where({
+      available: true
+    }).get({
+      success: res => {
+        console.log("咨询师数据：", res.data); // 调试用
+        const counselors = res.data.map(item => ({
+          _id: item._id,
+          id: item._id,
+          name: item.name || '未命名咨询师',
+          title: item.title || '心理咨询师',
+          avatar: item.avatar || '👨‍⚕️',
+          specialties: item.specialties || [],
+          experience: item.experience || '5年以上',
+          rating: item.rating || 5.0,
+          consults: item.consults || 0,
+          price: item.price || 200,
+          available: item.available !== false
+        }));
+        this.setData({ counselors: counselors });
       },
-      {
-        id: '2',
-        name: '李芳',
-        title: '国家二级心理咨询师',
-        avatar: '👩‍⚕️',
-        specialties: ['情感问题', '自我成长', '职业规划'],
-        experience: '8年',
-        rating: 4.8,
-        consults: 980,
-        price: 180,
-        available: true
-      },
-      {
-        id: '3',
-        name: '王强',
-        title: '心理治疗师',
-        avatar: '👨‍🏫',
-        specialties: ['睡眠问题', '情绪管理', '青少年心理'],
-        experience: '12年',
-        rating: 4.9,
-        consults: 1500,
-        price: 220,
-        available: false
-      },
-      {
-        id: '4',
-        name: '陈静',
-        title: '临床心理咨询师',
-        avatar: '👩‍🔬',
-        specialties: ['创伤修复', '强迫症', '社交恐惧'],
-        experience: '15年',
-        rating: 5.0,
-        consults: 2000,
-        price: 250,
-        available: true
+      fail: err => {
+        console.error('获取咨询师列表失败', err);
+        wx.showToast({ title: '加载咨询师失败', icon: 'none' });
       }
-    ];
-    
-    this.setData({ counselors: counselors });
+    });
   },
 
-  // 生成可预约日期
-  generateDates: function() {
+  // 生成日期
+  generateDates: function () {
     const dates = [];
     const today = new Date();
-    
+    const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
     for (let i = 1; i <= 7; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+
       dates.push({
-        date: date.toISOString().split('T')[0],
-        weekDay: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()],
-        day: date.getDate()
+        date: `${year}-${month}-${day}`,
+        displayDate: `${month}月${day}日`,
+        weekDay: weekDays[date.getDay()],
+        day: date.getDate(),
+        month: date.getMonth() + 1
       });
     }
-    
-    this.setData({ dates: dates });
+    this.setData({ dates });
   },
 
-  // 加载预约记录（普通用户）
-  loadAppointments: function() {
+  // 加载用户预约
+  loadAppointments: function () {
     const appointments = wx.getStorageSync('appointments') || [];
-    this.setData({ appointments: appointments });
+    this.setData({ appointments });
   },
 
-  // 加载咨询师的预约列表
-  loadMyConsultations: function() {
+  // 加载咨询师预约
+  loadMyConsultations: function () {
     if (this.data.userRole !== 'counselor') return;
-    
-    // 从本地存储获取所有预约，筛选出当前咨询师的
     const allAppointments = wx.getStorageSync('allAppointments') || [];
-    const myConsultations = allAppointments.filter(a => {
-      return a.counselorOpenid === app.getOpenid();
-    });
-    
-    this.setData({ myConsultations: myConsultations });
+    const myConsultations = allAppointments.filter(a => a.counselorId === this.data.counselorId);
+    this.setData({ myConsultations });
   },
 
-  // 选择咨询师
-  selectCounselor: function(e) {
+  // 选择咨询师 → 打开弹窗
+  selectCounselor: function (e) {
     const id = e.currentTarget.dataset.id;
     const counselor = this.data.counselors.find(c => c.id === id);
-    
+
     if (!counselor.available) {
       wx.showToast({ title: '该咨询师暂不可预约', icon: 'none' });
       return;
     }
-    
+
     this.setData({
       selectedCounselor: counselor,
-      showBookingModal: true
+      showBookingModal: true,
+      selectedDate: '',
+      selectedTime: '',
+      bookingReason: '',
+      bookedTimes: []
+    }, () => {
+      this.getBookedTimesForAllDates();
     });
   },
 
-  // 选择日期
-  selectDate: function(e) {
+  // 选择日期 → 自动刷新已约时间段
+  selectDate: function (e) {
     const date = e.currentTarget.dataset.date;
-    this.setData({ selectedDate: date });
+    this.setData({ selectedDate: date, selectedTime: '' });
+    this.getBookedTimes();
   },
 
   // 选择时间
-  selectTime: function(e) {
+  selectTime: function (e) {
     const time = e.currentTarget.dataset.time;
     this.setData({ selectedTime: time });
   },
 
-  // 输入预约原因
-  onReasonInput: function(e) {
+  // ====================== 核心功能：获取已预约时间段 ======================
+  getBookedTimes: function () {
+    const { selectedCounselor, selectedDate } = this.data;
+    if (!selectedCounselor || !selectedDate) return;
+
+    const allAppointments = wx.getStorageSync('allAppointments') || [];
+
+    // 筛选：同一咨询师 + 同一日期 + 不是已拒绝/已取消的预约
+    const booked = allAppointments.filter(item => {
+      return item.counselorId === selectedCounselor.id
+        && item.date === selectedDate
+        && item.status !== '已拒绝'
+        && item.status !== '已取消';
+    }).map(item => item.time);
+
+    this.setData({ bookedTimes: [...new Set(booked)] });
+  },
+
+  //获取所有日期的已约时间（用于判断日期是否约满）
+  getBookedTimesForAllDates: function () {
+    const { selectedCounselor, dates } = this.data;
+    if (!selectedCounselor) return;
+
+    const allAppointments = wx.getStorageSync('allAppointments') || [];
+    const dateBookedStatus = {};
+
+    dates.forEach(item => {
+      const date = item.date;
+      const booked = allAppointments.filter(a => {
+        return a.counselorId === selectedCounselor.id
+          && a.date === date
+          && a.status !== '已拒绝'
+          && a.status !== '已取消';
+      }).map(a => a.time);
+      dateBookedStatus[date] = booked;
+    });
+
+    this.setData({ dateBookedStatus });
+  },
+
+  //判断日期是否全部约满
+  isDateFullyBooked: function (date) {
+    const { times, dateBookedStatus } = this.data;
+    const booked = dateBookedStatus[date] || [];
+    return times.every(time => booked.includes(time));
+  },
+
+  // 输入原因
+  onReasonInput: function (e) {
     this.setData({ bookingReason: e.detail.value });
   },
 
   // 确认预约
-  confirmBooking: function() {
-    const { selectedCounselor, selectedDate, selectedTime, bookingReason, appointments, userRole } = this.data;
-    
-    // 咨询师不能预约
+  confirmBooking: function () {
+    const { selectedCounselor, selectedDate, selectedTime, bookingReason, appointments, userRole, bookedTimes } = this.data;
+
     if (userRole === 'counselor') {
-      wx.showToast({ title: '咨询师身份无法预约', icon: 'none' });
+      wx.showToast({ title: '咨询师无法预约', icon: 'none' });
       return;
     }
-    
-    if (!selectedDate) {
-      wx.showToast({ title: '请选择预约日期', icon: 'none' });
-      return;
-    }
-    
-    if (!selectedTime) {
-      wx.showToast({ title: '请选择预约时间', icon: 'none' });
-      return;
-    }
-    
-    if (!bookingReason.trim()) {
-      wx.showToast({ title: '请填写预约原因', icon: 'none' });
+    if (!selectedDate) { wx.showToast({ title: '请选日期', icon: 'none' }); return; }
+    if (!selectedTime) { wx.showToast({ title: '请选时间', icon: 'none' }); return; }
+
+    // 防止重复预约
+    if (bookedTimes.includes(selectedTime)) {
+      wx.showToast({ title: '该时段已被预约', icon: 'none' });
       return;
     }
 
-    const userInfo = app.getUserInfo();
+    const userInfo = app.getUserInfo() || {};
     const newAppointment = {
       id: Date.now().toString(),
       openid: app.getOpenid(),
       userName: userInfo.nickName || '用户',
       userAvatar: userInfo.avatarUrl || '',
-      counselorOpenid: selectedCounselor.openid || '',
       counselorId: selectedCounselor.id,
       counselorName: selectedCounselor.name,
       counselorTitle: selectedCounselor.title,
       date: selectedDate,
       time: selectedTime,
-      reason: bookingReason,
+      reason: bookingReason.trim() || '未填写',
       status: '待确认',
-      createTime: new Date().toISOString()
+      createTime: new Date().toLocaleString()
     };
 
-    appointments.unshift(newAppointment);
-    wx.setStorageSync('appointments', appointments);
-    wx.setStorageSync('appointmentRecords', appointments);
-    
-    // 保存到所有预约（供咨询师查看）
-    const allAppointments = wx.getStorageSync('allAppointments') || [];
-    allAppointments.unshift(newAppointment);
-    wx.setStorageSync('allAppointments', allAppointments);
-    
+    // 保存
+    const newAppList = [newAppointment, ...appointments];
+    wx.setStorageSync('appointments', newAppList);
+    wx.setStorageSync('appointmentRecords', newAppList);
+
+    const allApp = wx.getStorageSync('allAppointments') || [];
+    allApp.unshift(newAppointment);
+    wx.setStorageSync('allAppointments', allApp);
+
+    // 刷新所有状态
+    this.getBookedTimes();
+    this.getBookedTimesForAllDates();
+
     this.setData({
-      showBookingModal: false,
-      appointments: appointments,
-      selectedCounselor: null,
-      selectedDate: '',
+      appointments: newAppList,
       selectedTime: '',
       bookingReason: ''
     });
-    
+
     wx.showToast({ title: '预约成功', icon: 'success' });
+
+    // ====================== 修复：预约成功自动关闭弹窗 ======================
+    setTimeout(() => {
+      this.closeModal();
+    }, 1000);
   },
 
   // 取消预约
-  cancelAppointment: function(e) {
+  cancelAppointment: function (e) {
     const id = e.currentTarget.dataset.id;
-    const appointments = this.data.appointments.filter(a => a.id !== id);
+    const appointments = this.data.appointments.map(a => {
+      if (a.id === id) {
+        return { ...a, status: '已取消' };
+      }
+      return a;
+    });
     wx.setStorageSync('appointments', appointments);
-    this.setData({ appointments: appointments });
-    wx.showToast({ title: '已取消预约', icon: 'success' });
+
+    let allApp = wx.getStorageSync('allAppointments') || [];
+    allApp = allApp.map(a => {
+      if (a.id === id) {
+        return { ...a, status: '已取消' };
+      }
+      return a;
+    });
+    wx.setStorageSync('allAppointments', allApp);
+
+    // 刷新所有状态
+    this.getBookedTimes();
+    this.getBookedTimesForAllDates();
+    this.setData({ appointments });
+    wx.showToast({ title: '已取消', icon: 'success' });
   },
 
   // 关闭弹窗
-  closeModal: function() {
+  closeModal: function () {
     this.setData({
       showBookingModal: false,
       selectedDate: '',
       selectedTime: '',
-      bookingReason: ''
+      bookingReason: '',
+      bookedTimes:[],
+      dateBookedStatus: {}
     });
-  },
-
-  // 切换视图（预约/管理）
-  switchView: function(e) {
-    const view = e.currentTarget.dataset.view;
-    this.setData({ currentView: view });
-  },
-
-  // 咨询师确认预约
-  confirmConsultation: function(e) {
-    const id = e.currentTarget.dataset.id;
-    let allAppointments = wx.getStorageSync('allAppointments') || [];
-    
-    allAppointments = allAppointments.map(a => {
-      if (a.id === id) {
-        return { ...a, status: '已确认' };
-      }
-      return a;
-    });
-    
-    wx.setStorageSync('allAppointments', allAppointments);
+    this.loadAppointments();
     this.loadMyConsultations();
-    wx.showToast({ title: '已确认预约', icon: 'success' });
   },
 
-  // 咨询师拒绝预约
-  rejectConsultation: function(e) {
+  // 切换视图
+  switchView: function (e) {
+    this.setData({ currentView: e.currentTarget.dataset.view });
+  },
+
+  // 同步更新 appointments 和 allAppointments 的状态
+  syncAppointmentStatus: function (id, status) {
+    // 更新 allAppointments
+    let all = wx.getStorageSync('allAppointments') || [];
+    all = all.map(a => a.id === id ? { ...a, status: status } : a);
+    wx.setStorageSync('allAppointments', all);
+    // 同步更新 appointments
+    let appointments = wx.getStorageSync('appointments') || [];
+    appointments = appointments.map(a => a.id === id ? { ...a, status: status } : a);
+    wx.setStorageSync('appointments', appointments);
+    // 同步更新 appointmentRecords
+    let records = wx.getStorageSync('appointmentRecords') || [];
+    records = records.map(a => a.id === id ? { ...a, status: status } : a);
+    wx.setStorageSync('appointmentRecords', records);
+  },
+
+  // 咨询师确认
+  confirmConsultation: function (e) {
+    const id = e.currentTarget.dataset.id;
+    this.syncAppointmentStatus(id, '已确认');
+    this.loadMyConsultations();
+    this.loadAppointments();
+    wx.showToast({ title: '已确认' });
+  },
+
+  // 咨询师拒绝
+  rejectConsultation: function (e) {
     const id = e.currentTarget.dataset.id;
     wx.showModal({
       title: '拒绝预约',
-      content: '确定要拒绝此预约吗？',
-      success: (res) => {
+      success: res => {
         if (res.confirm) {
-          let allAppointments = wx.getStorageSync('allAppointments') || [];
-          
-          allAppointments = allAppointments.map(a => {
-            if (a.id === id) {
-              return { ...a, status: '已拒绝' };
-            }
-            return a;
-          });
-          
-          wx.setStorageSync('allAppointments', allAppointments);
+          this.syncAppointmentStatus(id, '已拒绝');
           this.loadMyConsultations();
-          wx.showToast({ title: '已拒绝预约', icon: 'success' });
+          this.loadAppointments();
+          this.getBookedTimes();
+          wx.showToast({ title: '已拒绝' });
         }
       }
     });
   },
 
-  // 咨询师完成咨询
-  completeConsultation: function(e) {
+  // 完成咨询
+  completeConsultation: function (e) {
     const id = e.currentTarget.dataset.id;
-    let allAppointments = wx.getStorageSync('allAppointments') || [];
-    
-    allAppointments = allAppointments.map(a => {
-      if (a.id === id) {
-        return { ...a, status: '已完成' };
-      }
-      return a;
-    });
-    
-    wx.setStorageSync('allAppointments', allAppointments);
+    this.syncAppointmentStatus(id, '已完成');
     this.loadMyConsultations();
-    wx.showToast({ title: '咨询已完成', icon: 'success' });
+    this.loadAppointments();
   }
 });

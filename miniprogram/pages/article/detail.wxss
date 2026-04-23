@@ -1,0 +1,112 @@
+/* pages/article/detail.wxss */
+page { background: #fff; }
+
+.detail-container { padding-bottom: 60rpx; }
+
+.detail-cover {
+  width: 100%;
+  height: 400rpx;
+  overflow: hidden;
+}
+.detail-cover image { width: 100%; height: 100%; }
+
+.detail-header {
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.top-badge {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.detail-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+.meta-author {
+  font-size: 24rpx;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.meta-category {
+  font-size: 24rpx;
+  color: #999;
+  background: #f5f5f5;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+}
+
+.meta-views {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.detail-time {
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+.detail-content {
+  padding: 30rpx;
+}
+
+.content-text {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 加载状态 */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #eee;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text { font-size: 26rpx; color: #999; }
+
+/* 错误状态 */
+.error-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+}
+
+.error-icon { font-size: 80rpx; margin-bottom: 20rpx; }
+.error-text { font-size: 28rpx; color: #999; }

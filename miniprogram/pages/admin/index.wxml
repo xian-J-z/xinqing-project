@@ -46,6 +46,11 @@
         <text class="menu-text">用户管理</text>
         <text class="menu-arrow">›</text>
       </view>
+      <view class="menu-item" bindtap="goToCounselors">
+        <view class="menu-icon" style="background: #fce7f3;">👨‍⚕️</view>
+        <text class="menu-text">咨询师管理</text>
+        <text class="menu-arrow">›</text>
+      </view>
       <view class="menu-item" bindtap="goToArticles">
         <view class="menu-icon" style="background: #fef3c7;">📝</view>
         <text class="menu-text">文章管理</text>

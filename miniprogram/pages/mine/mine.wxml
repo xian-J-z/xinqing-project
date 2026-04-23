@@ -104,11 +104,11 @@
     </block>
     <!-- 咨询师功能 -->
     <block wx:else>
-      <view class="action-card" bindtap="goToTreehole">
-        <view class="action-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-          <text>💬</text>
+      <view class="action-card" bindtap="goToPublish">
+        <view class="action-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <text>📝</text>
         </view>
-        <text class="action-text">回复咨询</text>
+        <text class="action-text">发表文章</text>
       </view>
       <view class="action-card" bindtap="goToAppointment">
         <view class="action-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
@@ -116,17 +116,17 @@
         </view>
         <text class="action-text">预约管理</text>
       </view>
-      <view class="action-card" bindtap="goToTest">
-        <view class="action-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          <text>📊</text>
+      <view class="action-card" bindtap="goToTreehole">
+        <view class="action-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <text>💬</text>
         </view>
-        <text class="action-text">查看报告</text>
+        <text class="action-text">回复咨询</text>
       </view>
-      <view class="action-card" bindtap="goToAI">
+      <view class="action-card" bindtap="goToArticleList">
         <view class="action-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          <text>📝</text>
+          <text>📚</text>
         </view>
-        <text class="action-text">咨询记录</text>
+        <text class="action-text">文章列表</text>
       </view>
     </block>
   </view>
@@ -243,11 +243,16 @@
 
     <!-- 预约记录 -->
     <view class="record-section" wx:if="{{currentTab === 1}}">
-      <view class="record-card" wx:for="{{appointmentRecords}}" wx:key="id">
+      <!-- 有效预约 -->
+      <view class="section-sub-title" wx:if="{{validAppointments.length > 0}}">
+        <text>有效预约 ({{validAppointments.length}})</text>
+      </view>
+      <view class="record-card" wx:for="{{validAppointments}}" wx:key="id">
         <view class="record-header">
           <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
           <view wx:if="{{item.status === '已确认'}}" class="record-badge badge-good">{{item.status}}</view>
           <view wx:elif="{{item.status === '待确认'}}" class="record-badge badge-warn">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已完成'}}" class="record-badge badge-completed">{{item.status}}</view>
           <view wx:else class="record-badge badge-warn">{{item.status}}</view>
         </view>
         <view class="record-info">
@@ -255,7 +260,23 @@
           <text class="info-item">📝 {{item.reason}}</text>
         </view>
       </view>
-      <view class="empty-tip" wx:if="{{appointmentRecords.length === 0}}">
+      
+      <!-- 已取消预约 -->
+      <view class="section-sub-title cancelled" wx:if="{{cancelledAppointments.length > 0}}">
+        <text>已取消 ({{cancelledAppointments.length}})</text>
+      </view>
+      <view class="record-card cancelled-card" wx:for="{{cancelledAppointments}}" wx:key="id">
+        <view class="record-header">
+          <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
+          <view class="record-badge badge-cancelled">{{item.status}}</view>
+        </view>
+        <view class="record-info">
+          <text class="info-item">📅 {{item.date}} {{item.time}}</text>
+          <text class="info-item">📝 {{item.reason}}</text>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:if="{{validAppointments.length === 0 && cancelledAppointments.length === 0}}">
         <text>暂无预约记录</text>
       </view>
     </view>

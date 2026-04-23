@@ -12,19 +12,24 @@
         <image src="{{item.cover}}" mode="aspectFill"/>
       </view>
       <view class="article-info">
-        <text class="article-title">{{item.title}}</text>
+        <view class="title-row">
+          <text class="top-tag" wx:if="{{item.isTop}}">📌 置顶</text>
+          <text class="article-title">{{item.title}}</text>
+        </view>
         <view class="article-meta">
           <text>{{item.authorName || '管理员'}}</text>
           <text>{{item.createTimeStr}}</text>
           <text>阅读 {{item.viewCount || 0}}</text>
+          <text>{{item.category}}</text>
         </view>
       </view>
       <view class="article-actions">
+        <text class="action-btn top-btn {{item.isTop ? 'cancel-top' : ''}}" bindtap="toggleTop" data-id="{{item._id}}" data-istop="{{item.isTop ? '1' : '0'}}">{{item.isTop ? '取消置顶' : '置顶'}}</text>
         <text class="action-btn" bindtap="editArticle" data-id="{{item._id}}">编辑</text>
         <text class="action-btn delete" bindtap="deleteArticle" data-id="{{item._id}}">删除</text>
       </view>
     </view>
-    
+
     <view class="empty" wx:if="{{articles.length === 0}}">
       <text>暂无文章</text>
     </view>

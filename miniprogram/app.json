@@ -10,7 +10,10 @@
     "pages/admin/index",
     "pages/admin/users",
     "pages/admin/articles",
-    "pages/admin/publish"
+    "pages/admin/publish",
+    "pages/article/detail",
+    "pages/article/list",
+    "pages/counselor/publish"
   ],
   "window": {
     "backgroundColor": "#f8f8f8",

@@ -1,4 +1,4 @@
-<!--pages/admin/publish.wxml-->
+<!--pages/counselor/publish.wxml-->
 <view class="publish-container">
   <view class="form-section">
     <text class="form-label">文章标题</text>
@@ -21,15 +21,6 @@
     <picker bindchange="onCategoryChange" value="{{categoryIndex}}" range="{{categories}}">
       <view class="picker-value">{{categories[categoryIndex]}}</view>
     </picker>
-  </view>
-
-  <!-- 仅管理员可见置顶选项 -->
-  <view class="form-section" wx:if="{{isAdmin}}">
-    <view class="top-switch-row">
-      <text class="form-label">是否置顶</text>
-      <switch checked="{{isTop}}" bindchange="onTopChange" color="#667eea"/>
-    </view>
-    <text class="form-hint">置顶文章将展示在首页轮播区</text>
   </view>
 
   <view class="form-section content-section">

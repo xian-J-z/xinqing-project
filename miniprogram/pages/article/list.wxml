@@ -1,0 +1,30 @@
+<!--pages/article/list.wxml-->
+<view class="list-container">
+  <view class="article-item" wx:for="{{articles}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+    <view class="article-cover" wx:if="{{item.cover}}">
+      <image src="{{item.cover}}" mode="aspectFill"/>
+    </view>
+    <view class="article-body">
+      <view class="article-top" wx:if="{{item.isTop}}">📌 置顶</view>
+      <text class="article-title">{{item.title}}</text>
+      <view class="article-meta">
+        <text class="meta-author">{{item.authorName || '匿名'}}</text>
+        <text class="meta-category">{{item.category}}</text>
+        <text class="meta-views">{{item.viewCount || 0}} 阅读</text>
+      </view>
+      <text class="article-time">{{item.displayTime}}</text>
+    </view>
+  </view>
+
+  <view class="loading-tip" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="empty-tip" wx:if="{{!loading && articles.length === 0}}">
+    <text>暂无文章</text>
+  </view>
+
+  <view class="end-tip" wx:if="{{!loading && articles.length > 0 && !hasMore}}">
+    <text>— 已加载全部 —</text>
+  </view>
+</view>

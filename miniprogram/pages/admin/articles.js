@@ -14,6 +14,10 @@ Page({
     this.loadArticles()
   },
 
+  onShow() {
+    this.loadArticles()
+  },
+
   async loadArticles() {
     wx.showLoading({ title: '加载中...' })
     try {
@@ -36,7 +40,7 @@ Page({
     wx.navigateTo({ url: '/pages/admin/publish' })
   },
 
-  async editArticle(e) {
+  editArticle(e) {
     wx.navigateTo({ url: `/pages/admin/publish?articleId=${e.currentTarget.dataset.id}` })
   },
 
@@ -56,6 +60,30 @@ Page({
         }
       }
     })
+  },
+
+  async toggleTop(e) {
+    const { id, istop } = e.currentTarget.dataset
+    const isCurrentlyTop = istop === '1'
+    const newTopState = !isCurrentlyTop
+
+    wx.showLoading({ title: '操作中...' })
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'adminArticle',
+        data: { action: 'toggleTop', articleId: id, isTop: newTopState }
+      })
+      wx.hideLoading()
+      if (res.result && res.result.success) {
+        wx.showToast({ title: newTopState ? '已置顶' : '已取消置顶', icon: 'success' })
+        this.loadArticles()
+      } else {
+        wx.showToast({ title: '操作失败', icon: 'none' })
+      }
+    } catch (e) {
+      wx.hideLoading()
+      wx.showToast({ title: '操作失败', icon: 'none' })
+    }
   },
 
   formatTime(time) {

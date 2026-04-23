@@ -44,6 +44,10 @@ Page({
     wx.navigateTo({ url: '/pages/admin/users' })
   },
 
+  goToCounselors() {
+    wx.navigateTo({ url: '/pages/admin/counselors' })
+  },
+
   goToArticles() {
     wx.navigateTo({ url: '/pages/admin/articles' })
   },

@@ -1,4 +1,4 @@
-/* pages/admin/publish.wxss */
+/* pages/counselor/publish.wxss */
 page { background: #fff; }
 
 .publish-container { padding: 30rpx; padding-bottom: 120rpx; }
@@ -48,21 +48,6 @@ picker .picker-value {
   color: #333;
 }
 
-.top-switch-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.top-switch-row .form-label { margin-bottom: 0; }
-
-.form-hint {
-  font-size: 22rpx;
-  color: #999;
-  margin-top: 8rpx;
-  display: block;
-}
-
 .content-section { flex: 1; }
 
 .form-textarea {
@@ -77,7 +62,7 @@ picker .picker-value {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   color: #fff;
   font-size: 32rpx;
   padding: 28rpx;

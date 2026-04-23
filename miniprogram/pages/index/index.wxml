@@ -19,20 +19,23 @@
     </block>
   </view>
 
-  <!-- 轮播图 - 咨询师不显示 -->
-  <view class="banner-section" wx:if="{{userRole !== 'counselor'}}">
+  <!-- 置顶文章轮播区 -->
+  <view class="banner-section" wx:if="{{topArticles.length > 0}}">
     <swiper class="banner" indicator-dots autoplay circular interval="3000" bindchange="onBannerChange">
-      <swiper-item wx:for="{{banners}}" wx:key="id">
-        <view class="banner-item">
-          <view class="banner-emoji">{{item.emoji}}</view>
+      <swiper-item wx:for="{{topArticles}}" wx:key="_id">
+        <view class="banner-item" bindtap="goToArticle" data-id="{{item._id}}">
+          <image wx:if="{{item.cover}}" class="banner-image" src="{{item.cover}}" mode="aspectFill"/>
+          <view wx:else class="banner-bg">{{item.category === '心理健康' ? '💪' : item.category === '情绪管理' ? '😊' : item.category === '人际关系' ? '🤝' : '📚'}}</view>
           <view class="banner-mask">
+            <view class="banner-top-tag">📌 置顶</view>
             <text class="banner-title">{{item.title}}</text>
+            <text class="banner-author">{{item.authorName || '管理员'}}</text>
           </view>
         </view>
       </swiper-item>
     </swiper>
-    <view class="banner-dots">
-      <view class="dot {{currentBanner === index ? 'active' : ''}}" wx:for="{{banners}}" wx:key="id"></view>
+    <view class="banner-dots" wx:if="{{topArticles.length > 1}}">
+      <view class="dot {{currentBanner === index ? 'active' : ''}}" wx:for="{{topArticles}}" wx:key="_id"></view>
     </view>
   </view>
 
@@ -56,6 +59,10 @@
       </view>
     </view>
     <view class="counselor-actions">
+      <view class="action-item" bindtap="goToPublish">
+        <text class="action-icon">📝</text>
+        <text class="action-text">发表文章</text>
+      </view>
       <view class="action-item" bindtap="goToTreehole">
         <text class="action-icon">💬</text>
         <text class="action-text">回复咨询</text>
@@ -63,10 +70,6 @@
       <view class="action-item" bindtap="goToAppointment">
         <text class="action-icon">📅</text>
         <text class="action-text">预约管理</text>
-      </view>
-      <view class="action-item" bindtap="goToTest">
-        <text class="action-icon">📊</text>
-        <text class="action-text">查看报告</text>
       </view>
     </view>
   </view>
@@ -107,24 +110,30 @@
   <view class="articles-section">
     <view class="section-header">
       <text class="section-title">{{userRole === 'counselor' ? '热门文章' : '心理文章'}}</text>
-      <text class="more-text">更多 ></text>
+      <text class="more-text" bindtap="goToArticleList">更多 ></text>
     </view>
-    
-    <view class="article-list">
-      <view class="article-card" wx:for="{{articles}}" wx:key="id" bindtap="goToArticle" data-id="{{item.id}}">
-        <view class="article-emoji">{{item.emoji}}</view>
+
+    <view class="article-list" wx:if="{{articles.length > 0}}">
+      <view class="article-card" wx:for="{{articles}}" wx:key="_id" bindtap="goToArticle" data-id="{{item._id}}">
+        <view class="article-cover-wrap" wx:if="{{item.cover}}">
+          <image class="article-cover-img" src="{{item.cover}}" mode="aspectFill"/>
+        </view>
         <view class="article-info">
           <text class="article-title">{{item.title}}</text>
-          <text class="article-summary">{{item.summary}}</text>
           <view class="article-meta">
-            <text class="article-author">{{item.author}}</text>
-            <text class="article-views">{{item.views}} 阅读</text>
+            <text class="article-author">{{item.authorName || '匿名'}}</text>
+            <text class="article-views">{{item.viewCount || 0}} 阅读</text>
           </view>
-          <view class="article-tags">
-            <text class="tag tag-primary" wx:for="{{item.tags}}" wx:for-item="tag">{{tag}}</text>
+          <view class="article-bottom">
+            <text class="article-category">{{item.category}}</text>
+            <text class="article-date">{{item.displayTime}}</text>
           </view>
         </view>
       </view>
+    </view>
+
+    <view class="empty-articles" wx:if="{{!loading && articles.length === 0}}">
+      <text>暂无文章</text>
     </view>
   </view>
 

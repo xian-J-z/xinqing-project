@@ -12,9 +12,11 @@ Page({
       aiCount: 0,
       replyCount: 0  // 咨询师回复数
     },
-    currentTab: 0,
+    currentTab: 1,  // 默认显示预约记录
     testRecords: [],
-    appointmentRecords: [],
+    appointmentRecords: [],      // 全部预约记录
+    validAppointments: [],       // 有效预约
+    cancelledAppointments: [],    // 已取消预约
     treeholeRecords: [],
     aiRecords: [],
     counselorStats: {
@@ -45,18 +47,50 @@ Page({
   // 加载所有记录
   loadRecords: function() {
     const testRecords = wx.getStorageSync('testRecords') || [];
-    const appointmentRecords = wx.getStorageSync('appointments') || [];
+    const appointments = wx.getStorageSync('appointments') || [];
+    const allAppointments = wx.getStorageSync('allAppointments') || [];
     const treeholeRecords = wx.getStorageSync('myPosts') || [];
     const aiRecords = wx.getStorageSync('aiRecords') || [];
     
+    // 用 allAppointments 的最新状态同步更新 appointments 中的记录
+    const statusMap = {};
+    allAppointments.forEach(item => {
+      statusMap[item.id] = item;
+    });
+    const syncedAppointments = appointments.map(item => {
+      return statusMap[item.id] || item;
+    });
+    
+    // 如果有状态不同步的，回写 appointments 缓存
+    let needSync = false;
+    for (let i = 0; i < appointments.length; i++) {
+      if (syncedAppointments[i].status !== appointments[i].status) {
+        needSync = true;
+        break;
+      }
+    }
+    if (needSync) {
+      wx.setStorageSync('appointments', syncedAppointments);
+    }
+    
+    // 区分有效预约和已取消预约
+    const validAppointments = syncedAppointments.filter(item => 
+      item.status !== '已取消' && item.status !== '已拒绝'
+    );
+    const cancelledAppointments = syncedAppointments.filter(item => 
+      item.status === '已取消' || item.status === '已拒绝'
+    );
+    
     this.setData({
       testRecords: testRecords,
-      appointmentRecords: appointmentRecords,
+      appointmentRecords: syncedAppointments,
+      validAppointments: validAppointments,
+      cancelledAppointments: cancelledAppointments,
       treeholeRecords: treeholeRecords,
       aiRecords: aiRecords,
       stats: {
         testCount: testRecords.length,
-        appointmentCount: appointmentRecords.length,
+        appointmentCount: validAppointments.length,
         treeholeCount: treeholeRecords.length,
         aiCount: aiRecords.length
       }
@@ -108,6 +142,20 @@ Page({
   goToAppointment: function() {
     wx.navigateTo({
       url: '/pages/appointment/appointment'
+    });
+  },
+
+  // 咨询师发表文章
+  goToPublish: function() {
+    wx.navigateTo({
+      url: '/pages/counselor/publish'
+    });
+  },
+
+  // 查看文章列表
+  goToArticleList: function() {
+    wx.navigateTo({
+      url: '/pages/article/list'
     });
   }
 });
