@@ -35,15 +35,17 @@ async function deleteUser(userId) {
 
 // 获取统计数据
 async function getStats() {
-  const [users, counselors, articles] = await Promise.all([
+  const [users, counselors, articles, appointments] = await Promise.all([
     db.collection('user').count(),
     db.collection('counselor').count(),
-    db.collection('article').count()
+    db.collection('article').count(),
+    db.collection('appointment').count()
   ])
   return {
     totalUsers: users.total,
     counselors: counselors.total,
-    articles: articles.total
+    articles: articles.total,
+    totalAppointments: appointments.total
   }
 }
 
@@ -90,6 +92,85 @@ async function toggleCounselorAvailable(counselorId, available) {
 async function deleteCounselor(counselorId) {
   await db.collection('counselor').doc(counselorId).remove()
   return { success: true }
+}
+
+// 获取所有预约列表
+async function getAppointments() {
+  try {
+    const countRes = await db.collection('appointment').count()
+    const total = countRes.total
+    if (total === 0) return []
+    
+    const batchSize = 100
+    const tasks = []
+    for (let i = 0; i < total; i += batchSize) {
+      tasks.push(
+        db.collection('appointment')
+          .orderBy('createTime', 'desc')
+          .skip(i)
+          .limit(batchSize)
+          .get()
+      )
+    }
+    const results = await Promise.all(tasks)
+    let data = []
+    results.forEach(res => { data = data.concat(res.data) })
+    return data
+  } catch (e) {
+    console.error('获取预约列表失败', e)
+    return []
+  }
+}
+
+// 获取预约统计数据
+async function getAppointmentStats() {
+  try {
+    const [total, pending, confirmed, completed, cancelled] = await Promise.all([
+      db.collection('appointment').count(),
+      db.collection('appointment').where({ status: '待确认' }).count(),
+      db.collection('appointment').where({ status: '已确认' }).count(),
+      db.collection('appointment').where({ status: '已完成' }).count(),
+      db.collection('appointment').where({
+        status: db.command.in(['已取消', '已拒绝'])
+      }).count()
+    ])
+    return {
+      total: total.total,
+      pending: pending.total,
+      confirmed: confirmed.total,
+      completed: completed.total,
+      cancelled: cancelled.total
+    }
+  } catch (e) {
+    return {
+      total: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0
+    }
+  }
+}
+
+// 更新预约状态（管理员操作）
+async function updateAppointmentStatus(appointmentId, status) {
+  try {
+    await db.collection('appointment').doc(appointmentId).update({
+      data: {
+        status: status,
+        updateTime: new Date()
+      }
+    })
+    return { success: true }
+  } catch (e) {
+    return { success: false, message: e.message }
+  }
+}
+
+// 删除预约
+async function deleteAppointment(appointmentId) {
+  try {
+    await db.collection('appointment').doc(appointmentId).remove()
+    return { success: true }
+  } catch (e) {
+    return { success: false, message: e.message }
+  }
 }
 
 // 创建管理员账号
@@ -145,6 +226,18 @@ exports.main = async (event, context) => {
         
       case 'deleteCounselor':
         return await deleteCounselor(event.counselorId)
+        
+      case 'getAppointments':
+        return await getAppointments()
+        
+      case 'getAppointmentStats':
+        return await getAppointmentStats()
+        
+      case 'updateAppointmentStatus':
+        return await updateAppointmentStatus(event.appointmentId, event.status)
+        
+      case 'deleteAppointment':
+        return await deleteAppointment(event.appointmentId)
         
       default:
         return { success: false, message: '未知操作' }

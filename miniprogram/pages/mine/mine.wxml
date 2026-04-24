@@ -247,7 +247,7 @@
       <view class="section-sub-title" wx:if="{{validAppointments.length > 0}}">
         <text>有效预约 ({{validAppointments.length}})</text>
       </view>
-      <view class="record-card" wx:for="{{validAppointments}}" wx:key="id">
+      <view class="record-card" wx:for="{{validAppointments}}" wx:key="_id">
         <view class="record-header">
           <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
           <view wx:if="{{item.status === '已确认'}}" class="record-badge badge-good">{{item.status}}</view>
@@ -265,7 +265,7 @@
       <view class="section-sub-title cancelled" wx:if="{{cancelledAppointments.length > 0}}">
         <text>已取消 ({{cancelledAppointments.length}})</text>
       </view>
-      <view class="record-card cancelled-card" wx:for="{{cancelledAppointments}}" wx:key="id">
+      <view class="record-card cancelled-card" wx:for="{{cancelledAppointments}}" wx:key="_id">
         <view class="record-header">
           <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
           <view class="record-badge badge-cancelled">{{item.status}}</view>

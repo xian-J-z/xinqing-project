@@ -95,7 +95,14 @@ Page({
 
   // 跳转到预约页面
   goToAppointment: function() {
-    wx.navigateTo({ url: '/pages/appointment/appointment' });
+    const userRole = app.getUserRole();
+    if (userRole === 'counselor') {
+      // 咨询师跳转到预约管理页面
+      wx.navigateTo({ url: '/pages/counselor/manage' });
+    } else {
+      // 普通用户跳转到预约页面
+      wx.navigateTo({ url: '/pages/appointment/appointment' });
+    }
   },
 
   // 跳转到AI分析页面

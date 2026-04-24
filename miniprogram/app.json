@@ -14,7 +14,8 @@
     "pages/admin/counselors",
     "pages/article/detail",
     "pages/article/list",
-    "pages/counselor/publish"
+    "pages/counselor/publish",
+    "pages/counselor/manage"
   ],
   "window": {
     "backgroundColor": "#f8f8f8",

@@ -1,0 +1,160 @@
+<!-- pages/counselor/manage.wxml -->
+<view class="manage-container">
+  <view class="header">
+    <text class="header-title">预约管理</text>
+    <text class="header-desc">管理您的咨询预约</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-cards">
+    <view class="stat-card">
+      <text class="stat-num">{{pendingCount}}</text>
+      <text class="stat-label">待处理</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{confirmedCount}}</text>
+      <text class="stat-label">已确认</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{completedCount}}</text>
+      <text class="stat-label">已完成</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{totalCount}}</text>
+      <text class="stat-label">全部</text>
+    </view>
+  </view>
+
+  <!-- 待处理预约 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">待处理预约</text>
+      <text class="section-badge" wx:if="{{pendingCount > 0}}">{{pendingCount}}</text>
+    </view>
+    
+    <view class="appointment-list" wx:if="{{pendingList.length > 0}}">
+      <view class="appointment-card pending-card" wx:for="{{pendingList}}" wx:key="_id">
+        <view class="card-header">
+          <view class="user-info">
+            <text class="user-avatar">{{item.userAvatar || '👤'}}</text>
+            <view class="user-detail">
+              <text class="user-name">{{item.userName}}</text>
+              <text class="create-time">{{item.createTimeStr}}</text>
+            </view>
+          </view>
+          <view class="status-badge pending">待确认</view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-icon">📅</text>
+            <text class="info-text">{{item.date}} {{item.time}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">📝</text>
+            <text class="info-text">{{item.reason || '未填写'}}</text>
+          </view>
+        </view>
+        
+        <view class="card-actions">
+          <button class="btn-confirm" bindtap="confirmAppointment" data-id="{{item._id}}">✅ 确认预约</button>
+          <button class="btn-reject" bindtap="rejectAppointment" data-id="{{item._id}}">❌ 拒绝</button>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">🎉</text>
+      <text class="empty-text">暂无待处理预约</text>
+    </view>
+  </view>
+
+  <!-- 已确认预约 -->
+  <view class="section" wx:if="{{confirmedList.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">已确认预约</text>
+      <text class="section-badge confirmed">{{confirmedCount}}</text>
+    </view>
+    
+    <view class="appointment-list">
+      <view class="appointment-card confirmed-card" wx:for="{{confirmedList}}" wx:key="_id">
+        <view class="card-header">
+          <view class="user-info">
+            <text class="user-avatar">{{item.userAvatar || '👤'}}</text>
+            <view class="user-detail">
+              <text class="user-name">{{item.userName}}</text>
+              <text class="create-time">{{item.date}} {{item.time}}</text>
+            </view>
+          </view>
+          <view class="status-badge confirmed">已确认</view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-icon">📝</text>
+            <text class="info-text">{{item.reason || '未填写'}}</text>
+          </view>
+        </view>
+        
+        <view class="card-actions">
+          <button class="btn-complete" bindtap="completeAppointment" data-id="{{item._id}}">✅ 完成咨询</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">历史记录</text>
+    </view>
+    
+    <view class="history-tabs">
+      <view class="tab {{historyTab === 'completed' ? 'active' : ''}}" bindtap="switchHistoryTab" data-tab="completed">
+        已完成 ({{completedList.length}})
+      </view>
+      <view class="tab {{historyTab === 'cancelled' ? 'active' : ''}}" bindtap="switchHistoryTab" data-tab="cancelled">
+        已取消/拒绝 ({{cancelledList.length}})
+      </view>
+    </view>
+    
+    <view class="appointment-list" wx:if="{{historyList.length > 0}}">
+      <view class="appointment-card history-card" wx:for="{{historyList}}" wx:key="_id">
+        <view class="card-header">
+          <view class="user-info">
+            <text class="user-avatar">{{item.userAvatar || '👤'}}</text>
+            <view class="user-detail">
+              <text class="user-name">{{item.userName}}</text>
+              <text class="create-time">{{item.createTimeStr}}</text>
+            </view>
+          </view>
+          <view class="status-badge {{item.status === '已完成' ? 'completed' : 'cancelled'}}">
+            {{item.status}}
+          </view>
+        </view>
+        
+        <view class="card-body">
+          <view class="info-row">
+            <text class="info-icon">📅</text>
+            <text class="info-text">{{item.date}} {{item.time}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">📝</text>
+            <text class="info-text">{{item.reason || '未填写'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无历史记录</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-mask" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

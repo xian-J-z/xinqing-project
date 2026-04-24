@@ -55,16 +55,16 @@ Page({
     // 用 allAppointments 的最新状态同步更新 appointments 中的记录
     const statusMap = {};
     allAppointments.forEach(item => {
-      statusMap[item.id] = item;
+      statusMap[item._id] = item;
     });
     const syncedAppointments = appointments.map(item => {
-      return statusMap[item.id] || item;
+      return statusMap[item._id] || item;
     });
     
     // 如果有状态不同步的，回写 appointments 缓存
     let needSync = false;
     for (let i = 0; i < appointments.length; i++) {
-      if (syncedAppointments[i].status !== appointments[i].status) {
+      if (syncedAppointments[i] && syncedAppointments[i].status !== appointments[i].status) {
         needSync = true;
         break;
       }
@@ -138,11 +138,21 @@ Page({
     });
   },
 
+
   // 跳转到预约
   goToAppointment: function() {
-    wx.navigateTo({
-      url: '/pages/appointment/appointment'
-    });
+    const userRole = app.getUserRole();
+    if (userRole === 'counselor') {
+      // 咨询师跳转到预约管理页面
+      wx.navigateTo({
+        url: '/pages/counselor/manage'
+      });
+    } else {
+      // 普通用户跳转到预约页面
+      wx.navigateTo({
+        url: '/pages/appointment/appointment'
+      });
+    }
   },
 
   // 咨询师发表文章
