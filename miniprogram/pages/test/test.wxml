@@ -7,32 +7,27 @@
       <text class="header-subtitle">专业的心理健康评估工具</text>
     </view>
     
-    <view class="test-list" wx:if="{{!loading}}">
+    <view class="test-list">
       <view 
         class="test-card" 
         wx:for="{{testList}}" 
-        wx:key="_id"
+        wx:key="id"
         bindtap="startTest"
-        data-id="{{item._id}}"
+        data-id="{{item.id}}"
       >
-        <view class="test-icon" style="background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);">
+        <view class="test-icon" style="background: {{item.color}}">
           <text>{{item.icon}}</text>
-
         </view>
         <view class="test-info">
-          <text class="test-title">{{item.title || item.name}}</text>
-          <text class="test-desc">{{item.desc || item.description}}</text>
+          <text class="test-title">{{item.title}}</text>
+          <text class="test-desc">{{item.desc}}</text>
           <view class="test-meta">
-            <text class="test-questions">{{item.questionCount || item.questions || 10}}题</text>
-            <text class="test-time">{{item.duration || item.time || '5分钟'}}</text>
+            <text class="test-questions">{{item.questions}}题</text>
+            <text class="test-time">{{item.time}}</text>
           </view>
         </view>
-        <view class="test-arrow">›</view>
+        <view class="test-arrow">></view>
       </view>
-    </view>
-    
-    <view class="loading-view" wx:if="{{loading}}">
-      <text>加载中...</text>
     </view>
     
     <view class="notice-section">
@@ -55,24 +50,19 @@
       <text class="test-name">{{currentTest.title}}</text>
     </view>
     
-    <view class="question-section">
-      <text class="question-text">{{questions[currentQuestion].title || questions[currentQuestion].question || questions[currentQuestion].content}}</text>
-      
-      <view class="scale-hint" wx:if="{{questions[currentQuestion].hint}}">
-        <text>{{questions[currentQuestion].hint}}</text>
-      </view>
+    <view class="question-section" wx:if="{{questions[currentQuestion]}}">
+      <text class="question-text">第 {{currentQuestion + 1}} 题：{{questions[currentQuestion].content}}</text>
       
       <view class="options">
         <view 
-          class="option {{answers[currentQuestion] == option.value ? 'selected' : ''}}" 
-          wx:for="{{questions[currentQuestion].options}}"
-          wx:for-item="option"
-          wx:key="value"
+          wx:for="{{questions[currentQuestion].options}}" 
+          wx:key="index"
+          class="option {{answers[currentQuestion] == item.score ? 'selected' : ''}}" 
           bindtap="selectAnswer" 
-          data-score="{{option.value}}"
+          data-score="{{item.score}}"
         >
-          <text class="option-score">{{option.value}}</text>
-          <text class="option-label">{{option.label}}</text>
+          <text class="option-score">{{item.score}}</text>
+          <text class="option-label">{{item.text}}</text>
         </view>
       </view>
     </view>
@@ -96,14 +86,20 @@
       </view>
       
       <view class="result-card">
-        <view class="result-level level-{{result.avgScore < 2 ? 'normal' : result.avgScore < 3 ? 'mild' : result.avgScore < 4 ? 'moderate' : 'severe'}}">
+        <view class="result-level" style="background: {{result.avgScore < 2 ? '#43e97b' : result.avgScore < 3 ? '#ffb84d' : '#ff6b6b'}}">
           {{result.level}}
+        </view>
+        
+        <view class="result-score">
+          <text class="score-label">总得分</text>
+          <text class="score-value">{{result.totalScore}}</text>
+          <text class="score-max">满分{{result.fullScore}}分</text>
         </view>
         
         <view class="result-score">
           <text class="score-label">平均得分</text>
           <text class="score-value">{{result.avgScore}}</text>
-          <text class="score-max">满分{{questions.length > 0 ? (questions[0].options.length || 5) : 5}}分</text>
+          <text class="score-max">满分{{result.maxPerQuestion}}分</text>
         </view>
         
         <view class="result-desc">

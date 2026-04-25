@@ -11,8 +11,7 @@ Page({
     },
     showAddModal: false,
     newAccount: '',
-    newPwd: '',
-    newNick: ''
+    newPwd: ''
   },
 
   onLoad() {
@@ -57,7 +56,7 @@ Page({
   },
 
   showAddCounselor() {
-    this.setData({ showAddModal: true, newAccount: '', newPwd: '', newNick: '' })
+    this.setData({ showAddModal: true, newAccount: '', newPwd: '' })
   },
 
   hideAddModal() {
@@ -68,10 +67,9 @@ Page({
 
   onAccountInput(e) { this.setData({ newAccount: e.detail.value }) },
   onPwdInput(e) { this.setData({ newPwd: e.detail.value }) },
-  onNickInput(e) { this.setData({ newNick: e.detail.value }) },
 
   async handleAddCounselor() {
-    const { newAccount, newPwd, newNick } = this.data
+    const { newAccount, newPwd } = this.data
     if (!newAccount || !newPwd) {
       wx.showToast({ title: '请填写完整', icon: 'none' })
       return
@@ -88,13 +86,17 @@ Page({
         data: {
           username: newAccount,
           password: newPwd,
-          role: 'counselor',
-          userInfo: { nickName: newNick }
+          role: 'counselor'
         }
       })
       wx.hideLoading()
       if (res.result.success) {
-        wx.showToast({ title: '添加成功', icon: 'success' })
+        wx.showModal({
+          title: '添加成功',
+          content: '账号：' + newAccount + '\n密码：' + res.result.password,
+          showCancel: false,
+          confirmText: '知道了'
+        })
         this.hideAddModal()
         this.loadStats()
       } else {

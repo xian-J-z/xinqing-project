@@ -70,13 +70,15 @@ exports.main = async (event, context) => {
       data: userData
     })
 
-    // 如果是咨询师，同步写入 counselor 表
+    // 如果是咨询师，同步写入 counselor 表和 admin_counselor 表
     if (role === 'counselor') {
+      // 写入 counselor 表（公开信息，username 用于关联）
       await db.collection('counselor').add({
         data: {
           openid: openid,
-          name: userInfo?.nickName || username,
-          avatar: userInfo?.avatarUrl || '',
+          name: username,
+          username: username,  // 保存账号，用于与 admin_counselor 关联
+          avatar: '',
           profile: '',
           title: '心理咨询师',
           specialties: [],
@@ -84,7 +86,20 @@ exports.main = async (event, context) => {
           price: 200,
           rating: 5.0,
           consults: 0,
-          available: true
+          available: true,
+          createTime: new Date()
+        }
+      })
+
+      // 同时写入 admin_counselor 表（保存账号密码信息）
+      await db.collection('admin_counselor').add({
+        data: {
+          username: username,
+          name: username,  // 保存名字，与 counselor.name 一一对应
+          password: password,  // 明文密码
+          hashedPassword: hashedPassword,  // 哈希密码
+          createdBy: openid,
+          createTime: new Date()
         }
       })
     }
@@ -93,7 +108,8 @@ exports.main = async (event, context) => {
       success: true,
       message: '注册成功',
       userId: userResult._id,
-      role: role
+      role: role,
+      password: password  // 返回明文密码供管理员查看
     }
 
   } catch (err) {

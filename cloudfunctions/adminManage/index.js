@@ -217,7 +217,7 @@ async function createAdmin(username, password, nickName) {
   if (exist.data.length > 0) {
     return { success: false, message: '账号已存在' }
   }
-  
+
   await db.collection('user').add({
     data: {
       username: username,
@@ -229,6 +229,50 @@ async function createAdmin(username, password, nickName) {
     }
   })
   return { success: true, message: '创建成功' }
+}
+
+// 修改密码（咨询师修改自己的密码）
+async function changePassword(openid, oldPassword, newPassword) {
+  try {
+    // 查找用户
+    const userRes = await db.collection('user').where({ openid: openid }).get()
+    if (userRes.data.length === 0) {
+      return { success: false, message: '用户不存在' }
+    }
+
+    const user = userRes.data[0]
+
+    // 验证旧密码（如果提供了的话）
+    if (oldPassword && user.password !== oldPassword) {
+      return { success: false, message: '原密码错误' }
+    }
+
+    // 更新 user 表的密码
+    await db.collection('user').where({ openid: openid }).update({
+      data: {
+        password: newPassword,
+        updateTime: new Date()
+      }
+    })
+
+    // 如果是咨询师，同时更新 admin_counselor 表
+    if (user.role === 'counselor' && user.username) {
+      await db.collection('admin_counselor').where({
+        username: user.username
+      }).update({
+        data: {
+          password: newPassword,
+          hashedPassword: hashPassword(newPassword),
+          updateTime: new Date()
+        }
+      })
+    }
+
+    return { success: true, message: '密码修改成功' }
+  } catch (e) {
+    console.error('修改密码失败', e)
+    return { success: false, message: e.message }
+  }
 }
 
 exports.main = async (event, context) => {
@@ -278,7 +322,10 @@ exports.main = async (event, context) => {
         
       case 'deleteAppointment':
         return await deleteAppointment(event.appointmentId)
-        
+
+      case 'changePassword':
+        return await changePassword(event.openid, event.oldPassword, event.newPassword)
+
       default:
         return { success: false, message: '未知操作' }
     }

@@ -63,7 +63,7 @@ exports.main = async (event, context) => {
   }
 
   // ==============================================
-  // 咨询师登录（走数据库）
+  // 咨询师登录（从 admin_counselor 表验证）
   // ==============================================
   if (role === 'counselor') {
     console.log('【登录日志】进入咨询师登录逻辑')
@@ -71,25 +71,33 @@ exports.main = async (event, context) => {
       const hashedPassword = hashPassword(password)
       console.log('【登录日志】咨询师加密后密码：', hashedPassword)
 
-      const userRes = await db.collection('user').where({
+      // 从 admin_counselor 表验证账号密码
+      const counselorRes = await db.collection('admin_counselor').where({
         username: username,
-        password: hashedPassword,
-        role: 'counselor'
+        password: password  // 使用明文密码验证（或者用 hashedPassword 验证哈希）
       }).get()
 
-      console.log('【登录日志】咨询师查询结果：', userRes.data)
+      console.log('【登录日志】咨询师查询结果：', counselorRes.data)
 
-      if (userRes.data.length > 0) {
+      if (counselorRes.data.length > 0) {
         console.log('【登录日志】咨询师登录成功')
-        const user = userRes.data[0]
+
+        // 根据 username 从 counselor 表获取公开信息
+        const publicRes = await db.collection('counselor').where({
+          name: username
+        }).get()
+
+        const publicInfo = publicRes.data.length > 0 ? publicRes.data[0] : {}
+
         return {
           success: true,
-          userId: user._id,
-          role: user.role,
+          userId: counselorRes.data[0]._id,
+          role: 'counselor',
           userInfo: {
-            nickName: user.nickName,
-            avatarUrl: user.avatarUrl,
-            username: user.username
+            nickName: publicInfo.name || username,
+            avatarUrl: publicInfo.avatar || '',
+            username: username,
+            counselorId: publicInfo._id || ''
           }
         }
       } else {

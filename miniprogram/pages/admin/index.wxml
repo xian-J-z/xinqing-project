@@ -84,9 +84,8 @@
       <text class="modal-close" bindtap="hideAddModal">✕</text>
     </view>
     <view class="modal-body">
-      <input class="form-input" placeholder="账号/手机号" bindinput="onAccountInput" value="{{newAccount}}"/>
+      <input class="form-input" placeholder="账号" bindinput="onAccountInput" value="{{newAccount}}"/>
       <input class="form-input" type="password" placeholder="密码" bindinput="onPwdInput" value="{{newPwd}}"/>
-      <input class="form-input" placeholder="昵称（选填）" bindinput="onNickInput" value="{{newNick}}"/>
       <button class="submit-btn" bindtap="handleAddCounselor">确认添加</button>
     </view>
   </view>
