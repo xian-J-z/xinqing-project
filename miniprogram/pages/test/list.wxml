@@ -12,7 +12,7 @@
         <text class="score-full">/{{item.fullScore}}</text>
       </view>
       <view class="progress-bar">
-        <view class="progress-fill" style="width: {{item.scorePercent}}%"></view>
+        <view class="progress-fill" style="width: '{{item.scorePercent}}%'"></view>
       </view>
     </view>
     <view class="record-footer">

@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "心晴",
+  "navigationBarBackgroundColor": "#f5fff9",
+  "navigationBarTextStyle": "black",
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
   "usingComponents": {}

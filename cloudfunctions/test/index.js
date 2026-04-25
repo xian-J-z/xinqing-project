@@ -25,10 +25,23 @@ const getTestInfo = async (event) => {
 const getTestQuestions = async (event) => {
   try {
     const { testId } = event;
-    const result = await db.collection("questionBank").where({ testId }).orderBy("sort", "asc").get();
-    return { success: true, data: result.data };
+    console.log('获取题目, testId:', testId);
+    
+    // 尝试直接获取所有题目
+    const allQuestions = await db.collection("questionBank").get();
+    console.log('questionBank总数:', allQuestions.data.length);
+    
+    // 按testId过滤
+    const filtered = allQuestions.data.filter(q => q.testId === testId);
+    console.log('匹配题目数:', filtered.length);
+    
+    // 按sort排序
+    filtered.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+    
+    return { success: true, data: filtered };
   } catch (e) {
-    return { success: false, errMsg: e };
+    console.error('获取题目失败:', e);
+    return { success: false, errMsg: e.message || e };
   }
 };
 

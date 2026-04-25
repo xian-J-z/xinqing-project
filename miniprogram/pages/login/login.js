@@ -3,7 +3,14 @@ const app = getApp();
 Page({
   data: {
     hasUserInfo: false,
-    selectedRole: 'user',  // 默认普通用户
+    selectedRole: '',  // 默认未选择
+    selectedRoleName: '',
+    roleOptions: [
+      { name: '学生', value: 'user' },
+      { name: '心理咨询师', value: 'counselor' },
+      { name: '管理员', value: 'admin' }
+    ],
+    showRoleDropdown: false,  // 下拉菜单展开状态
     // 账号密码登录
     username: '',
     password: '',
@@ -25,11 +32,20 @@ Page({
     }
   },
 
+  // 角色选择
+  toggleRoleDropdown: function() {
+    this.setData({
+      showRoleDropdown: !this.data.showRoleDropdown
+    });
+  },
+
   // 选择角色
   selectRole: function(e) {
-    const role = e.currentTarget.dataset.role;
-    this.setData({ 
-      selectedRole: role,
+    const { value, name } = e.currentTarget.dataset;
+    this.setData({
+      selectedRole: value,
+      selectedRoleName: name,
+      showRoleDropdown: false,
       username: '',
       password: ''
     });

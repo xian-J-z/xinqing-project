@@ -1,5 +1,8 @@
 <!--pages/login/login.wxml-->
 <view class="login-container">
+  <!-- 背景图片 -->
+  <image class="bg-image" src="/images/background/login_back3.jpg" mode="aspectFill"></image>
+  
   <!-- 顶部背景 -->
   <view class="header-bg">
     <view class="logo-area">
@@ -9,75 +12,30 @@
     </view>
   </view>
 
-  <!-- 功能介绍 -->
-  <view class="features">
-    <view class="feature-item">
-      <view class="feature-icon" style="background:FFFFFF">
-        <text class="icon-emoji">📋</text>
-      </view>
-      <text class="feature-text">心理测评</text>
-    </view>
-    <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);">
-        <text class="icon-emoji">📅</text>
-      </view>
-      <text class="feature-text">预约咨询</text>
-    </view>
-    <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);">
-        <text class="icon-emoji">💬</text>
-      </view>
-      <text class="feature-text">心理树洞</text>
-    </view>
-    <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">
-        <text class="icon-emoji">🤖</text>
-      </view>
-      <text class="feature-text">AI分析</text>
-    </view>
-  </view>
-
   <!-- 角色选择 -->
   <view class="role-section">
-    <text class="role-title">请选择您的身份</text>
-    <view class="role-list">
-      <view 
-        class="role-item {{selectedRole === 'user' ? 'selected' : ''}}"
-        data-role="user"
-        bindtap="selectRole"
-      >
-        <view class="role-icon">👤</view>
-        <view class="role-info">
-          <text class="role-name">学生</text>
-          <text class="role-desc">浏览文章、参与测评、倾诉心事</text>
+    <view class="role-picker-wrap">
+      <!-- 选中项 -->
+      <view class="role-picker" bindtap="toggleRoleDropdown">
+        <view class="picker-label">
+          <text class="picker-value {{!selectedRoleName ? 'placeholder' : ''}}">{{selectedRoleName || '点击选择身份'}}</text>
         </view>
-        <view class="role-check" wx:if="{{selectedRole === 'user'}}">✓</view>
+        <text class="picker-arrow {{showRoleDropdown ? 'arrow-up' : ''}}">▼</text>
       </view>
       
-      <view 
-        class="role-item {{selectedRole === 'counselor' ? 'selected' : ''}}"
-        data-role="counselor"
-        bindtap="selectRole"
-      >
-        <view class="role-icon">👨‍⚕️</view>
-        <view class="role-info">
-          <text class="role-name">心理咨询师</text>
-          <text class="role-desc">回复咨询、发布文章、管理预约</text>
+      <!-- 下拉选项 -->
+      <view class="role-dropdown {{showRoleDropdown ? 'dropdown-show' : ''}}">
+        <view 
+          class="dropdown-item {{selectedRole === item.value ? 'item-selected' : ''}}" 
+          wx:for="{{roleOptions}}" 
+          wx:key="value"
+          bindtap="selectRole"
+          data-value="{{item.value}}"
+          data-name="{{item.name}}"
+        >
+          <text class="item-text">{{item.name}}</text>
+          <text class="item-check" wx:if="{{selectedRole === item.value}}">✓</text>
         </view>
-        <view class="role-check" wx:if="{{selectedRole === 'counselor'}}">✓</view>
-      </view>
-      
-      <view 
-        class="role-item {{selectedRole === 'admin' ? 'selected' : ''}}"
-        data-role="admin"
-        bindtap="selectRole"
-      >
-        <view class="role-icon admin-icon">🔐</view>
-        <view class="role-info">
-          <text class="role-name">管理员</text>
-          <text class="role-desc">系统管理、数据统计</text>
-        </view>
-        <view class="role-check" wx:if="{{selectedRole === 'admin'}}">✓</view>
       </view>
     </view>
   </view>

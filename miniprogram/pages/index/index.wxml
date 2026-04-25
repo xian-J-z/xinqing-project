@@ -1,24 +1,5 @@
 <!--pages/index/index.wxml-->
 <view class="index-container">
-  <!-- 顶部欢迎 -->
-  <view class="header">
-  <view class="welcome">
-    <text class="welcome-text">
-      {{userRole === 'counselor' ? '咨询师' : '你好，'}}{{userInfo.nickName || '同学'}}
-    </text>
-
-    <text class="date-text">{{currentDate}}</text>
-    <text class="role-badge" wx:if="{{userRole === 'counselor'}}">👨‍⚕️ 心理咨询师</text>
-  </view>
-
-  <block wx:if="{{userInfo.avatarUrl}}">
-    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
-  </block>
-  <block wx:else>
-    <view class="avatar-emoji">{{userRole === 'counselor' ? '👨‍⚕️' : '👤'}}</view>
-  </block>
-</view>
-
   <!-- 置顶文章轮播区 -->
   <view class="banner-section" wx:if="{{topArticles.length > 0}}">
     <swiper class="banner" indicator-dots autoplay circular interval="3000" bindchange="onBannerChange">
@@ -77,22 +58,22 @@
   <!-- 普通用户快捷入口 -->
   <view class="quick-entry" wx:if="{{userRole !== 'counselor'}}">
     <view class="entry-item" bindtap="goToTest">
-      <view class="entry-icon" style="background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);">📋</view>
+      <view class="entry-icon" style="background: linear-gradient(135deg, #EAE5F5 0%, #f0e6fb 100%);;">📋</view>
       <text class="entry-title">心理测评</text>
       <text class="entry-desc">了解你的内心</text>
     </view>
     <view class="entry-item" bindtap="goToAI">
-      <view class="entry-icon" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">🤖</view>
+      <view class="entry-icon" style="background: linear-gradient(135deg, #EAE5F5 0%, #f5d6e0 100%);">🤖</view>
       <text class="entry-title">AI分析</text>
       <text class="entry-desc">智能心理分析</text>
     </view>
     <view class="entry-item" bindtap="goToTreehole">
-      <view class="entry-icon" style="background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);">💬</view>
+      <view class="entry-icon" style="background: linear-gradient(135deg, #EAE5F5 0%, #cfe6f9 100%);">💬</view>
       <text class="entry-title">心理树洞</text>
       <text class="entry-desc">倾诉你的心声</text>
     </view>
     <view class="entry-item" bindtap="goToAppointment">
-      <view class="entry-icon" style="background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);">📅</view>
+      <view class="entry-icon" style="background: linear-gradient(135deg, #EAE5F5 0%, #d6ffd8 100%);">📅</view>
       <text class="entry-title">预约咨询</text>
       <text class="entry-desc">专业心理咨询</text>
     </view>
