@@ -34,7 +34,6 @@ Page({
   // 从云数据库加载文章
   async loadArticles() {
     try {
-      // 并行获取置顶文章和最新文章
       const [topRes, latestRes] = await Promise.all([
         wx.cloud.callFunction({
           name: 'adminArticle',
@@ -45,22 +44,52 @@ Page({
           data: { action: 'getLatestArticles', limit: 5 }
         })
       ]);
-
-      const topArticles = (Array.isArray(topRes.result) ? topRes.result : []).map(a => ({
+  
+      let topArticles = (Array.isArray(topRes.result) ? topRes.result : []).map(a => ({
         ...a,
         displayTime: this.formatTime(a.updateTime || a.createTime)
       }));
-
-      const articles = (Array.isArray(latestRes.result) ? latestRes.result : []).map(a => ({
+  
+      let articles = (Array.isArray(latestRes.result) ? latestRes.result : []).map(a => ({
         ...a,
         displayTime: this.formatTime(a.updateTime || a.createTime)
       }));
-
+  
+      // ==============================================
+      // 👇 强制转换图片（100% 成功）
+      // ==============================================
+      async function convertCovers(list) {
+        if (!list || list.length === 0) return list;
+  
+        const fileIDs = list.map(item => item.cover).filter(Boolean);
+  
+        if (fileIDs.length === 0) return list;
+  
+        const res = await wx.cloud.getTempFileURL({
+          fileList: fileIDs
+        });
+  
+        return list.map((item, index) => {
+          if (res.fileList[index]?.tempFileURL) {
+            item.cover = res.fileList[index].tempFileURL;
+          }
+          return item;
+        });
+      }
+  
+      // 转换
+      topArticles = await convertCovers(topArticles);
+      articles = await convertCovers(articles);
+  
       this.setData({
         topArticles,
         articles,
         loading: false
       });
+  
+      // 在这里看！控制台会输出转换后的 https 链接
+      console.log("转换后的封面:", articles[0]?.cover);
+  
     } catch (e) {
       console.error('加载文章失败', e);
       this.setData({ loading: false });
