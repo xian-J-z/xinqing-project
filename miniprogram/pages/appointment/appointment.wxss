@@ -1,16 +1,16 @@
-/* pages/appointment/appointment.wxss - 与首页统一的配色方案 */
+/* pages/appointment/appointment.wxss - 预约咨询页面（绿色风格） */
 page {
-  background: #f5fff9;
+  background: #F1F8F2;
 }
 
 .appointment-container {
   min-height: 100vh;
-  background: #f5fff9;
+  background: #F1F8F2;
   padding-bottom: 40rpx;
 }
 
 .header {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 50%, #66BB6A 100%);
   padding: 40rpx 30rpx;
 }
 
@@ -46,7 +46,11 @@ page {
   margin-bottom: 20rpx;
   display: flex;
   position: relative;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 16rpx rgba(129, 199, 132, 0.1);
+}
+
+.counselor-card:active {
+  transform: scale(0.98);
 }
 
 .counselor-avatar {
@@ -54,7 +58,7 @@ page {
   height: 120rpx;
   border-radius: 60rpx;
   margin-right: 24rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
 }
 
 .counselor-avatar-emoji {
@@ -62,7 +66,7 @@ page {
   height: 120rpx;
   border-radius: 60rpx;
   margin-right: 24rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,13 +105,13 @@ page {
 }
 
 .status-tag.available {
-  background: rgba(67, 233, 123, 0.1);
-  color: #43e97b;
+  background: rgba(129, 199, 132, 0.2);
+  color: #388E3C;
 }
 
 .status-tag.unavailable {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
+  background: rgba(244, 67, 54, 0.1);
+  color: #E53935;
 }
 
 .counselor-title {
@@ -124,8 +128,8 @@ page {
 }
 
 .tag {
-  background: rgba(141, 218, 248, 0.15);
-  color: #5B9BD5;
+  background: rgba(129, 199, 132, 0.2);
+  color: #388E3C;
   font-size: 20rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
@@ -139,7 +143,7 @@ page {
 
 .meta-item {
   font-size: 22rpx;
-  color: #999;
+  color: #81C784;
   margin-right: 20rpx;
 }
 
@@ -154,12 +158,12 @@ page {
 .price {
   font-size: 40rpx;
   font-weight: 700;
-  color: #ff6b6b;
+  color: #E53935;
 }
 
 .price-unit {
   font-size: 22rpx;
-  color: #999;
+  color: #A5D6A7;
 }
 
 .my-appointments {
@@ -175,7 +179,7 @@ page {
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 16rpx rgba(129, 199, 132, 0.08);
 }
 
 .appointment-header {
@@ -192,32 +196,32 @@ page {
 }
 
 .status-pending {
-  background: rgba(255, 184, 77, 0.1);
-  color: #ffb84d;
+  background: rgba(255, 183, 77, 0.15);
+  color: #F57C00;
   font-size: 22rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
 }
 
 .status-confirmed {
-  background: rgba(67, 233, 123, 0.1);
-  color: #43e97b;
+  background: rgba(129, 199, 132, 0.2);
+  color: #388E3C;
   font-size: 22rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
 }
 
 .status-completed {
-  background: rgba(141, 218, 248, 0.15);
-  color: #5B9BD5;
+  background: rgba(100, 181, 246, 0.15);
+  color: #1976D2;
   font-size: 22rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
 }
 
 .status-rejected {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
+  background: rgba(244, 67, 54, 0.1);
+  color: #E53935;
   font-size: 22rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
@@ -227,7 +231,7 @@ page {
   display: flex;
   background: #fff;
   padding: 20rpx 30rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #E8F5E9;
 }
 
 .view-tabs .tab-item {
@@ -240,7 +244,7 @@ page {
 }
 
 .view-tabs .tab-item.active {
-  color: #5B9BD5;
+  color: #388E3C;
   font-weight: 600;
 }
 
@@ -252,7 +256,7 @@ page {
   transform: translateX(-50%);
   width: 60rpx;
   height: 4rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #66BB6A 100%);
   border-radius: 2rpx;
 }
 
@@ -267,27 +271,30 @@ page {
   width: auto;
   padding: 12rpx 32rpx;
   font-size: 24rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
   color: #fff;
   box-shadow: none;
+  border-radius: 30rpx;
 }
 
 .reject-btn.small {
   width: auto;
   padding: 12rpx 32rpx;
   font-size: 24rpx;
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
+  background: rgba(244, 67, 54, 0.1);
+  color: #E53935;
   box-shadow: none;
+  border-radius: 30rpx;
 }
 
 .complete-btn.small {
   width: auto;
   padding: 12rpx 32rpx;
   font-size: 24rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
   color: #fff;
   box-shadow: none;
+  border-radius: 30rpx;
 }
 
 .appointment-info {
@@ -309,22 +316,22 @@ page {
 
 .appointment-time {
   font-size: 22rpx;
-  color: #ccc;
+  color: #A5D6A7;
 }
 
 .cancel-btn {
   background: transparent;
-  color: #ff6b6b;
+  color: #E53935;
   font-size: 24rpx;
   padding: 8rpx 24rpx;
-  border: 1rpx solid #ff6b6b;
+  border: 1rpx solid #E53935;
   border-radius: 30rpx;
 }
 
 .empty-state {
   text-align: center;
   padding: 100rpx 0;
-  color: #999;
+  color: #81C784;
   font-size: 28rpx;
 }
 
@@ -363,7 +370,7 @@ page {
   justify-content: space-between;
   align-items: center;
   padding: 30rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #E8F5E9;
   position: sticky;
   top: 0;
   background: #fff;
@@ -377,7 +384,7 @@ page {
 
 .modal-close {
   font-size: 50rpx;
-  color: #ccc;
+  color: #A5D6A7;
   line-height: 1;
 }
 
@@ -388,10 +395,11 @@ page {
 .selected-counselor {
   display: flex;
   align-items: center;
-  background: #f5fff9;
+  background: #F1F8F2;
   padding: 20rpx;
   border-radius: 16rpx;
   margin-bottom: 30rpx;
+  border: 1rpx solid #C8E6C9;
 }
 
 .selected-counselor .counselor-avatar {
@@ -410,7 +418,7 @@ page {
 
 .selected-counselor .counselor-title {
   font-size: 22rpx;
-  color: #999;
+  color: #81C784;
 }
 
 .form-section {
@@ -438,17 +446,19 @@ page {
   align-items: center;
   padding: 16rpx 24rpx;
   border-radius: 12rpx;
-  background: #f5f5f5;
+  background: #F1F8F2;
   min-width: 100rpx;
+  border: 1rpx solid #C8E6C9;
 }
 
 .date-item.selected {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
+  border-color: transparent;
 }
 
 .date-month {
   font-size: 20rpx;
-  color: #999;
+  color: #81C784;
   margin-bottom: 4rpx;
 }
 
@@ -458,7 +468,7 @@ page {
 
 .date-weekday {
   font-size: 22rpx;
-  color: #999;
+  color: #A5D6A7;
   margin-bottom: 4rpx;
 }
 
@@ -478,26 +488,26 @@ page {
 
 /* 日期约满变红样式 */
 .date-item.booked {
-  background: #fff5f5 !important;
-  border: 2rpx solid #ff6b6b !important;
+  background: #FFEBEE !important;
+  border: 2rpx solid #E53935 !important;
 }
 .date-item.booked .date-month,
 .date-item.booked .date-day,
 .date-item.booked .date-weekday {
-  color: #999 !important;
+  color: #E53935 !important;
 }
 .booked-tip {
   font-size: 20rpx;
-  color: #ff6b6b;
+  color: #E53935;
   margin-top: 4rpx;
 }
 
 .time-item-wrapper.booked {
-  background: #fff5f5 !important;
-  border: 2rpx solid #ff6b6b !important;
+  background: #FFEBEE !important;
+  border: 2rpx solid #E53935 !important;
 }
 .time-item-wrapper.booked .time-text {
-  color: #666 !important;
+  color: #E53935 !important;
 }
 .time-list {
   display: flex;
@@ -508,14 +518,16 @@ page {
 .time-item {
   padding: 16rpx 32rpx;
   border-radius: 30rpx;
-  background: #f5f5f5;
+  background: #F1F8F2;
   font-size: 26rpx;
   color: #333;
+  border: 1rpx solid #C8E6C9;
 }
 
 .time-item.selected {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
   color: #fff;
+  border-color: transparent;
 }
 
 /* 时间项容器（带状态标签） */
@@ -525,17 +537,19 @@ page {
   align-items: center;
   padding: 20rpx 0;
   border-radius: 16rpx;
-  background: #f5f5f5;
+  background: #F1F8F2;
   min-width: 140rpx;
+  border: 1rpx solid #C8E6C9;
 }
 
 .time-item-wrapper.selected {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
+  border-color: transparent;
 }
 
 .time-item-wrapper.booked {
-  background: #fff5f5 !important;
-  border: 2rpx solid #ff6b6b !important;
+  background: #FFEBEE !important;
+  border: 2rpx solid #E53935 !important;
 }
 
 .time-text {
@@ -549,7 +563,7 @@ page {
 }
 
 .time-item-wrapper.booked .time-text {
-  color: #666 !important;
+  color: #E53935 !important;
 }
 
 .time-status {
@@ -559,8 +573,8 @@ page {
 }
 
 .status-available {
-  background: rgba(67, 233, 123, 0.15);
-  color: #43e97b;
+  background: rgba(129, 199, 132, 0.2);
+  color: #388E3C;
 }
 
 .time-item-wrapper.selected .status-available {
@@ -569,18 +583,19 @@ page {
 }
 
 .status-booked {
-  background: rgba(255, 107, 107, 0.8) !important;
+  background: rgba(244, 67, 54, 0.8) !important;
   color: #ffffff !important;
 }
 
 .reason-input {
   width: 100%;
   min-height: 150rpx;
-  background: #f5f5f5;
+  background: #F1F8F2;
   border-radius: 16rpx;
   padding: 24rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+  border: 1rpx solid #C8E6C9;
 }
 
 .fee-info {
@@ -588,7 +603,7 @@ page {
   align-items: center;
   justify-content: flex-end;
   padding: 20rpx 0;
-  border-top: 1rpx solid #eee;
+  border-top: 1rpx solid #E8F5E9;
   margin-top: 20rpx;
 }
 
@@ -600,7 +615,7 @@ page {
 .fee-price {
   font-size: 36rpx;
   font-weight: 700;
-  color: #ff6b6b;
+  color: #E53935;
 }
 
 .modal-footer {
@@ -613,13 +628,13 @@ page {
 
 .confirm-btn {
   width: 100%;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #66BB6A 100%);
   color: #fff;
   font-size: 32rpx;
   font-weight: 600;
   padding: 28rpx 0;
   border-radius: 50rpx;
-  box-shadow: 0 8rpx 20rpx rgba(141, 218, 248, 0.4);
+  box-shadow: 0 8rpx 20rpx rgba(129, 199, 132, 0.3);
 }
 
 .confirm-btn::after {
@@ -650,7 +665,7 @@ page {
 
 .user-time {
   font-size: 22rpx;
-  color: #999;
+  color: #81C784;
   margin-top: 4rpx;
 }
 
@@ -661,13 +676,13 @@ page {
 }
 
 .pending-card {
-  border-left: 6rpx solid #ffb84d;
-  background: #fffaf5;
+  border-left: 6rpx solid #F57C00;
+  background: #FFF8E1;
 }
 
 .confirmed-card {
-  border-left: 6rpx solid #43e97b;
-  background: #f5fff8;
+  border-left: 6rpx solid #388E3C;
+  background: #F1F8F2;
 }
 
 .pending-header {
@@ -690,7 +705,7 @@ page {
 
 .info-label {
   font-size: 26rpx;
-  color: #999;
+  color: #A5D6A7;
   width: 140rpx;
 }
 
@@ -705,7 +720,7 @@ page {
   gap: 20rpx;
   margin-top: 20rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid #eee;
+  border-top: 1rpx solid #E8F5E9;
 }
 
 .pending-actions .confirm-btn,
@@ -718,12 +733,14 @@ page {
 }
 
 .pending-actions .reject-btn {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
+  background: rgba(244, 67, 54, 0.1);
+  color: #E53935;
   box-shadow: none;
+  border-radius: 50rpx;
 }
 
 .pending-actions .complete-btn {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
-  box-shadow: 0 4rpx 12rpx rgba(141, 218, 248, 0.3);
+  background: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+  box-shadow: 0 4rpx 12rpx rgba(129, 199, 132, 0.3);
+  border-radius: 50rpx;
 }

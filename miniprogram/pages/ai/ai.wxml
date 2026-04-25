@@ -1,114 +1,99 @@
-<!--pages/ai/ai.wxml-->
 <view class="ai-container">
   <!-- 头部 -->
-  <view class="header">
-    <view class="header-content">
-      <view class="ai-avatar" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">
-        <text class="ai-icon">🤖</text>
-      </view>
-      <view class="header-text">
-        <text class="header-title">AI心理分析</text>
-        <text class="header-subtitle">多模态大模型 · 智能分析</text>
+  <view class="ai-header">
+    <view class="ai-header-left">
+      <view class="ai-avatar">🤖</view>
+      <view class="ai-title-wrap">
+        <text class="ai-title">AI心理分析</text>
+        <text class="ai-subtitle">豆包大模型 · 专业评估</text>
       </view>
     </view>
-    <button class="restart-btn" bindtap="restart" wx:if="{{showResult}}">重新开始</button>
+    <button class="ai-restart" bindtap="restart">重新开始</button>
   </view>
 
-  <!-- 对话区域 -->
-  <scroll-view scroll-y class="conversation" scroll-top="0">
-    <view class="message-list">
-      <view 
-        class="message {{item.role}}" 
-        wx:for="{{conversation}}" 
-        wx:key="index"
-      >
-        <view class="message-avatar" wx:if="{{item.role === 'assistant'}}">
-          <text>🤖</text>
+  <!-- 聊天区域 -->
+  <scroll-view class="chat-area" scroll-y scroll-top="{{scrollTop}}" enhanced>
+    <view class="chat-list">
+      <!-- 消息循环 -->
+      <view class="chat-item {{item.role}}" wx:for="{{conversation}}" wx:key="index">
+        <view class="avatar ai-avatar-icon" wx:if="{{item.role === 'assistant'}}">🤖</view>
+        <view class="bubble-wrap">
+          <view class="bubble {{item.role}}">
+            <text class="bubble-text">{{item.content}}</text>
+          </view>
+          <text class="chat-time">{{item.time}}</text>
         </view>
-        <view class="message-content">
-          <text class="message-text">{{item.content}}</text>
-          <text class="message-time">{{item.time}}</text>
-        </view>
+        <view class="avatar user-avatar-icon" wx:if="{{item.role === 'user'}}">我</view>
       </view>
-      
+
       <!-- 加载中 -->
-      <view class="message assistant" wx:if="{{analyzing}}">
-        <view class="message-avatar">
-          <text>🤖</text>
-        </view>
-        <view class="message-content">
-          <view class="typing">
-            <view class="dot"></view>
-            <view class="dot"></view>
-            <view class="dot"></view>
+      <view class="chat-item assistant" wx:if="{{analyzing}}">
+        <view class="avatar ai-avatar-icon">🤖</view>
+        <view class="bubble-wrap">
+          <view class="bubble assistant typing">
+            <view class="typing-dot"></view>
+            <view class="typing-dot"></view>
+            <view class="typing-dot"></view>
           </view>
         </view>
       </view>
+
+      <view id="chat-bottom"></view>
     </view>
   </scroll-view>
 
-  <!-- 分析结果卡片 -->
-  <view class="result-card" wx:if="{{showResult && analysisResult}}">
-    <view class="result-header">
-      <text class="result-title">📊 分析结果</text>
+  <!-- 输入区域 -->
+  <view class="input-area">
+    <!-- 结束对话按钮 -->
+    <view class="action-btns" wx:if="{{hasAnalysis}}">
+      <button class="end-btn" bindtap="showFinalAnalysis">结束对话并查看分析</button>
     </view>
-    <view class="result-content">
-      <view class="result-item">
-        <text class="result-label">情绪状态</text>
-        <view class="emotion-display">
-          <text wx:if="{{analysisResult.emotion === '良好'}}" class="result-value emotion-good">{{analysisResult.emotion}}</text>
-          <text wx:elif="{{analysisResult.emotion === '轻度困扰'}}" class="result-value emotion-warn">{{analysisResult.emotion}}</text>
-          <text wx:else class="result-value emotion-bad">{{analysisResult.emotion}}</text>
-        </view>
+    <view class="input-box">
+      <textarea 
+        class="chat-input" 
+        placeholder="{{hasAnalysis ? '继续描述...' : '请描述你的情绪、压力或困扰...'}}" 
+        value="{{userInput}}"
+        bindinput="onInput"
+        bindlinechange="onLineChange"
+        maxlength="500"
+        adjust-position
+        auto-height
+      />
+      <view class="send-btn {{canSend ? 'active' : ''}}" bindtap="sendMessage" wx:if="{{canSend || analyzing}}">
+        <text class="send-icon">▲</text>
       </view>
-      <view class="result-item">
-        <text class="result-label">关键词</text>
-        <view class="result-tags">
-          <text class="tag" wx:for="{{analysisResult.keywords}}" wx:for-item="kw">{{kw}}</text>
-        </view>
-      </view>
-      <view class="result-item">
-        <text class="result-label">建议措施</text>
-        <view class="suggestion-list">
-          <text wx:for="{{analysisResult.suggestions}}" wx:for-item="sug" class="suggestion-item">• {{sug}}</text>
-        </view>
-      </view>
-    </view>
-    <view class="result-actions">
-      <button class="action-btn test" bindtap="goToTest" wx:if="{{userRole !== 'counselor'}}">
-        <text>去做测评</text>
-      </button>
-      <button class="action-btn consult" bindtap="goToAppointment" wx:if="{{userRole !== 'counselor'}}">
-        <text>预约咨询</text>
-      </button>
     </view>
   </view>
 
-  <!-- 输入区域 -->
-  <view class="input-section">
-    <view class="input-wrapper">
-      <textarea 
-        class="user-input" 
-        placeholder="描述你的感受或困扰..." 
-        value="{{userInput}}"
-        bindinput="onInput"
-        bindconfirm="sendMessage"
-        maxlength="500"
-        adjust-position="{{true}}"
-        cursor-spacing="20"
-      />
-      <button 
-        class="send-btn" 
-        bindtap="sendMessage"
-        disabled="{{analyzing}}"
-      >
-        <text>发送</text>
-      </button>
-    </view>
-    <view class="input-tips">
-      <text>AI分析仅供参考</text>
-      <text class="separator">|</text>
-      <text>如有需要请寻求专业帮助</text>
+  <!-- 分析结果弹窗 -->
+  <view class="analysis-modal" wx:if="{{showAnalysis}}" bindtap="toggleAnalysis">
+    <view class="analysis-content" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">📊 智能分析结果</text>
+        <text class="modal-close" bindtap="toggleAnalysis">×</text>
+      </view>
+      <scroll-view scroll-y class="modal-scroll">
+        <view class="analysis-row">
+          <text class="analysis-label">情绪状态</text>
+          <text class="analysis-value {{getEmotionClass(analysisResult.emotion)}}">{{analysisResult.emotion}}</text>
+        </view>
+        <view class="analysis-row">
+          <text class="analysis-label">风险评分</text>
+          <text class="analysis-value">{{analysisResult.score}} / 10</text>
+        </view>
+        <view class="analysis-row">
+          <text class="analysis-label">识别关键词</text>
+          <view class="keyword-list">
+            <text class="keyword-tag" wx:for="{{analysisResult.keywords}}">{{item}}</text>
+          </view>
+        </view>
+        <view class="analysis-row">
+          <text class="analysis-label">专业建议</text>
+          <view class="suggestion-list">
+            <text class="suggestion-text" wx:for="{{analysisResult.suggestions}}">• {{item}}</text>
+          </view>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </view>

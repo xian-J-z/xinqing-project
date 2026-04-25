@@ -1,15 +1,15 @@
-/* pages/test/test.wxss - 与首页统一的配色方案 */
+/* pages/test/test.wxss - 心理测评页面（紫色风格） */
 page {
-  background: #f5fff9;
+  background: #F5EFF7;
 }
 
 .test-container {
   min-height: 100vh;
-  background: #f5fff9;
+  background: #F5EFF7;
 }
 
 .header {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 50%, #BA68C8 100%);
   padding: 50rpx 40rpx;
 }
 
@@ -23,7 +23,7 @@ page {
 
 .header-subtitle {
   font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .test-list {
@@ -37,7 +37,11 @@ page {
   margin-bottom: 20rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 16rpx rgba(179, 157, 219, 0.1);
+}
+
+.test-card:active {
+  transform: scale(0.98);
 }
 
 .test-icon {
@@ -49,7 +53,7 @@ page {
   justify-content: center;
   font-size: 50rpx;
   margin-right: 24rpx;
-  background: #FFF3E0;
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
 }
 
 .test-info {
@@ -77,27 +81,28 @@ page {
 
 .test-questions, .test-time {
   font-size: 22rpx;
-  color: #999;
+  color: #9575CD;
   margin-right: 20rpx;
 }
 
 .test-arrow {
   font-size: 32rpx;
-  color: #ccc;
+  color: #CE93D8;
   margin-left: 20rpx;
 }
 
 .notice-section {
-  background: rgba(255, 107, 107, 0.1);
+  background: linear-gradient(135deg, rgba(225, 190, 231, 0.2) 0%, rgba(206, 147, 216, 0.2) 100%);
   margin: 30rpx;
   padding: 30rpx;
   border-radius: 16rpx;
+  border: 1rpx solid rgba(186, 104, 200, 0.2);
 }
 
 .notice-title {
   font-size: 28rpx;
   font-weight: 600;
-  color: #ff6b6b;
+  color: #8E24AA;
   display: block;
   margin-bottom: 16rpx;
 }
@@ -113,7 +118,7 @@ page {
 .test-header {
   background: #fff;
   padding: 30rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #F3E5F5;
 }
 
 .test-progress {
@@ -122,7 +127,7 @@ page {
 
 .progress-text {
   font-size: 26rpx;
-  color: #5B9BD5;
+  color: #8E24AA;
   font-weight: 600;
   display: block;
   margin-bottom: 12rpx;
@@ -130,14 +135,14 @@ page {
 
 .progress-bar {
   height: 8rpx;
-  background: #eee;
+  background: #F3E5F5;
   border-radius: 4rpx;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(90deg, #CE93D8 0%, #BA68C8 100%);
   border-radius: 4rpx;
   transition: width 0.3s;
 }
@@ -157,12 +162,13 @@ page {
   color: #333;
   display: block;
   margin-bottom: 30rpx;
+  line-height: 1.6;
 }
 
 .scale-hint {
   display: flex;
   justify-content: space-between;
-  background: #f5f5f5;
+  background: #F5EFF7;
   padding: 20rpx;
   border-radius: 12rpx;
   margin-bottom: 40rpx;
@@ -170,7 +176,7 @@ page {
 
 .scale-hint text {
   font-size: 20rpx;
-  color: #999;
+  color: #9575CD;
 }
 
 .options {
@@ -187,19 +193,20 @@ page {
   background: #fff;
   padding: 30rpx 10rpx;
   border-radius: 16rpx;
-  border: 2rpx solid #eee;
+  border: 2rpx solid #F3E5F5;
   transition: all 0.3s;
 }
 
 .option.selected {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
   border-color: transparent;
+  box-shadow: 0 4rpx 16rpx rgba(186, 104, 200, 0.2);
 }
 
 .option-score {
   font-size: 40rpx;
   font-weight: 700;
-  color: #5B9BD5;
+  color: #8E24AA;
   margin-bottom: 10rpx;
 }
 
@@ -213,7 +220,7 @@ page {
 }
 
 .option.selected .option-label {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .btn-section {
@@ -231,19 +238,20 @@ page {
 
 .btn-prev {
   background: #fff;
-  color: #5B9BD5;
-  border: 2rpx solid #5B9BD5;
+  color: #8E24AA;
+  border: 2rpx solid #CE93D8;
 }
 
 .btn-next {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #CE93D8 0%, #BA68C8 100%);
   color: #fff;
+  box-shadow: 0 4rpx 16rpx rgba(186, 104, 200, 0.3);
 }
 
 .btn-quit {
   margin: 0 30rpx 30rpx;
   background: transparent;
-  color: #999;
+  color: #B39DDB;
   font-size: 26rpx;
 }
 
@@ -274,7 +282,7 @@ page {
   background: #fff;
   border-radius: 24rpx;
   padding: 40rpx;
-  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8rpx 30rpx rgba(179, 157, 219, 0.15);
 }
 
 .result-level {
@@ -285,6 +293,7 @@ page {
   font-size: 32rpx;
   font-weight: 600;
   margin-bottom: 40rpx;
+  background: linear-gradient(135deg, #CE93D8 0%, #BA68C8 100%);
 }
 
 .result-score {
@@ -294,7 +303,7 @@ page {
 
 .score-label {
   font-size: 26rpx;
-  color: #999;
+  color: #9575CD;
   display: block;
   margin-bottom: 10rpx;
 }
@@ -302,13 +311,13 @@ page {
 .score-value {
   font-size: 80rpx;
   font-weight: 700;
-  color: #5B9BD5;
+  color: #8E24AA;
   display: block;
 }
 
 .score-max {
   font-size: 24rpx;
-  color: #ccc;
+  color: #CE93D8;
 }
 
 .result-desc, .result-suggestion {
@@ -332,9 +341,9 @@ page {
 .result-date {
   text-align: center;
   font-size: 22rpx;
-  color: #ccc;
+  color: #CE93D8;
   padding-top: 20rpx;
-  border-top: 1rpx solid #eee;
+  border-top: 1rpx solid #F3E5F5;
 }
 
 .result-actions {
@@ -352,11 +361,11 @@ page {
 
 .btn-back {
   background: #fff;
-  color: #5B9BD5;
-  border: 2rpx solid #5B9BD5;
+  color: #8E24AA;
+  border: 2rpx solid #CE93D8;
 }
 
 .btn-ai {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
   color: #fff;
 }

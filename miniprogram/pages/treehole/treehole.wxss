@@ -1,16 +1,16 @@
-/* pages/treehole/treehole.wxss - 与首页统一的配色方案 */
+/* pages/treehole/treehole.wxss - 心理树洞页面（蓝色风格） */
 page {
-  background: #f5fff9;
+  background: #EEF6FC;
 }
 
 .treehole-container {
   min-height: 100vh;
-  background: #f5fff9;
+  background: #EEF6FC;
   padding-bottom: 120rpx;
 }
 
 .header {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 50%, #42A5F5 100%);
   padding: 40rpx 30rpx;
 }
 
@@ -36,9 +36,10 @@ page {
 .search-bar {
   display: flex;
   align-items: center;
-  background: #f5f5f5;
+  background: #EEF6FC;
   border-radius: 30rpx;
   padding: 16rpx 24rpx;
+  border: 1rpx solid #BBDEFB;
 }
 
 .search-icon {
@@ -62,7 +63,7 @@ page {
 .filter-section {
   background: #fff;
   padding: 0 30rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #E3F2FD;
 }
 
 .filter-bar {
@@ -78,8 +79,8 @@ page {
 }
 
 .filter-item.active {
-  background: rgba(141, 218, 248, 0.15);
-  color: #5B9BD5;
+  background: rgba(144, 202, 249, 0.2);
+  color: #1976D2;
   font-weight: 600;
 }
 
@@ -88,7 +89,7 @@ page {
   display: flex;
   background: #fff;
   padding: 0 30rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #E3F2FD;
 }
 
 .tab {
@@ -99,7 +100,7 @@ page {
 }
 
 .tab.active {
-  color: #5B9BD5;
+  color: #1976D2;
   font-weight: 600;
 }
 
@@ -111,7 +112,7 @@ page {
   transform: translateX(-50%);
   width: 40rpx;
   height: 6rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #42A5F5 100%);
   border-radius: 3rpx;
 }
 
@@ -121,6 +122,7 @@ page {
   margin: 20rpx;
   border-radius: 16rpx;
   padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(100, 181, 246, 0.1);
 }
 
 .publish-title {
@@ -129,7 +131,7 @@ page {
   color: #333;
   margin-bottom: 16rpx;
   padding: 16rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
+  border-bottom: 1rpx solid #E3F2FD;
 }
 
 .publish-input {
@@ -154,7 +156,7 @@ page {
 
 .char-count {
   font-size: 22rpx;
-  color: #ccc;
+  color: #BBDEFB;
 }
 
 .anonymous-toggle {
@@ -162,7 +164,7 @@ page {
   align-items: center;
   gap: 8rpx;
   padding: 8rpx 16rpx;
-  background: #f5f5f5;
+  background: #EEF6FC;
   border-radius: 20rpx;
 }
 
@@ -172,11 +174,12 @@ page {
 }
 
 .publish-btn {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);
   color: #fff;
   font-size: 26rpx;
   padding: 16rpx 40rpx;
   border-radius: 50rpx;
+  box-shadow: 0 4rpx 12rpx rgba(100, 181, 246, 0.3);
 }
 
 .publish-btn::after {
@@ -193,11 +196,11 @@ page {
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 16rpx rgba(100, 181, 246, 0.08);
 }
 
 .my-post {
-  border-left: 4rpx solid #5B9BD5;
+  border-left: 4rpx solid #42A5F5;
 }
 
 .post-header {
@@ -211,7 +214,7 @@ page {
   height: 80rpx;
   border-radius: 50%;
   margin-right: 20rpx;
-  background: #eee;
+  background: #E3F2FD;
 }
 
 .post-avatar-emoji {
@@ -219,7 +222,7 @@ page {
   height: 80rpx;
   border-radius: 50%;
   margin-right: 20rpx;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -240,12 +243,12 @@ page {
 
 .post-time {
   font-size: 22rpx;
-  color: #999;
+  color: #90CAF9;
 }
 
 .anonymous-tag {
-  background: rgba(141, 218, 248, 0.15);
-  color: #5B9BD5;
+  background: rgba(144, 202, 249, 0.2);
+  color: #1976D2;
   font-size: 20rpx;
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
@@ -274,7 +277,7 @@ page {
   display: flex;
   gap: 40rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid #f0f0f0;
+  border-top: 1rpx solid #E3F2FD;
 }
 
 .action-item {
@@ -285,25 +288,25 @@ page {
 
 .action-count {
   font-size: 24rpx;
-  color: #999;
+  color: #90CAF9;
 }
 
 .action-item .liked {
-  color: #ff6b6b;
+  color: #E91E63;
 }
 
 .edit-btn {
-  color: #5B9BD5;
+  color: #42A5F5;
 }
 
 .delete-btn {
-  color: #ff6b6b;
+  color: #E91E63;
 }
 
 .comments-section {
   margin-top: 24rpx;
   padding-top: 24rpx;
-  border-top: 1rpx solid #f0f0f0;
+  border-top: 1rpx solid #E3F2FD;
 }
 
 .comment-item {
@@ -314,7 +317,7 @@ page {
 
 .comment-nickname {
   font-size: 24rpx;
-  color: #5B9BD5;
+  color: #1976D2;
   font-weight: 600;
   margin-right: 10rpx;
 }
@@ -327,7 +330,7 @@ page {
 
 .comment-time {
   font-size: 20rpx;
-  color: #ccc;
+  color: #BBDEFB;
   width: 100%;
   margin-top: 6rpx;
   padding-left: 0;
@@ -338,16 +341,17 @@ page {
 }
 
 .comment-input {
-  background: #f5f5f5;
+  background: #EEF6FC;
   border-radius: 30rpx;
   padding: 16rpx 24rpx;
   font-size: 24rpx;
+  border: 1rpx solid #BBDEFB;
 }
 
 .empty-tip {
   text-align: center;
   padding: 100rpx 0;
-  color: #999;
+  color: #90CAF9;
   font-size: 28rpx;
 }
 
@@ -359,12 +363,12 @@ page {
   background: #fff;
   padding: 20rpx;
   text-align: center;
-  border-top: 1rpx solid #eee;
+  border-top: 1rpx solid #E3F2FD;
 }
 
 .footer-tip text {
   font-size: 22rpx;
-  color: #ccc;
+  color: #BBDEFB;
 }
 
 /* 编辑弹窗 */
@@ -402,7 +406,7 @@ page {
   justify-content: space-between;
   align-items: center;
   padding: 30rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid #E3F2FD;
 }
 
 .modal-title {
@@ -413,7 +417,7 @@ page {
 
 .modal-close {
   font-size: 50rpx;
-  color: #ccc;
+  color: #BBDEFB;
   line-height: 1;
 }
 
@@ -435,21 +439,23 @@ page {
 
 .form-input {
   width: 100%;
-  background: #f5f5f5;
+  background: #EEF6FC;
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+  border: 1rpx solid #BBDEFB;
 }
 
 .form-textarea {
   width: 100%;
   min-height: 200rpx;
-  background: #f5f5f5;
+  background: #EEF6FC;
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+  border: 1rpx solid #BBDEFB;
 }
 
 .modal-footer {
@@ -457,12 +463,12 @@ page {
   gap: 20rpx;
   padding: 30rpx;
   padding-bottom: 60rpx;
-  border-top: 1rpx solid #eee;
+  border-top: 1rpx solid #E3F2FD;
 }
 
 .cancel-btn {
   flex: 1;
-  background: #f5f5f5;
+  background: #EEF6FC;
   color: #666;
   font-size: 30rpx;
   padding: 24rpx 0;
@@ -475,11 +481,12 @@ page {
 
 .save-btn {
   flex: 1;
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);
   color: #fff;
   font-size: 30rpx;
   padding: 24rpx 0;
   border-radius: 50rpx;
+  box-shadow: 0 4rpx 12rpx rgba(100, 181, 246, 0.3);
 }
 
 .save-btn::after {
@@ -488,7 +495,7 @@ page {
 
 /* 咨询师样式 */
 .counselor-btn {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);
   color: #fff !important;
   padding: 8rpx 20rpx;
   border-radius: 20rpx;
@@ -500,20 +507,20 @@ page {
 }
 
 .counselor-comment {
-  background: rgba(141, 218, 248, 0.15);
+  background: rgba(144, 202, 249, 0.15);
   padding: 16rpx;
   border-radius: 12rpx;
   margin-bottom: 12rpx;
 }
 
 .counselor-comment .comment-nickname {
-  color: #5B9BD5;
+  color: #1976D2;
   font-weight: 700;
 }
 
 /* 待回复区域 */
 .pending-header {
-  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);
   padding: 24rpx 30rpx;
   margin-bottom: 20rpx;
   border-radius: 16rpx;
@@ -529,11 +536,11 @@ page {
 
 .pending-desc {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .pending-card {
-  border-left: 4rpx solid #5B9BD5;
+  border-left: 4rpx solid #42A5F5;
 }
 
 /* Tab徽章 */
@@ -545,7 +552,7 @@ page {
   position: absolute;
   top: -10rpx;
   right: -20rpx;
-  background: #ff6b6b;
+  background: #E91E63;
   color: #fff;
   font-size: 18rpx;
   padding: 4rpx 10rpx;

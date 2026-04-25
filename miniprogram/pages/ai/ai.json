@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "AI心理分析",
-  "navigationBarBackgroundColor": "#8ddaf8",
-  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#fce7f3",
+  "navigationBarTextStyle": "black",
   "usingComponents": {}
 }
+

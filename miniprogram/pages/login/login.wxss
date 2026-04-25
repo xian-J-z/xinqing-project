@@ -5,7 +5,7 @@ page {
 
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(180deg, #8ddaf8 0%, #B4E8D1 100%);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,20 +42,20 @@ page {
 .app-name {
   font-size: 56rpx;
   font-weight: 700;
-  color: #fff;
+  color: #30373b;
   margin-bottom: 12rpx;
 }
 
 .app-subtitle {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(19, 24, 24, 0.9);
 }
 
 .features {
   display: flex;
   justify-content: space-around;
   width: 90%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(212, 207, 207, 0.15);
   border-radius: 30rpx;
   padding: 40rpx 20rpx;
   margin: 40rpx 0;
@@ -169,8 +169,8 @@ page {
 }
 
 .feature-text {
-  font-size: 22rpx;
-  color: #fff;
+  font-size: 28rpx;
+  color: #333;
 }
 
 .login-section {
