@@ -1,0 +1,60 @@
+<!-- pages/mine/edit-profile.wxml -->
+<view class="edit-container">
+  <!-- 用户信息预览 -->
+  <view class="profile-preview">
+    <view class="avatar-wrapper" bindtap="chooseAvatar">
+      <block wx:if="{{avatarUrl}}">
+        <image class="avatar-image" src="{{avatarUrl}}" mode="aspectFill"/>
+      </block>
+      <block wx:else>
+        <view class="avatar-default">👤</view>
+      </block>
+      <view class="avatar-edit-icon">📷</view>
+    </view>
+    <text class="preview-hint">点击更换头像</text>
+  </view>
+
+  <!-- 编辑表单 -->
+  <view class="edit-form">
+    <view class="form-item">
+      <view class="form-label">
+        <text class="label-icon">👤</text>
+        <text class="label-text">昵称</text>
+      </view>
+      <input 
+        class="form-input" 
+        value="{{nickName}}" 
+        placeholder="给自己起个名字"
+        maxlength="20"
+        bindinput="onNickNameInput"
+      />
+      <text class="char-count">{{nickName.length || 0}}/20</text>
+    </view>
+
+    <view class="form-item bio-item">
+      <view class="form-label">
+        <text class="label-icon">💫</text>
+        <text class="label-text">个性签名</text>
+      </view>
+    </view>
+    <view class="bio-textarea-wrapper">
+      <textarea 
+        class="bio-textarea" 
+        value="{{bio}}" 
+        placeholder="介绍一下自己吧..."
+        maxlength="50"
+        bindinput="onBioInput"
+        auto-height
+      />
+      <text class="char-count bio-count">{{bio.length || 0}}/50</text>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-section">
+    <button class="save-btn {{saving ? 'loading' : ''}}" bindtap="handleSave">
+      <text wx:if="{{!saving}}">保存修改</text>
+      <text wx:else>保存中...</text>
+    </button>
+  </view>
+</view>

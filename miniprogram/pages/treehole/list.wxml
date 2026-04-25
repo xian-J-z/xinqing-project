@@ -1,0 +1,19 @@
+<!--pages/treehole/list.wxml-->
+<view class="list-container">
+  <view class="record-item" wx:for="{{records}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+    <view class="record-content">{{item.content}}</view>
+    <view class="record-footer">
+      <view class="record-stats">
+        <text class="stat-item">❤️ {{item.likes}}</text>
+        <text class="stat-item">💬 {{item.comments}}</text>
+      </view>
+      <text class="record-time">{{item.time}}</text>
+    </view>
+    <view class="delete-btn" catchtap="deleteRecord" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <view class="empty-tip" wx:if="{{!loading && records.length === 0}}">
+    <text>暂无树洞记录</text>
+    <text class="empty-hint">去首页发布你的树洞吧</text>
+  </view>
+</view>

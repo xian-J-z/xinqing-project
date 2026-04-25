@@ -1,5 +1,5 @@
-/* pages/counselor/publish.wxss */
-page { background: #fff; }
+/* pages/counselor/publish.wxss - 与首页统一的配色方案 */
+page { background: #f5fff9; }
 
 .publish-container { padding: 30rpx; padding-bottom: 120rpx; }
 
@@ -62,7 +62,7 @@ picker .picker-value {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
   font-size: 32rpx;
   padding: 28rpx;

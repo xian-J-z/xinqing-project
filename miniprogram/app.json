@@ -3,11 +3,14 @@
     "pages/login/login",
     "pages/index/index",
     "pages/test/test",
+    "pages/test/list",
     "pages/ai/ai",
+    "pages/ai/list",
     "pages/appointment/appointment",
     "pages/mine/mine",
+    "pages/mine/edit-profile",
     "pages/treehole/treehole",
-    "pages/test-storage/test-storage",
+    "pages/treehole/list",
     "pages/admin/index",
     "pages/admin/users",
     "pages/admin/articles",
@@ -19,10 +22,10 @@
     "pages/counselor/manage"
   ],
   "window": {
-    "backgroundColor": "#f8f8f8",
+    "backgroundColor": "#f5fff9",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#667eea",
-    "navigationBarTitleText": "心灵伴侣",
+    "navigationBarBackgroundColor": "#8ddaf8",
+    "navigationBarTitleText": "心晴",
     "navigationBarTextStyle": "white"
   },
   "sitemapLocation": "sitemap.json",
@@ -31,8 +34,10 @@
   "tabBar": {
     "iconPath": "images/home.png",
     "selectedIconPath": "images/home-active.png",
-    "color": "#666",
-    "selectedColor": "#667eea",
+    "color": "#999999",
+    "selectedColor": "#333333",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",

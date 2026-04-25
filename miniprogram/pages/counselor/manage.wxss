@@ -1,12 +1,14 @@
-/* pages/counselor/manage.wxss */
+/* pages/counselor/manage.wxss - 与首页统一的配色方案 */
+page { background: #f5fff9; }
+
 .manage-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f5fff9;
   padding-bottom: 40rpx;
 }
 
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   padding: 40rpx 30rpx;
 }
 
@@ -40,7 +42,7 @@
 .stat-num {
   font-size: 44rpx;
   font-weight: 700;
-  color: #667eea;
+  color: #5B9BD5;
   display: block;
 }
 
@@ -71,7 +73,7 @@
 }
 
 .section-badge {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
   font-size: 22rpx;
   padding: 4rpx 16rpx;
@@ -130,7 +132,7 @@
   margin-right: 16rpx;
   width: 80rpx;
   height: 80rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   border-radius: 40rpx;
   display: flex;
   align-items: center;
@@ -171,8 +173,8 @@
 }
 
 .status-badge.completed {
-  background: rgba(102, 126, 234, 0.15);
-  color: #667eea;
+  background: rgba(141, 218, 248, 0.15);
+  color: #5B9BD5;
 }
 
 .status-badge.cancelled {
@@ -226,7 +228,7 @@
 }
 
 .btn-confirm {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
 }
 
@@ -236,7 +238,7 @@
 }
 
 .btn-complete {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
 }
 
@@ -266,7 +268,7 @@
 
 .tab.active {
   background: #fff;
-  color: #667eea;
+  color: #5B9BD5;
   font-weight: 600;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
 }

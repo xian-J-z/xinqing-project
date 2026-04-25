@@ -15,7 +15,7 @@
         bindtap="startTest"
         data-id="{{item.id}}"
       >
-        <view class="test-icon" style="background: {{item.color}}">
+        <view class="test-icon" style="background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);">
           <text>{{item.icon}}</text>
         </view>
         <view class="test-info">

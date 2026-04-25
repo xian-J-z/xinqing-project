@@ -1,5 +1,5 @@
-/* pages/article/detail.wxss */
-page { background: #fff; }
+/* pages/article/detail.wxss - 与首页统一的配色方案 */
+page { background: #f5fff9; }
 
 .detail-container { padding-bottom: 60rpx; }
 
@@ -42,7 +42,7 @@ page { background: #fff; }
 
 .meta-author {
   font-size: 24rpx;
-  color: #667eea;
+  color: #5B9BD5;
   font-weight: 500;
 }
 
@@ -88,7 +88,7 @@ page { background: #fff; }
   width: 60rpx;
   height: 60rpx;
   border: 4rpx solid #eee;
-  border-top-color: #667eea;
+  border-top-color: #5B9BD5;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 20rpx;

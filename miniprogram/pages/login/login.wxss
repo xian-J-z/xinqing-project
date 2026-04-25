@@ -1,7 +1,11 @@
-/* pages/login/login.wxss */
+/* pages/login/login.wxss - 与首页统一的配色方案 */
+page {
+  background: #f5fff9;
+}
+
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(180deg, #8ddaf8 0%, #B4E8D1 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,15 +96,15 @@
 }
 
 .role-item.selected {
-  background: #e8f0fe;
-  border-color: #667eea;
+  background: #e8f5f9;
+  border-color: #8ddaf8;
 }
 
 .role-icon {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,7 +113,7 @@
 }
 
 .role-icon.admin-icon {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
 }
 
 .role-info {
@@ -134,7 +138,7 @@
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  background: #667eea;
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -177,7 +181,7 @@
 .login-btn {
   width: 100%;
   background: #fff;
-  color: #667eea;
+  color: #5B9BD5;
   font-size: 34rpx;
   font-weight: 600;
   border-radius: 50rpx;
@@ -190,12 +194,12 @@
 }
 
 .wechat-btn {
-  background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
 }
 
 .account-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   color: #fff;
 }
 
@@ -243,7 +247,7 @@
 }
 
 .form-input:focus {
-  border-color: #667eea;
+  border-color: #8ddaf8;
 }
 
 .form-actions {
@@ -253,7 +257,7 @@
 }
 
 .register-link {
-  color: #667eea;
+  color: #5B9BD5;
   font-size: 26rpx;
 }
 

@@ -1,0 +1,29 @@
+<!--pages/test/list.wxml-->
+<view class="list-container">
+  <view class="record-item" wx:for="{{records}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+    <view class="record-header">
+      <text class="record-title">{{item.testTitle}}</text>
+      <text class="record-badge {{item.badgeClass}}">{{item.level}}</text>
+    </view>
+    <view class="record-body">
+      <view class="score-section">
+        <text class="score-label">得分</text>
+        <text class="score-value">{{item.totalScore}}</text>
+        <text class="score-full">/{{item.fullScore}}</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{item.scorePercent}}%"></view>
+      </view>
+    </view>
+    <view class="record-footer">
+      <text class="record-desc">{{item.description}}</text>
+      <text class="record-date">{{item.date}}</text>
+    </view>
+    <view class="delete-btn" catchtap="deleteRecord" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <view class="empty-tip" wx:if="{{!loading && records.length === 0}}">
+    <text>暂无测评记录</text>
+    <text class="empty-hint">去首页开始测评吧</text>
+  </view>
+</view>

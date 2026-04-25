@@ -1,16 +1,21 @@
-/* pages/index/index.wxss */
+/* pages/index/index.wxss - 精确配色方案 */
+page {
+  background: #f5fff9;
+}
+
 .index-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background:#f5fff9;
   padding-bottom: 30rpx;
 }
 
+/* 顶部头部 - 淡蓝渐变 #87CEEB -> #B4E8D1 */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30rpx 40rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20rpx 35rpx 30rpx;
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
 }
 
 .welcome {
@@ -18,35 +23,48 @@
   flex-direction: column;
 }
 
+/* 问候语 - 纯白 #FFFFFF */
 .welcome-text {
-  font-size: 40rpx;
-  font-weight: 600;
-  color: #fff;
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #FFFFFF;
   margin-bottom: 8rpx;
 }
 
+/* 日期 - 淡白偏绿 #F0F9F6 */
 .date-text {
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.8);
+  color: #F0F9F6;
 }
 
 .avatar {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.5);
+  border: 4rpx solid rgba(255, 255, 255, 0.6);
 }
 
 .avatar-emoji {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.5);
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border: 4rpx solid rgba(255, 255, 255, 0.8);
+  background: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 40rpx;
+  color: #CCCCCC;
+}
+
+.role-badge {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-top: 8rpx;
 }
 
 /* 置顶轮播 */
@@ -75,7 +93,7 @@
 .banner-bg {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #87CEEB 0%, #B4E8D1 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,22 +106,24 @@
   left: 0;
   right: 0;
   padding: 40rpx 30rpx 30rpx;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
 }
 
+/* 置顶标签 - 珊瑚红 #FF6B6B */
 .banner-top-tag {
   display: inline-block;
   font-size: 20rpx;
-  color: #fff;
-  background: rgba(255, 107, 107, 0.8);
+  color: #FFFFFF;
+  background: #FF6B6B;
   padding: 4rpx 14rpx;
   border-radius: 20rpx;
   margin-bottom: 10rpx;
 }
 
+/* 标题 - 纯白 */
 .banner-title {
   font-size: 32rpx;
-  color: #fff;
+  color: #FFFFFF;
   font-weight: 600;
   display: block;
   margin-bottom: 8rpx;
@@ -112,9 +132,10 @@
   white-space: nowrap;
 }
 
+/* 作者 - 浅灰白 #F0F0F0 */
 .banner-author {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.8);
+  color:  #F0F0F0 
 }
 
 .banner-dots {
@@ -123,26 +144,28 @@
   margin-top: 20rpx;
 }
 
+/* 未激活指示器 - 浅灰 #E0E0E0 */
 .dot {
   width: 16rpx;
   height: 16rpx;
   border-radius: 50%;
-  background: rgba(102, 126, 234, 0.3);
+  background: #E0E0E0;
   margin: 0 8rpx;
   transition: all 0.3s;
 }
 
+/* 激活指示器 - 淡紫色 #819BEA */
 .dot.active {
   width: 40rpx;
   border-radius: 8rpx;
-  background: #667eea;
+  background: #819BEA;
 }
 
-/* 快捷入口 */
+/* 快捷入口 - 纯白背景 #FFFFFF */
 .quick-entry {
   display: flex;
   justify-content: space-around;
-  background: #fff;
+  background: #FFFFFF;
   margin: 0 30rpx;
   padding: 40rpx 20rpx;
   border-radius: 20rpx;
@@ -164,27 +187,30 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 16rpx;
+  font-size: 48rpx;
 }
 
-.icon-text {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #fff;
-}
+/* 精确图标配色 */
+.test-icon { background: #FFF3E0; }      /* 心理测评：浅米黄 */
+.ai-icon { background: #FFEBEE; }         /* AI分析：浅粉 */
+.treehole-icon { background: #E3F2FD; }   /* 心理树洞：浅灰蓝 */
+.appoint-icon { background: #E0F7F0; }    /* 预约咨询：浅薄荷绿 */
 
+/* 主文字 - 深灰黑 #333333 */
 .entry-title {
   font-size: 26rpx;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   margin-bottom: 6rpx;
 }
 
+/* 辅助文字 - 中灰 #999999 */
 .entry-desc {
   font-size: 20rpx;
-  color: #999;
+  color: #999999;
 }
 
-/* 文章列表 */
+/* 文章列表区 */
 .articles-section {
   margin-top: 30rpx;
 }
@@ -197,29 +223,32 @@
   margin-bottom: 20rpx;
 }
 
+/* 标题 - 深灰黑 #333333 */
 .section-title {
   font-size: 36rpx;
   font-weight: 700;
-  color: #333;
-  border-left: 6rpx solid #667eea;
+  color: #333333;
   padding-left: 20rpx;
+  border-left: 6rpx solid #FFB6C1; /* 淡粉色分割线 */
 }
 
+/* 更多 - 中灰 #999999 */
 .more-text {
   font-size: 26rpx;
-  color: #999;
+  color: #999999;
 }
 
 .article-list {
   padding: 0 30rpx;
 }
 
+/* 文章卡片 - 米白色背景 */
 .article-card {
-  background: #fff;
+  background: #FAF9F6;  /* 米白色 */
   border-radius: 20rpx;
   overflow: hidden;
   margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 
 .article-cover-wrap {
@@ -237,10 +266,11 @@
   padding: 24rpx 30rpx;
 }
 
+/* 文章标题 - 黑色 */
 .article-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #333;
+  color: #000000;
   margin-bottom: 16rpx;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -257,12 +287,12 @@
 
 .article-author {
   font-size: 22rpx;
-  color: #667eea;
+  color: #666666;
 }
 
 .article-views {
   font-size: 22rpx;
-  color: #999;
+  color: #888888;
 }
 
 .article-bottom {
@@ -273,27 +303,27 @@
 
 .article-category {
   font-size: 20rpx;
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  color: #FF6B6B;
+  background: rgba(255, 107, 107, 0.1);
   padding: 4rpx 14rpx;
   border-radius: 20rpx;
 }
 
 .article-date {
   font-size: 22rpx;
-  color: #ccc;
+  color: #666666;
 }
 
 .empty-articles {
   text-align: center;
   padding: 80rpx;
-  color: #999;
+  color: #999999;
   font-size: 28rpx;
 }
 
 /* 底部提示 */
 .tip-section {
-  background: rgba(255, 107, 107, 0.1);
+  background: rgba(168, 230, 207, 0.1);
   margin: 30rpx;
   padding: 30rpx;
   border-radius: 16rpx;
@@ -302,21 +332,21 @@
 
 .tip-text {
   font-size: 26rpx;
-  color: #ff6b6b;
+  color: #666666;
   display: block;
   margin-bottom: 10rpx;
 }
 
 .tip-phone {
   font-size: 28rpx;
-  color: #ff6b6b;
+  color: #5B9BD5;
   font-weight: 600;
 }
 
 /* 咨询师工作台 */
 .counselor-section {
   margin: 30rpx;
-  background: #fff;
+  background: #FFFFFF;
   border-radius: 24rpx;
   padding: 30rpx;
   box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
@@ -327,13 +357,13 @@
 .counselor-title {
   font-size: 32rpx;
   font-weight: 700;
-  color: #333;
+  color: #333333;
 }
 
 .counselor-stats {
   display: flex;
   justify-content: space-around;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #87CEEB 0%, #B4E8D1 100%);
   border-radius: 16rpx;
   padding: 30rpx 20rpx;
   margin-bottom: 24rpx;
@@ -348,13 +378,13 @@
 .stat-num {
   font-size: 48rpx;
   font-weight: 700;
-  color: #fff;
+  color: #FFFFFF;
   margin-bottom: 8rpx;
 }
 
 .stat-label {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .counselor-actions {
@@ -367,19 +397,9 @@
   flex-direction: column;
   align-items: center;
   padding: 20rpx 40rpx;
-  background: #f8f9fa;
+  background: #f5f5f5;
   border-radius: 16rpx;
 }
 
 .action-icon { font-size: 48rpx; margin-bottom: 12rpx; }
-.action-text { font-size: 24rpx; color: #666; }
-
-.role-badge {
-  display: inline-block;
-  font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4rpx 16rpx;
-  border-radius: 20rpx;
-  margin-top: 8rpx;
-}
+.action-text { font-size: 24rpx; color: #666666; }

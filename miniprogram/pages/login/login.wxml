@@ -3,7 +3,7 @@
   <!-- 顶部背景 -->
   <view class="header-bg">
     <view class="logo-area">
-      <view class="logo-icon">💜</view>
+      <view class="logo-icon">🌤️</view>
       <text class="app-name">心晴</text>
       <text class="app-subtitle">大学生心理健康助手</text>
     </view>
@@ -12,25 +12,25 @@
   <!-- 功能介绍 -->
   <view class="features">
     <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <text class="icon-emoji">📖</text>
-      </view>
-      <text class="feature-text">心理文章</text>
-    </view>
-    <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-        <text class="icon-emoji">📝</text>
+      <view class="feature-icon" style="background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);">
+        <text class="icon-emoji">📋</text>
       </view>
       <text class="feature-text">心理测评</text>
     </view>
     <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-        <text class="icon-emoji">🌳</text>
+      <view class="feature-icon" style="background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);">
+        <text class="icon-emoji">📅</text>
+      </view>
+      <text class="feature-text">预约咨询</text>
+    </view>
+    <view class="feature-item">
+      <view class="feature-icon" style="background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);">
+        <text class="icon-emoji">💬</text>
       </view>
       <text class="feature-text">心理树洞</text>
     </view>
     <view class="feature-item">
-      <view class="feature-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+      <view class="feature-icon" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">
         <text class="icon-emoji">🤖</text>
       </view>
       <text class="feature-text">AI分析</text>

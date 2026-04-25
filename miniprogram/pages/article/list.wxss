@@ -1,5 +1,5 @@
-/* pages/article/list.wxss */
-page { background: #f5f5f5; }
+/* pages/article/list.wxss - 与首页统一的配色方案 */
+page { background: #f5fff9; }
 
 .list-container { padding: 20rpx 30rpx; }
 
@@ -48,7 +48,7 @@ page { background: #f5f5f5; }
   margin-bottom: 8rpx;
 }
 
-.meta-author { font-size: 24rpx; color: #667eea; }
+.meta-author { font-size: 24rpx; color: #5B9BD5; }
 .meta-category { font-size: 24rpx; color: #999; background: #f5f5f5; padding: 2rpx 10rpx; border-radius: 6rpx; }
 .meta-views { font-size: 24rpx; color: #999; }
 

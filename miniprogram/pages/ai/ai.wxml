@@ -3,7 +3,7 @@
   <!-- 头部 -->
   <view class="header">
     <view class="header-content">
-      <view class="ai-avatar">
+      <view class="ai-avatar" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">
         <text class="ai-icon">🤖</text>
       </view>
       <view class="header-text">

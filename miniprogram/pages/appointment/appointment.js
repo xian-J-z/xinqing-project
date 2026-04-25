@@ -15,17 +15,23 @@ Page({
     showBookingModal: false,
     bookingReason: '',
     appointments: [],
-    loading: false
+    myConsultations: [],
+    loading: false,
+    currentView: 'booking'
   },
 
   onLoad: function () {
+    this.setData({ userRole: app.getUserRole() });
     this.loadCounselors();
     this.generateDates();
     this.loadAppointments();
+    this.loadMyConsultations();
   },
 
   onShow: function () {
+    this.setData({ userRole: app.getUserRole() });
     this.loadAppointments();
+    this.loadMyConsultations();
   },
 
   // 加载咨询师列表
@@ -35,9 +41,9 @@ Page({
       available: true
     }).get({
       success: res => {
+        /*console.log("咨询师数据：", res.data); // 调试用*/
         const counselors = res.data.map(item => ({
           _id: item._id,
-          openid: item.openid || '',  // 咨询师openid
           name: item.name || '未命名咨询师',
           title: item.title || '心理咨询师',
           avatar: item.avatar || '👨‍⚕️',
@@ -84,24 +90,18 @@ Page({
 
   // 加载用户预约
   loadAppointments: function () {
-    const openid = app.getOpenid();
-    const db = wx.cloud.database();
-    
-    db.collection('appointment').where({
-      openid: openid
-    }).orderBy('createTimeStr', 'desc').get({
-      success: res => {
-        console.log('加载用户预约', res.data);
-        this.setData({ appointments: res.data });
-        wx.setStorageSync('appointments', res.data);
-        wx.setStorageSync('allAppointments', res.data);
-      },
-      fail: err => {
-        console.error('加载用户预约失败', err);
-        const appointments = wx.getStorageSync('appointments') || [];
-        this.setData({ appointments });
-      }
-    });
+    const appointments = wx.getStorageSync('appointments') || [];
+    console.log('loadAppointments - 当前预约数:', appointments.length);
+    this.setData({ appointments });
+  },
+
+  // 加载咨询师预约
+  loadMyConsultations: function () {
+    if (this.data.userRole !== 'counselor') return;
+    const counselorId = app.getOpenid();
+    const allAppointments = wx.getStorageSync('allAppointments') || [];
+    const myConsultations = allAppointments.filter(a => a.counselorId === counselorId);
+    this.setData({ myConsultations });
   },
 
   // 选择咨询师 → 打开弹窗
@@ -139,13 +139,14 @@ Page({
     this.setData({ selectedTime: time });
   },
 
-  // 获取已预约时间段
+  // ====================== 核心功能：获取已预约时间段 ======================
   getBookedTimes: function () {
     const { selectedCounselor, selectedDate } = this.data;
     if (!selectedCounselor || !selectedDate) return;
 
     const allAppointments = wx.getStorageSync('allAppointments') || [];
 
+    // 筛选：同一咨询师 + 同一日期 + 不是已拒绝/已取消的预约
     const booked = allAppointments.filter(item => {
       return item.counselorId === selectedCounselor._id
         && item.date === selectedDate
@@ -192,11 +193,16 @@ Page({
 
   // 确认预约
   confirmBooking: function () {
-    const { selectedCounselor, selectedDate, selectedTime, bookingReason, appointments, bookedTimes } = this.data;
+    const { selectedCounselor, selectedDate, selectedTime, bookingReason, appointments, userRole, bookedTimes } = this.data;
 
+    if (userRole === 'counselor') {
+      wx.showToast({ title: '咨询师无法预约', icon: 'none' });
+      return;
+    }
     if (!selectedDate) { wx.showToast({ title: '请选日期', icon: 'none' }); return; }
     if (!selectedTime) { wx.showToast({ title: '请选时间', icon: 'none' }); return; }
 
+    // 防止重复预约
     if (bookedTimes.includes(selectedTime)) {
       wx.showToast({ title: '该时段已被预约', icon: 'none' });
       return;
@@ -210,7 +216,6 @@ Page({
       counselorId: selectedCounselor._id,
       counselorName: selectedCounselor.name,
       counselorTitle: selectedCounselor.title,
-      counselorOpenid: selectedCounselor.openid || '',  // 咨询师openid
       date: selectedDate,
       time: selectedTime,
       reason: bookingReason.trim() || '未填写',
@@ -219,8 +224,7 @@ Page({
       updateTimeStr: new Date().toLocaleString()
     };
 
-    this.setData({ loading: true });
-
+    // 保存到云数据库，让数据库自动生成 _id
     wx.cloud.callFunction({
       name: 'appointment',
       data: {
@@ -229,23 +233,26 @@ Page({
       },
       success: res => {
         console.log('预约已同步到云数据库', res);
+        // 云数据库返回的 _id
         const cloudId = res.result._id;
         if (cloudId) {
+          // 更新本地存储，使用云数据库返回的 _id
           const newAppointment = { ...appointmentData, _id: cloudId };
           const newAppList = [newAppointment, ...appointments];
           wx.setStorageSync('appointments', newAppList);
-          wx.setStorageSync('allAppointments', newAppList);
+          wx.setStorageSync('appointmentRecords', newAppList);
+
+          const allApp = wx.getStorageSync('allAppointments') || [];
+          allApp.unshift(newAppointment);
+          wx.setStorageSync('allAppointments', allApp);
 
           this.setData({
             appointments: newAppList,
             selectedTime: '',
-            bookingReason: '',
-            loading: false
+            bookingReason: ''
           });
 
           wx.showToast({ title: '预约成功', icon: 'success' });
-          this.getBookedTimes();
-          this.getBookedTimesForAllDates();
 
           setTimeout(() => {
             this.closeModal();
@@ -254,49 +261,53 @@ Page({
       },
       fail: err => {
         console.error('同步预约到云数据库失败', err);
-        this.setData({ loading: false });
         wx.showToast({ title: '预约失败', icon: 'none' });
       }
     });
+
+    // 刷新所有状态
+    this.getBookedTimes();
+    this.getBookedTimesForAllDates();
   },
 
   // 取消预约
   cancelAppointment: function (e) {
     const id = e.currentTarget.dataset.id;
+    const appointments = this.data.appointments.map(a => {
+      if (a._id === id) {
+        return { ...a, status: '已取消', updateTimeStr: new Date().toLocaleString() };
+      }
+      return a;
+    });
     
-    wx.showModal({
-      title: '取消预约',
-      content: '确定要取消这个预约吗？',
-      success: res => {
-        if (res.confirm) {
-          wx.cloud.callFunction({
-            name: 'appointment',
-            data: {
-              action: 'cancel',
-              appointmentId: id
-            },
-            success: () => {
-              const appointments = this.data.appointments.map(a => {
-                if (a._id === id) {
-                  return { ...a, status: '已取消', updateTimeStr: new Date().toLocaleString() };
-                }
-                return a;
-              });
-              wx.setStorageSync('appointments', appointments);
-              wx.setStorageSync('allAppointments', appointments);
-              this.setData({ appointments });
-              this.getBookedTimes();
-              this.getBookedTimesForAllDates();
-              wx.showToast({ title: '已取消', icon: 'success' });
-            },
-            fail: err => {
-              console.error('取消预约失败', err);
-              wx.showToast({ title: '取消失败', icon: 'none' });
-            }
-          });
-        }
+    // 同步取消状态到云数据库
+    wx.cloud.callFunction({
+      name: 'appointment',
+      data: {
+        action: 'cancel',
+        appointmentId: id
+      },
+      fail: err => {
+        console.error('同步取消预约到云数据库失败', err);
       }
     });
+    
+    wx.setStorageSync('appointments', appointments);
+
+    let allApp = wx.getStorageSync('allAppointments') || [];
+    allApp = allApp.map(a => {
+      if (a._id === id) {
+        return { ...a, status: '已取消', updateTimeStr: new Date().toLocaleString() };
+      }
+      return a;
+    });
+    wx.setStorageSync('allAppointments', allApp);
+
+    // 刷新所有状态
+    this.getBookedTimes();
+    this.getBookedTimesForAllDates();
+    this.setData({ appointments });
+    wx.showToast({ title: '已取消', icon: 'success' });
   },
 
   // 关闭弹窗
@@ -306,9 +317,83 @@ Page({
       selectedDate: '',
       selectedTime: '',
       bookingReason: '',
-      bookedTimes: [],
+      bookedTimes:[],
       dateBookedStatus: {}
     });
+    this.loadAppointments();
+    this.loadMyConsultations();
+  },
+
+  // 切换视图
+  switchView: function (e) {
+    this.setData({ currentView: e.currentTarget.dataset.view });
+  },
+
+  // 预约状态展示映射
+  getAppointmentStatusText: function (status) {
+    return status;
+  },
+
+  // 同步更新 appointments 和 allAppointments 的状态
+  syncAppointmentStatus: function (id, status) {
+    // 更新云数据库中的状态（直接使用中文）
+    wx.cloud.callFunction({
+      name: 'appointment',
+      data: {
+        action: 'updateStatus',
+        appointmentId: id,
+        status: status
+      },
+      fail: err => {
+        console.error('同步预约状态到云数据库失败', err);
+      }
+    });
+
+    // 更新 allAppointments
+    let all = wx.getStorageSync('allAppointments') || [];
+    all = all.map(a => a._id === id ? { ...a, status: status, updateTimeStr: new Date().toLocaleString() } : a);
+    wx.setStorageSync('allAppointments', all);
+    // 同步更新 appointments
+    let appointments = wx.getStorageSync('appointments') || [];
+    appointments = appointments.map(a => a._id === id ? { ...a, status: status, updateTimeStr: new Date().toLocaleString() } : a);
+    wx.setStorageSync('appointments', appointments);
+    // 同步更新 appointmentRecords
+    let records = wx.getStorageSync('appointmentRecords') || [];
+    records = records.map(a => a._id === id ? { ...a, status: status, updateTimeStr: new Date().toLocaleString() } : a);
+    wx.setStorageSync('appointmentRecords', records);
+  },
+
+  // 咨询师确认
+  confirmConsultation: function (e) {
+    const id = e.currentTarget.dataset.id;
+    this.syncAppointmentStatus(id, '已确认');
+    this.loadMyConsultations();
+    this.loadAppointments();
+    wx.showToast({ title: '已确认' });
+  },
+
+  // 咨询师拒绝
+  rejectConsultation: function (e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '拒绝预约',
+      success: res => {
+        if (res.confirm) {
+          this.syncAppointmentStatus(id, '已拒绝');
+          this.loadMyConsultations();
+          this.loadAppointments();
+          this.getBookedTimes();
+          wx.showToast({ title: '已拒绝' });
+        }
+      }
+    });
+  },
+
+  // 完成咨询
+  completeConsultation: function (e) {
+    const id = e.currentTarget.dataset.id;
+    this.syncAppointmentStatus(id, '已完成');
+    this.loadMyConsultations();
     this.loadAppointments();
   }
 });

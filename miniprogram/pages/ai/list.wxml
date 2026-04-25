@@ -1,0 +1,42 @@
+<!--pages/ai/list.wxml-->
+<view class="list-container">
+  <view class="record-item" wx:for="{{records}}" wx:key="index">
+    <view class="record-header">
+      <view class="emotion-section">
+        <text class="emotion-icon">{{item.emotionIcon}}</text>
+        <text class="emotion-label" style="color: {{item.emotionColor}}">{{item.emotion}}</text>
+      </view>
+      <text class="record-badge {{item.badgeClass}}">评分 {{item.score}}/5</text>
+    </view>
+    
+    <view class="input-section">
+      <text class="section-label">输入内容</text>
+      <text class="input-text">{{item.input}}</text>
+    </view>
+    
+    <view class="keywords-section">
+      <text class="section-label">关键词</text>
+      <view class="keywords-list">
+        <text class="keyword-tag" wx:for="{{item.keywords}}" wx:for-item="kw" wx:key="*this">{{kw}}</text>
+      </view>
+    </view>
+    
+    <view class="suggestions-section">
+      <text class="section-label">建议</text>
+      <text class="suggestion-text" wx:for="{{item.suggestions}}" wx:for-item="sug" wx:key="*this">• {{sug}}</text>
+    </view>
+    
+    <view class="record-footer">
+      <text class="record-date">{{item.date}}</text>
+      <view class="action-btns">
+        <text class="action-btn" catchtap="goToAI">重新分析</text>
+        <text class="action-btn delete" catchtap="deleteRecord" data-index="{{index}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-tip" wx:if="{{!loading && records.length === 0}}">
+    <text>暂无分析记录</text>
+    <text class="empty-hint">去AI分析开始对话吧</text>
+  </view>
+</view>

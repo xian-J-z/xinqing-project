@@ -1,0 +1,138 @@
+/* pages/test/list.wxss - 与首页统一的配色方案 */
+page {
+  background: #f5fff9;
+}
+
+.list-container {
+  min-height: 100vh;
+  background: #f5fff9;
+  padding: 30rpx;
+}
+
+.record-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  position: relative;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.record-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.record-badge {
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.badge-good {
+  background: rgba(67, 233, 123, 0.1);
+  color: #43e97b;
+}
+
+.badge-warn {
+  background: rgba(255, 184, 77, 0.1);
+  color: #ffb84d;
+}
+
+.badge-bad {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+.record-body {
+  margin-bottom: 20rpx;
+}
+
+.score-section {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 12rpx;
+}
+
+.score-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 12rpx;
+}
+
+.score-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #5B9BD5;
+}
+
+.score-full {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.progress-bar {
+  height: 8rpx;
+  background: #f0f0f0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
+  border-radius: 4rpx;
+  transition: width 0.3s;
+}
+
+.record-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.record-desc {
+  flex: 1;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-right: 20rpx;
+}
+
+.record-date {
+  font-size: 24rpx;
+  color: #ccc;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 30rpx;
+  bottom: 30rpx;
+  font-size: 24rpx;
+  color: #ff6b6b;
+  padding: 8rpx 16rpx;
+}
+
+.empty-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+  color: #ccc;
+  font-size: 28rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  margin-top: 16rpx;
+  color: #999;
+}

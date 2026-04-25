@@ -9,8 +9,8 @@ Page({
         id: '0f1f0c2969e82d030012b4f65f657c8c',
         title: '90项症状清单SCL-90',
         desc: '评估你的心理健康状态',
-        icon: '🧠',
-        color: '#667eea',
+        icon: '📋',
+        color: 'linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%)',
         questions: 90,
         time: '15-20分钟'
       },
@@ -18,8 +18,8 @@ Page({
         id: 'e5d2fd0069e82ccf0014fb1a00905e0a',
         title: '焦虑自评量表SAS',
         desc: '了解你的焦虑水平',
-        icon: '😰',
-        color: '#f5576c',
+        icon: '📋',
+        color: 'linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%)',
         questions: 20,
         time: '5-10分钟'
       },
@@ -27,8 +27,8 @@ Page({
         id: 'd8cc2fca69e82cee00128e590b1ae93f',
         title: '抑郁自评量表SDS',
         desc: '评估你的情绪状态',
-        icon: '😔',
-        color: '#4facfe',
+        icon: '📋',
+        color: 'linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%)',
         questions: 20,
         time: '5-10分钟'
       },
@@ -36,8 +36,8 @@ Page({
         id: 'e20fd67f69e82d130013e91c25f42d6c',
         title: '自尊量表SES',
         desc: '测量你的自我价值感',
-        icon: '💪',
-        color: '#43e97b',
+        icon: '📋',
+        color: 'linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%)',
         questions: 10,
         time: '3-5分钟'
       }

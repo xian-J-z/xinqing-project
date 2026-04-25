@@ -1,351 +1,99 @@
 <!--pages/mine/mine.wxml-->
 <view class="mine-container">
   <!-- 用户信息头部 -->
-  <view class="user-header">
+  <view class="user-header" bindtap="goToEditProfile">
     <view class="user-bg"></view>
     <view class="user-info">
-      <block wx:if="{{userInfo.avatarUrl}}">
-        <image 
-          class="user-avatar" 
-          src="{{userInfo.avatarUrl}}" 
-          mode="aspectFill"
-        />
-      </block>
-      <block wx:else>
-        <view class="user-avatar-emoji">{{userRole === 'counselor' ? '👨‍⚕️' : '👤'}}</view>
-      </block>
+      <view class="avatar-section">
+        <block wx:if="{{userInfo.avatarUrl}}">
+          <image 
+            class="user-avatar" 
+            src="{{userInfo.avatarUrl}}" 
+            mode="aspectFill"
+          />
+        </block>
+        <block wx:else>
+          <view class="user-avatar-emoji">{{userRole === 'counselor' ? '👨‍⚕️' : '👤'}}</view>
+        </block>
+      </view>
       <view class="user-detail">
-        <text class="user-name">{{userInfo.nickName || '未登录用户'}}</text>
-        <text class="user-tip" wx:if="{{userInfo.nickName}}">
-          <block wx:if="{{userRole === 'counselor'}}">👨‍⚕️ 心理咨询师</block>
-          <block wx:else>关注心理健康，享受美好生活</block>
-        </text>
-        <button class="login-tip-btn" wx:else bindtap="goToLogin">点击登录</button>
+        <text class="user-name">{{userInfo.nickName || '点击登录'}}</text>
+        <text class="user-bio" wx:if="{{userInfo.bio}}">{{userInfo.bio}}</text>
+        <text class="user-tip" wx:elif="{{userInfo.nickName}}">{{userRole === 'counselor' ? '👨‍⚕️ 心理咨询师' : '🌟 关注心理健康'}}</text>
+        <text class="login-hint" wx:else>点击登录/编辑资料</text>
       </view>
+      <view class="header-arrow">›</view>
     </view>
   </view>
 
-  <!-- 普通用户统计卡片 -->
-  <view class="stats-card" wx:if="{{userRole !== 'counselor'}}">
-    <view class="stat-item" bindtap="switchTab" data-index="0">
-      <text class="stat-value">{{stats.testCount}}</text>
-      <text class="stat-label">测评记录</text>
+  <!-- 功能列表 -->
+  <view class="function-list">
+    <!-- 心理测评 -->
+    <view class="list-item" bindtap="goToTestList">
+      <view class="item-left">
+        <view class="item-icon" style="background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);">📋</view>
+        <view class="item-info">
+          <text class="item-title">心理测评</text>
+          <text class="item-desc">了解您的心理健康状态</text>
+        </view>
+      </view>
+      <view class="item-right">
+        <text class="item-count">{{stats.testCount}} 条记录</text>
+        <text class="item-arrow">›</text>
+      </view>
     </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item" bindtap="switchTab" data-index="1">
-      <text class="stat-value">{{stats.appointmentCount}}</text>
-      <text class="stat-label">预约记录</text>
+
+    <!-- 预约咨询 -->
+    <view class="list-item" bindtap="goToAppointment">
+      <view class="item-left">
+        <view class="item-icon" style="background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);">📅</view>
+        <view class="item-info">
+          <text class="item-title">预约咨询</text>
+          <text class="item-desc">专业心理咨询师为您服务</text>
+        </view>
+      </view>
+      <view class="item-right">
+        <text class="item-count">{{stats.appointmentCount}} 条记录</text>
+        <text class="item-arrow">›</text>
+      </view>
     </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item" bindtap="switchTab" data-index="2">
-      <text class="stat-value">{{stats.treeholeCount}}</text>
-      <text class="stat-label">树洞记录</text>
+
+    <!-- 心理树洞 -->
+    <view class="list-item" bindtap="goToTreeholeList">
+      <view class="item-left">
+        <view class="item-icon" style="background: linear-gradient(135deg, #90CAF9 0%, #64B5F6 100%);">💬</view>
+        <view class="item-info">
+          <text class="item-title">心理树洞</text>
+          <text class="item-desc">倾诉心声，释放压力</text>
+        </view>
+      </view>
+      <view class="item-right">
+        <text class="item-count">{{stats.treeholeCount}} 条记录</text>
+        <text class="item-arrow">›</text>
+      </view>
     </view>
-    <view class="stat-divider"></view>
-    <view class="stat-item" bindtap="switchTab" data-index="3">
-      <text class="stat-value">{{stats.aiCount}}</text>
-      <text class="stat-label">AI分析</text>
+
+    <!-- AI心理分析 -->
+    <view class="list-item" bindtap="goToAIList">
+      <view class="item-left">
+        <view class="item-icon" style="background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);">🤖</view>
+        <view class="item-info">
+          <text class="item-title">AI心理分析</text>
+          <text class="item-desc">智能分析您的心理状态</text>
+        </view>
+      </view>
+      <view class="item-right">
+        <text class="item-count">{{stats.aiCount}} 条记录</text>
+        <text class="item-arrow">›</text>
+      </view>
     </view>
   </view>
-
-  <!-- 咨询师统计卡片 -->
-  <view class="counselor-stats-card" wx:if="{{userRole === 'counselor'}}">
-    <view class="counselor-header">
-      <text class="counselor-title">📊 工作统计</text>
-    </view>
-    <view class="counselor-stats-grid">
-      <view class="counselor-stat-item">
-        <text class="counselor-stat-value">{{counselorStats.todayReplies}}</text>
-        <text class="counselor-stat-label">今日回复</text>
-      </view>
-      <view class="counselor-stat-item">
-        <text class="counselor-stat-value">{{counselorStats.totalReplies}}</text>
-        <text class="counselor-stat-label">总回复数</text>
-      </view>
-      <view class="counselor-stat-item">
-        <text class="counselor-stat-value">{{counselorStats.totalConsults}}</text>
-        <text class="counselor-stat-label">咨询总数</text>
-      </view>
-      <view class="counselor-stat-item">
-        <text class="counselor-stat-value">{{counselorStats.avgRating}}</text>
-        <text class="counselor-stat-label">满意度</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 快捷功能 -->
-  <view class="quick-actions">
-    <!-- 普通用户功能 -->
-    <block wx:if="{{userRole !== 'counselor'}}">
-      <view class="action-card" bindtap="goToTest">
-        <view class="action-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          <text>📝</text>
-        </view>
-        <text class="action-text">心理测评</text>
-      </view>
-      <view class="action-card" bindtap="goToAppointment">
-        <view class="action-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-          <text>📅</text>
-        </view>
-        <text class="action-text">预约咨询</text>
-      </view>
-      <view class="action-card" bindtap="goToTreehole">
-        <view class="action-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-          <text>🌳</text>
-        </view>
-        <text class="action-text">心理树洞</text>
-      </view>
-      <view class="action-card" bindtap="goToAI">
-        <view class="action-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          <text>🤖</text>
-        </view>
-        <text class="action-text">AI分析</text>
-      </view>
-    </block>
-    <!-- 咨询师功能 -->
-    <block wx:else>
-      <view class="action-card" bindtap="goToPublish">
-        <view class="action-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          <text>📝</text>
-        </view>
-        <text class="action-text">发表文章</text>
-      </view>
-      <view class="action-card" bindtap="goToAppointment">
-        <view class="action-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-          <text>📅</text>
-        </view>
-        <text class="action-text">预约管理</text>
-      </view>
-      <view class="action-card" bindtap="goToTreehole">
-        <view class="action-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-          <text>💬</text>
-        </view>
-        <text class="action-text">回复咨询</text>
-      </view>
-      <view class="action-card" bindtap="goToArticleList">
-        <view class="action-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          <text>📚</text>
-        </view>
-        <text class="action-text">文章列表</text>
-      </view>
-    </block>
-  </view>
-
-  <!-- Tab切换 -->
-  <view class="record-tabs">
-    <!-- 普通用户 -->
-    <block wx:if="{{userRole !== 'counselor'}}">
-      <view 
-        class="tab {{currentTab === 0 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="0"
-      >
-        <text>测评</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 1 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="1"
-      >
-        <text>预约</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 2 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="2"
-      >
-        <text>树洞</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 3 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="3"
-      >
-        <text>AI分析</text>
-      </view>
-    </block>
-    <!-- 咨询师 -->
-    <block wx:else>
-      <view 
-        class="tab {{currentTab === 0 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="0"
-      >
-        <text>今日</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 1 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="1"
-      >
-        <text>预约</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 2 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="2"
-      >
-        <text>回复</text>
-      </view>
-      <view 
-        class="tab {{currentTab === 3 ? 'active' : ''}}" 
-        bindtap="switchTab" 
-        data-index="3"
-      >
-        <text>统计</text>
-      </view>
-    </block>
-  </view>
-
-  <!-- 记录列表 -->
-  <scroll-view scroll-y class="record-list">
-    <!-- 测评/今日记录 -->
-    <view class="record-section" wx:if="{{currentTab === 0}}">
-      <block wx:if="{{userRole !== 'counselor'}}">
-        <view class="record-card" wx:for="{{testRecords}}" wx:key="id" bindtap="goToTestDetail" data-id="{{item.id}}">
-          <view class="record-header">
-            <text class="record-title">{{item.testTitle}}</text>
-            <view wx:if="{{item.level === '心理健康' || item.level === '良好'}}" class="record-badge badge-good">{{item.level}}</view>
-            <view wx:elif="{{item.level === '轻度心理问题' || item.level === '轻度困扰' || item.level === '待确认'}}" class="record-badge badge-warn">{{item.level}}</view>
-            <view wx:elif="{{item.level === '中度心理问题' || item.level === '需要关注'}}" class="record-badge badge-bad">{{item.level}}</view>
-            <view wx:else class="record-badge badge-warn">{{item.level}}</view>
-          </view>
-          <view class="record-info">
-            <text class="info-item">得分：{{item.avgScore}}</text>
-            <text class="info-item">日期：{{item.date}}</text>
-          </view>
-        </view>
-        <view class="empty-tip" wx:if="{{testRecords.length === 0}}">
-          <text>暂无测评记录</text>
-        </view>
-      </block>
-      <block wx:else>
-        <!-- 咨询师今日工作 -->
-        <view class="today-work-card">
-          <view class="work-header">
-            <text class="work-title">📋 今日工作概览</text>
-          </view>
-          <view class="work-item">
-            <text class="work-label">待回复帖子</text>
-            <text class="work-value">3</text>
-          </view>
-          <view class="work-item">
-            <text class="work-label">已回复咨询</text>
-            <text class="work-value">5</text>
-          </view>
-          <view class="work-item">
-            <text class="work-label">今日预约</text>
-            <text class="work-value">2</text>
-          </view>
-        </view>
-      </block>
-    </view>
-
-    <!-- 预约记录 -->
-    <view class="record-section" wx:if="{{currentTab === 1}}">
-      <!-- 有效预约 -->
-      <view class="section-sub-title" wx:if="{{validAppointments.length > 0}}">
-        <text>有效预约 ({{validAppointments.length}})</text>
-      </view>
-      <view class="record-card" wx:for="{{validAppointments}}" wx:key="_id">
-        <view class="record-header">
-          <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
-          <view wx:if="{{item.status === '已确认'}}" class="record-badge badge-good">{{item.status}}</view>
-          <view wx:elif="{{item.status === '待确认'}}" class="record-badge badge-warn">{{item.status}}</view>
-          <view wx:elif="{{item.status === '已完成'}}" class="record-badge badge-completed">{{item.status}}</view>
-          <view wx:else class="record-badge badge-warn">{{item.status}}</view>
-        </view>
-        <view class="record-info">
-          <text class="info-item">📅 {{item.date}} {{item.time}}</text>
-          <text class="info-item">📝 {{item.reason}}</text>
-        </view>
-      </view>
-      
-      <!-- 已取消预约 -->
-      <view class="section-sub-title cancelled" wx:if="{{cancelledAppointments.length > 0}}">
-        <text>已取消 ({{cancelledAppointments.length}})</text>
-      </view>
-      <view class="record-card cancelled-card" wx:for="{{cancelledAppointments}}" wx:key="_id">
-        <view class="record-header">
-          <text class="record-title">{{item.counselorName || '预约咨询'}}</text>
-          <view class="record-badge badge-cancelled">{{item.status}}</view>
-        </view>
-        <view class="record-info">
-          <text class="info-item">📅 {{item.date}} {{item.time}}</text>
-          <text class="info-item">📝 {{item.reason}}</text>
-        </view>
-      </view>
-      
-      <view class="empty-tip" wx:if="{{validAppointments.length === 0 && cancelledAppointments.length === 0}}">
-        <text>暂无预约记录</text>
-      </view>
-    </view>
-
-    <!-- 树洞/回复记录 -->
-    <view class="record-section" wx:if="{{currentTab === 2}}">
-      <view class="record-card" wx:for="{{treeholeRecords}}" wx:key="id">
-        <text class="record-content">{{item.content}}</text>
-        <view class="record-footer">
-          <text class="record-time">{{item.time}}</text>
-          <view class="record-actions">
-            <text>❤️ {{item.likes}}</text>
-            <text>💬 {{item.comments}}</text>
-          </view>
-        </view>
-      </view>
-      <view class="empty-tip" wx:if="{{treeholeRecords.length === 0}}">
-        <text wx:if="{{userRole === 'counselor'}}">暂无回复记录</text>
-        <text wx:else>暂无树洞记录</text>
-      </view>
-    </view>
-
-    <!-- AI分析/统计 -->
-    <view class="record-section" wx:if="{{currentTab === 3}}">
-      <block wx:if="{{userRole !== 'counselor'}}">
-        <view class="record-card ai-card" wx:for="{{aiRecords}}" wx:key="index">
-          <view class="record-header">
-            <text class="record-title">AI心理分析</text>
-            <view wx:if="{{item.emotion === '良好'}}" class="record-badge badge-good">{{item.emotion}}</view>
-            <view wx:elif="{{item.emotion === '轻度困扰'}}" class="record-badge badge-warn">{{item.emotion}}</view>
-            <view wx:elif="{{item.emotion === '需要关注'}}" class="record-badge badge-bad">{{item.emotion}}</view>
-            <view wx:else class="record-badge badge-warn">{{item.emotion}}</view>
-          </view>
-          <view class="record-info">
-            <text class="info-item">关键词：{{item.keywords.join('、')}}</text>
-            <text class="info-item">日期：{{item.date}}</text>
-          </view>
-          <view class="suggestion-preview">
-            <text class="preview-label">建议：</text>
-            <text class="preview-text">{{item.suggestions[0]}}</text>
-          </view>
-        </view>
-        <view class="empty-tip" wx:if="{{aiRecords.length === 0}}">
-          <text>暂无AI分析记录</text>
-        </view>
-      </block>
-      <block wx:else>
-        <!-- 咨询师统计 -->
-        <view class="stat-detail-card">
-          <text class="stat-detail-title">📈 工作详情</text>
-          <view class="stat-detail-item">
-            <text>本周回复</text>
-            <text class="stat-detail-value">35</text>
-          </view>
-          <view class="stat-detail-item">
-            <text>本月回复</text>
-            <text class="stat-detail-value">128</text>
-          </view>
-          <view class="stat-detail-item">
-            <text>平均评分</text>
-            <text class="stat-detail-value">4.9</text>
-          </view>
-        </view>
-      </block>
-    </view>
-  </scroll-view>
 
   <!-- 退出登录 -->
-  <view class="logout-section" wx:if="{{userInfo}}">
-    <button class="logout-btn" bindtap="logout">退出登录</button>
+  <view class="logout-section" wx:if="{{userInfo.nickName}}">
+    <view class="logout-btn" bindtap="logout">
+      <text class="logout-icon">🚪</text>
+      <text class="logout-text">退出登录</text>
+    </view>
   </view>
 </view>

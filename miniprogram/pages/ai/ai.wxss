@@ -1,13 +1,17 @@
-/* pages/ai/ai.wxss */
+/* pages/ai/ai.wxss - 与首页统一的配色方案 */
+page {
+  background: #f5fff9;
+}
+
 .ai-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f5;
+  background: #f5fff9;
 }
 
 .header {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #8ddaf8 0%, #B4E8D1 100%);
   padding: 30rpx;
   display: flex;
   justify-content: space-between;
@@ -82,7 +86,7 @@
 .message-avatar {
   width: 60rpx;
   height: 60rpx;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #F8BBD0 0%, #F48FB1 100%);
   border-radius: 30rpx;
   display: flex;
   align-items: center;
@@ -92,7 +96,7 @@
 }
 
 .message.user .message-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);
 }
 
 .message-content {
@@ -117,7 +121,7 @@
 }
 
 .message.user .message-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);
   color: #fff;
 }
 
@@ -144,7 +148,7 @@
 .dot {
   width: 12rpx;
   height: 12rpx;
-  background: #f093fb;
+  background: #F8BBD0;
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -208,8 +212,8 @@
 }
 
 .tag {
-  background: rgba(240, 147, 251, 0.1);
-  color: #f093fb;
+  background: rgba(248, 187, 208, 0.15);
+  color: #F06292;
   font-size: 22rpx;
   padding: 8rpx 16rpx;
   border-radius: 20rpx;
@@ -242,12 +246,12 @@
 }
 
 .action-btn.test {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(209, 196, 233, 0.15);
+  color: #9575CD;
 }
 
 .action-btn.consult {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
   color: #fff;
 }
 
@@ -276,13 +280,13 @@
 }
 
 .send-btn {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #D1C4E9 0%, #B39DDB 100%);
   color: #fff;
   font-size: 28rpx;
   font-weight: 600;
   padding: 20rpx 36rpx;
   border-radius: 40rpx;
-  box-shadow: 0 4rpx 16rpx rgba(240, 147, 251, 0.4);
+  box-shadow: 0 4rpx 16rpx rgba(209, 196, 233, 0.4);
 }
 
 .send-btn::after {

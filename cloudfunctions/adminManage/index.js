@@ -49,6 +49,43 @@ async function getStats() {
   }
 }
 
+// 更新用户信息
+async function updateUserInfo(nickName, avatarUrl, bio) {
+  const wxContext = cloud.getWXContext()
+  const openid = wxContext.OPENID
+  
+  try {
+    // 更新 user 表
+    await db.collection('user').where({
+      openid: openid
+    }).update({
+      data: {
+        nickName: nickName,
+        avatarUrl: avatarUrl || '',
+        bio: bio || '', // 个性签名
+        updateTime: new Date()
+      }
+    })
+    
+    // 如果是咨询师，也更新 counselor 表
+    await db.collection('counselor').where({
+      openid: openid
+    }).update({
+      data: {
+        name: nickName,
+        avatar: avatarUrl || '',
+        bio: bio || '', // 个性签名
+        updateTime: new Date()
+      }
+    })
+    
+    return { success: true, message: '更新成功' }
+  } catch (e) {
+    console.error('更新用户信息失败', e)
+    return { success: false, message: e.message }
+  }
+}
+
 // 获取咨询师列表（从 counselor 集合）
 async function getCounselors() {
   const countRes = await db.collection('counselor').count()
@@ -214,6 +251,9 @@ exports.main = async (event, context) => {
         
       case 'createAdmin':
         return await createAdmin(event.username, event.password, event.nickName)
+        
+      case 'updateUserInfo':
+        return await updateUserInfo(event.nickName, event.avatarUrl, event.bio)
         
       case 'getCounselors':
         return await getCounselors()

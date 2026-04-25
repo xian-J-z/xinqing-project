@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "心理树洞",
-  "navigationBarBackgroundColor": "#4facfe",
+  "navigationBarBackgroundColor": "#8ddaf8",
   "navigationBarTextStyle": "white",
   "enablePullDownRefresh": true,
   "usingComponents": {}

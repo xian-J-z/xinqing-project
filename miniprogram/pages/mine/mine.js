@@ -212,6 +212,13 @@ Page({
     this.setData({ currentTab: index });
   },
 
+  // 跳转到编辑资料页面
+  goToEditProfile: function() {
+    wx.navigateTo({
+      url: '/pages/mine/edit-profile'
+    });
+  },
+
   // 退出登录
   logout: function() {
     wx.showModal({
@@ -275,6 +282,27 @@ Page({
   goToArticleList: function() {
     wx.navigateTo({
       url: '/pages/article/list'
+    });
+  },
+
+  // 跳转到测评记录列表
+  goToTestList: function() {
+    wx.navigateTo({
+      url: '/pages/test/list'
+    });
+  },
+
+  // 跳转到心理树洞列表
+  goToTreeholeList: function() {
+    wx.navigateTo({
+      url: '/pages/treehole/list'
+    });
+  },
+
+  // 跳转到AI分析列表
+  goToAIList: function() {
+    wx.navigateTo({
+      url: '/pages/ai/list'
     });
   }
 });

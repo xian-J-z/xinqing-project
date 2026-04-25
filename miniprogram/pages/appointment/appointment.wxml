@@ -1,66 +1,115 @@
-<!-- pages/appointment/appointment.wxml -->
 <view class="appointment-container">
   <view class="header">
-    <text class="header-title">预约咨询</text>
-    <text class="header-desc">专业心理咨询师，为你排忧解难</text>
+    <text class="header-title">{{userRole === 'counselor' ? '预约管理' : '预约咨询'}}</text>
+    <text class="header-desc">{{userRole === 'counselor' ? '管理您的预约日程' : '专业心理咨询师，为你排忧解难'}}</text>
   </view>
 
-  <!-- 咨询师列表 -->
-  <view class="counselor-section">
-    <text class="section-title">选择咨询师</text>
-    <view class="counselor-list">
-      <view 
-        class="counselor-card" 
-        wx:for="{{counselors}}" 
-        wx:key="_id"
-        bindtap="selectCounselor"
-        data-id="{{item._id}}"
-      >
-        <view class="counselor-avatar-emoji">{{item.avatar}}</view>
-        <view class="counselor-info">
-          <view class="counselor-header">
-            <text class="counselor-name">{{item.name}}</text>
-            <view class="status-tag {{item.available ? 'available' : 'unavailable'}}">
-              {{item.available ? '可预约' : '已约满'}}
-            </view>
-          </view>
-          <text class="counselor-title">{{item.title}}</text>
-          <view class="counselor-tags">
-            <text class="tag" wx:for="{{item.specialties}}" wx:for-item="spec" wx:key="*this">{{spec}}</text>
-          </view>
-          <view class="counselor-meta">
-            <text class="meta-item">🕐 {{item.experience}}</text>
-            <text class="meta-item">⭐ {{item.rating}}</text>
-            <text class="meta-item">📋 {{item.consults}}次咨询</text>
-          </view>
-        </view>
-        <view class="counselor-price">
-          <text class="price">¥{{item.price}}</text>
-          <text class="price-unit">/次</text>
-        </view>
-      </view>
+  <view class="view-tabs" wx:if="{{userRole === 'counselor'}}">
+    <view 
+      class="tab-item {{currentView === 'booking' ? 'active' : ''}}" 
+      bindtap="switchView"
+      data-view="booking"
+    >
+      我的预约
+    </view>
+    <view 
+      class="tab-item {{currentView === 'manage' ? 'active' : ''}}" 
+      bindtap="switchView"
+      data-view="manage"
+    >
+      待管理
     </view>
   </view>
 
-  <!-- 我的预约 -->
-  <view class="my-appointments">
+  <block wx:if="{{userRole !== 'counselor'}}">
+    <view class="counselor-section">
+      <text class="section-title">选择咨询师</text>
+      <view class="counselor-list">
+        <view 
+          class="counselor-card" 
+          wx:for="{{counselors}}" 
+          wx:key="_id"
+          bindtap="selectCounselor"
+          data-id="{{item._id}}"
+        >
+          <view class="counselor-avatar-emoji">{{item.avatar}}</view>
+          <view class="counselor-info">
+            <view class="counselor-header">
+              <text class="counselor-name">{{item.name}}</text>
+              <view class="status-tag {{item.available ? 'available' : 'unavailable'}}">
+                {{item.available ? '可预约' : '已约满'}}
+              </view>
+            </view>
+            <text class="counselor-title">{{item.title}}</text>
+            <view class="counselor-tags">
+              <text class="tag" wx:for="{{item.specialties}}" wx:for-item="spec">{{spec}}</text>
+            </view>
+            <view class="counselor-meta">
+              <text class="meta-item">🕐 {{item.experience}}</text>
+              <text class="meta-item">⭐ {{item.rating}}</text>
+              <text class="meta-item">📋 {{item.consults}}次咨询</text>
+            </view>
+          </view>
+          <view class="counselor-price">
+            <text class="price">¥{{item.price}}</text>
+            <text class="price-unit">/次</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="my-appointments">
+      <text class="section-title">我的预约</text>
+      <view class="appointment-list" wx:if="{{appointments.length > 0}}">
+        <view class="appointment-card" wx:for="{{appointments}}" wx:key="_id">
+          <view class="appointment-header">
+            <text class="appointment-counselor">{{item.counselorName}}</text>
+            <view wx:if="{{item.status === '待确认'}}" class="status-pending">{{item.status}}</view>
+            <view wx:elif="{{item.status === '已确认'}}" class="status-confirmed">{{item.status}}</view>
+            <view wx:elif="{{item.status === '已完成'}}" class="status-completed">{{item.status}}</view>
+            <view wx:elif="{{item.status === '已拒绝'}}" class="status-rejected">{{item.status}}</view>
+            <view wx:elif="{{item.status === '已取消'}}" class="status-rejected">{{item.status}}</view>
+            <view wx:else class="status-pending">{{item.status}}</view>
+          </view>
+          <view class="appointment-info">
+            <text class="info-item">📅 {{item.date}} {{item.time}}</text>
+            <text class="info-item">📝 {{item.reason}}</text>
+          </view>
+          <view class="appointment-actions">
+            <text class="appointment-time">{{item.createTimeStr}}</text>
+            <button class="cancel-btn" bindtap="cancelAppointment" data-id="{{item._id}}" wx:if="{{item.status === '待确认'}}">取消预约</button>
+          </view>
+        </view>
+      </view>
+      <view class="empty-state" wx:else>
+        <text>暂无预约记录</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="my-appointments" wx:if="{{userRole === 'counselor' && currentView === 'booking'}}">
     <text class="section-title">我的预约</text>
-    <view class="appointment-list" wx:if="{{appointments.length > 0}}">
-      <view class="appointment-card" wx:for="{{appointments}}" wx:key="_id">
+    <view class="appointment-list" wx:if="{{myConsultations.length > 0}}">
+      <view class="appointment-card" wx:for="{{myConsultations}}" wx:key="_id">
         <view class="appointment-header">
-          <text class="appointment-counselor">{{item.counselorName}}</text>
-          <view wx:if="{{item.status === '待确认'}}" class="status-badge status-pending">{{item.status}}</view>
-          <view wx:elif="{{item.status === '已确认'}}" class="status-badge status-confirmed">{{item.status}}</view>
-          <view wx:elif="{{item.status === '已完成'}}" class="status-badge status-completed">{{item.status}}</view>
-          <view wx:elif="{{item.status === '已拒绝' || item.status === '已取消'}}" class="status-badge status-rejected">{{item.status}}</view>
+          <text class="appointment-counselor">{{item.userName}}</text>
+          <view wx:if="{{item.status === '待确认'}}" class="status-pending">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已确认'}}" class="status-confirmed">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已完成'}}" class="status-completed">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已拒绝'}}" class="status-rejected">{{item.status}}</view>
+          <view wx:elif="{{item.status === '已取消'}}" class="status-rejected">{{item.status}}</view>
+          <view wx:else class="status-pending">{{item.status}}</view>
         </view>
         <view class="appointment-info">
           <text class="info-item">📅 {{item.date}} {{item.time}}</text>
           <text class="info-item">📝 {{item.reason}}</text>
-          <text class="info-item">🕐 {{item.createTimeStr}}</text>
         </view>
-        <view class="appointment-actions" wx:if="{{item.status === '待确认'}}">
-          <button class="cancel-btn" bindtap="cancelAppointment" data-id="{{item._id}}">取消预约</button>
+        <view class="counselor-actions" wx:if="{{item.status === '待确认'}}">
+          <button class="confirm-btn small" bindtap="confirmConsultation" data-id="{{item._id}}">确认</button>
+          <button class="reject-btn small" bindtap="rejectConsultation" data-id="{{item._id}}">拒绝</button>
+        </view>
+        <view class="counselor-actions" wx:if="{{item.status === '已确认'}}">
+          <button class="complete-btn small" bindtap="completeConsultation" data-id="{{item._id}}">完成咨询</button>
         </view>
       </view>
     </view>
@@ -69,7 +118,6 @@
     </view>
   </view>
 
-  <!-- 预约弹窗 -->
   <view class="booking-modal" wx:if="{{showBookingModal}}">
     <view class="modal-mask" bindtap="closeModal"></view>
     <view class="modal-content">

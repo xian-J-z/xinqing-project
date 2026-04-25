@@ -40,6 +40,14 @@ App({
     wx.setStorageSync('userInfo', userInfo);
   },
   
+  // 更新用户信息（头像、昵称等）
+  setUserInfo: function(userInfo) {
+    const currentInfo = this.globalData.userInfo || {};
+    const updatedInfo = { ...currentInfo, ...userInfo };
+    this.globalData.userInfo = updatedInfo;
+    wx.setStorageSync('userInfo', updatedInfo);
+  },
+  
   // 获取用户信息
   getUserInfo: function() {
     return this.globalData.userInfo;
