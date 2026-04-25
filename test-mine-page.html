@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试我的页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .mine-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .record-card {
+            background: #fff;
+            border-radius: 16rpx;
+            padding: 24rpx;
+            margin-bottom: 20rpx;
+            box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+        }
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16rpx;
+        }
+        .record-title {
+            font-size: 30rpx;
+            font-weight: 600;
+            color: #333;
+        }
+        .record-badge {
+            font-size: 20rpx;
+            padding: 6rpx 16rpx;
+            border-radius: 20rpx;
+        }
+        .badge-good {
+            background: rgba(67, 233, 123, 0.1);
+            color: #43e97b;
+        }
+        .badge-warn {
+            background: rgba(255, 184, 77, 0.1);
+            color: #ffb84d;
+        }
+        .badge-bad {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+        .record-info {
+            margin-bottom: 12rpx;
+        }
+        .info-item {
+            font-size: 24rpx;
+            color: #666;
+            display: block;
+            margin-bottom: 6rpx;
+        }
+        .record-content {
+            font-size: 28rpx;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 16rpx;
+        }
+        .record-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .record-time {
+            font-size: 22rpx;
+            color: #ccc;
+        }
+        .record-actions {
+            display: flex;
+            gap: 20rpx;
+        }
+        .record-actions text {
+            font-size: 22rpx;
+            color: #999;
+        }
+        .empty-tip {
+            text-align: center;
+            padding: 80rpx 0;
+            color: #ccc;
+            font-size: 28rpx;
+        }
+        .record-tabs {
+            display: flex;
+            background: #fff;
+            margin: 30rpx 0;
+            border-radius: 16rpx;
+            padding: 8rpx;
+            box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 20rpx 0;
+            font-size: 28rpx;
+            color: #666;
+            border-radius: 12rpx;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            font-weight: 600;
+        }
+        .suggestion-preview {
+            margin-top: 16rpx;
+            padding-top: 16rpx;
+            border-top: 1rpx solid #f0f0f0;
+        }
+        .preview-label {
+            font-size: 24rpx;
+            color: #999;
+        }
+        .preview-text {
+            font-size: 24rpx;
+            color: #666;
+            display: block;
+            margin-top: 8rpx;
+        }
+    </style>
+</head>
+<body>
+    <div class="mine-container">
+        <h1>测试我的页面</h1>
+        
+        <!-- Tab切换 -->
+        <div class="record-tabs">
+            <div class="tab active" onclick="switchTab(0)">测评</div>
+            <div class="tab" onclick="switchTab(1)">预约</div>
+            <div class="tab" onclick="switchTab(2)">树洞</div>
+            <div class="tab" onclick="switchTab(3)">AI分析</div>
+        </div>
+        
+        <!-- 记录列表 -->
+        <div id="recordList">
+            <!-- 测评记录 -->
+            <div id="testRecords" class="record-section">
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">自尊量表</span>
+                        <div class="record-badge badge-good">心理健康</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">得分：4.00</span>
+                        <span class="info-item">日期：2026/4/25</span>
+                    </div>
+                </div>
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">焦虑量表</span>
+                        <div class="record-badge badge-good">心理健康</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">得分：1.00</span>
+                        <span class="info-item">日期：2026/4/24</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 预约记录 -->
+            <div id="appointmentRecords" class="record-section" style="display: none;">
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">张老师</span>
+                        <div class="record-badge badge-good">已确认</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">📅 2024-04-26 14:00-15:00</span>
+                        <span class="info-item">📝 情绪问题</span>
+                    </div>
+                </div>
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">李老师</span>
+                        <div class="record-badge badge-warn">待确认</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">📅 2024-04-27 10:00-11:00</span>
+                        <span class="info-item">📝 学业压力</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 树洞记录 -->
+            <div id="treeholeRecords" class="record-section" style="display: none;">
+                <div class="record-card">
+                    <span class="record-content">今天心情很好！</span>
+                    <div class="record-footer">
+                        <span class="record-time">2026/4/25 11:12:10</span>
+                        <div class="record-actions">
+                            <span>❤️ 5</span>
+                            <span>💬 2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="record-card">
+                    <span class="record-content">最近学习压力有点大，不知道该怎么办。</span>
+                    <div class="record-footer">
+                        <span class="record-time">2026/4/24 15:30:45</span>
+                        <div class="record-actions">
+                            <span>❤️ 12</span>
+                            <span>💬 8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI分析记录 -->
+            <div id="aiRecords" class="record-section" style="display: none;">
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">AI心理分析</span>
+                        <div class="record-badge badge-good">良好</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">关键词：开心、积极</span>
+                        <span class="info-item">日期：2026/4/25</span>
+                    </div>
+                    <div class="suggestion-preview">
+                        <span class="preview-label">建议：</span>
+                        <span class="preview-text">继续保持积极心态</span>
+                    </div>
+                </div>
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-title">AI心理分析</span>
+                        <div class="record-badge badge-warn">轻度困扰</div>
+                    </div>
+                    <div class="record-info">
+                        <span class="info-item">关键词：压力、焦虑</span>
+                        <span class="info-item">日期：2026/4/23</span>
+                    </div>
+                    <div class="suggestion-preview">
+                        <span class="preview-label">建议：</span>
+                        <span class="preview-text">尝试深呼吸放松</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(index) {
+            // 更新tab状态
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach((tab, i) => {
+                if (i === index) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // 显示对应记录
+            const sections = ['testRecords', 'appointmentRecords', 'treeholeRecords', 'aiRecords'];
+            sections.forEach((section, i) => {
+                const element = document.getElementById(section);
+                if (i === index) {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        }
+        
+        // 模拟数据加载
+        console.log('模拟数据加载完成');
+        console.log('测试记录:', [
+            {
+                id: '1777086730388xrngbtjiz',
+                testId: 'ses',
+                testTitle: '自尊量表',
+                totalScore: 40,
+                fullScore: 40,
+                maxPerQuestion: 4,
+                avgScore: '4.00',
+                level: '心理健康',
+                description: '你的自尊水平很高，心理健康状态良好。',
+                suggestion: '继续保持积极的自我认知和良好的心理状态。',
+                date: '2026/4/25'
+            },
+            {
+                id: '1777086730389abcdef',
+                testId: 'sas',
+                testTitle: '焦虑量表',
+                totalScore: 20,
+                fullScore: 80,
+                maxPerQuestion: 4,
+                avgScore: '1.00',
+                level: '心理健康',
+                description: '你的焦虑水平很低，心理健康状态良好。',
+                suggestion: '继续保持积极的生活态度。',
+                date: '2026/4/24'
+            }
+        ]);
+        
+        console.log('预约记录:', [
+            {
+                _id: 'test-appointment-1',
+                counselorName: '张老师',
+                date: '2024-04-26',
+                time: '14:00-15:00',
+                reason: '情绪问题',
+                status: '已确认'
+            },
+            {
+                _id: 'test-appointment-2',
+                counselorName: '李老师',
+                date: '2024-04-27',
+                time: '10:00-11:00',
+                reason: '学业压力',
+                status: '待确认'
+            }
+        ]);
+        
+        console.log('树洞记录:', [
+            {
+                id: 'test-treehole-1',
+                content: '今天心情很好！',
+                time: '2026/4/25 11:12:10',
+                likes: 5,
+                comments: 2
+            },
+            {
+                id: 'test-treehole-2',
+                content: '最近学习压力有点大，不知道该怎么办。',
+                time: '2026/4/24 15:30:45',
+                likes: 12,
+                comments: 8
+            }
+        ]);
+        
+        console.log('AI分析记录:', [
+            {
+                keywords: ['开心', '积极'],
+                emotion: '良好',
+                score: 1,
+                suggestions: ['继续保持积极心态'],
+                input: '我今天很开心',
+                date: '2026/4/25'
+            },
+            {
+                keywords: ['压力', '焦虑'],
+                emotion: '轻度困扰',
+                score: 3,
+                suggestions: ['尝试深呼吸放松', '合理安排时间'],
+                input: '最近压力很大，感觉很焦虑',
+                date: '2026/4/23'
+            }
+        ]);
+    </script>
+</body>
+</html>

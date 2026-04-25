@@ -42,64 +42,27 @@
   <block wx:if="{{testStarted && !testFinished}}">
     <view class="test-header">
       <view class="test-progress">
-        <text class="progress-text">{{currentQuestion + 1}} / {{currentTest.questions}}</text>
+        <text class="progress-text">{{currentQuestion + 1}} / {{questions.length}}</text>
         <view class="progress-bar">
-          <view class="progress-fill" style="width: {{(currentQuestion + 1) / currentTest.questions * 100}}%"></view>
+          <view class="progress-fill" style="width: {{(currentQuestion + 1) / questions.length * 100}}%"></view>
         </view>
       </view>
       <text class="test-name">{{currentTest.title}}</text>
     </view>
     
-    <view class="question-section">
-      <text class="question-text">第 {{currentQuestion + 1}} 题：您最近一周是否有以下感受？</text>
-      <view class="scale-hint">
-        <text>1 = 从无</text>
-        <text>2 = 轻度</text>
-        <text>3 = 中度</text>
-        <text>4 = 较重</text>
-        <text>5 = 严重</text>
-      </view>
+    <view class="question-section" wx:if="{{questions[currentQuestion]}}">
+      <text class="question-text">第 {{currentQuestion + 1}} 题：{{questions[currentQuestion].content}}</text>
       
       <view class="options">
         <view 
-          class="option {{answers[currentQuestion] == 1 ? 'selected' : ''}}" 
+          wx:for="{{questions[currentQuestion].options}}" 
+          wx:key="index"
+          class="option {{answers[currentQuestion] == item.score ? 'selected' : ''}}" 
           bindtap="selectAnswer" 
-          data-score="1"
+          data-score="{{item.score}}"
         >
-          <text class="option-score">1</text>
-          <text class="option-label">从无</text>
-        </view>
-        <view 
-          class="option {{answers[currentQuestion] == 2 ? 'selected' : ''}}" 
-          bindtap="selectAnswer" 
-          data-score="2"
-        >
-          <text class="option-score">2</text>
-          <text class="option-label">轻度</text>
-        </view>
-        <view 
-          class="option {{answers[currentQuestion] == 3 ? 'selected' : ''}}" 
-          bindtap="selectAnswer" 
-          data-score="3"
-        >
-          <text class="option-score">3</text>
-          <text class="option-label">中度</text>
-        </view>
-        <view 
-          class="option {{answers[currentQuestion] == 4 ? 'selected' : ''}}" 
-          bindtap="selectAnswer" 
-          data-score="4"
-        >
-          <text class="option-score">4</text>
-          <text class="option-label">较重</text>
-        </view>
-        <view 
-          class="option {{answers[currentQuestion] == 5 ? 'selected' : ''}}" 
-          bindtap="selectAnswer" 
-          data-score="5"
-        >
-          <text class="option-score">5</text>
-          <text class="option-label">严重</text>
+          <text class="option-score">{{item.score}}</text>
+          <text class="option-label">{{item.text}}</text>
         </view>
       </view>
     </view>
@@ -107,7 +70,7 @@
     <view class="btn-section">
       <button class="btn-prev" bindtap="prevQuestion" wx:if="{{currentQuestion > 0}}">上一题</button>
       <button class="btn-next" bindtap="nextQuestion">
-        {{currentQuestion < currentTest.questions - 1 ? '下一题' : '提交测试'}}
+        {{currentQuestion < questions.length - 1 ? '下一题' : '提交测试'}}
       </button>
     </view>
     
@@ -128,9 +91,15 @@
         </view>
         
         <view class="result-score">
+          <text class="score-label">总得分</text>
+          <text class="score-value">{{result.totalScore}}</text>
+          <text class="score-max">满分{{result.fullScore}}分</text>
+        </view>
+        
+        <view class="result-score">
           <text class="score-label">平均得分</text>
           <text class="score-value">{{result.avgScore}}</text>
-          <text class="score-max">满分5分</text>
+          <text class="score-max">满分{{result.maxPerQuestion}}分</text>
         </view>
         
         <view class="result-desc">

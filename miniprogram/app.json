@@ -7,6 +7,7 @@
     "pages/appointment/appointment",
     "pages/mine/mine",
     "pages/treehole/treehole",
+    "pages/test-storage/test-storage",
     "pages/admin/index",
     "pages/admin/users",
     "pages/admin/articles",

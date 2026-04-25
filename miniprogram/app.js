@@ -52,7 +52,7 @@ App({
   
   // 获取用户角色
   getUserRole: function() {
-    return this.globalData.userInfo ? this.globalData.userInfo.role : 'user';
+    return this.globalData.userInfo && this.globalData.userInfo.role ? this.globalData.userInfo.role : 'user';
   },
   
   // 检查是否为咨询师
